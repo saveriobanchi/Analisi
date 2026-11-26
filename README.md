@@ -12,8 +12,8 @@ Apri `dist/index.html` in un browser: è un unico file, funziona anche offline s
 | --- | --- |
 | 10 capitoli, 52 lezioni | Idea, definizioni ed enunciati esatti, metodo, esempi a livelli (base, medio, esame) con soluzione passo per passo, errori da evitare, "All'esame" |
 | 237 domande di lezione | Vero/Falso e multiple nel formato dello scritto, con spiegazione |
-| Pareti d'esame (124 quesiti) | Una per capitolo, punteggio dello scritto (+2/−1, +3/−1, 0 se salti) |
-| 87 quesiti delle prove reali | Dalle 8 prove disponibili (22/1/2025 – 15/7/2026), risposte secondo le chiavi ufficiali |
+| Pareti d'esame (221 quesiti) | Una per capitolo: a ogni attacco 13 quesiti estratti (6 V/F + 7 multipla), punteggio dello scritto (+2/−1, +3/−1, 0 se salti) |
+| 184 quesiti delle prove reali | 5 appelli 2025 (fila A e B), esempio di gennaio 2026, test online di luglio 2026: risposte confrontate con le chiavi ufficiali |
 | Simulazione d'esame | 13 quesiti (6 V/F + 7 multipla), timer, consegna, correzione, storico dei punteggi |
 | 26 domande di teoria | Risposta modello e checklist per autovalutarsi |
 | Zaino degli errori | Ripasso a intervalli (1, 3, 7, 16 giorni) delle domande sbagliate |
@@ -21,13 +21,20 @@ Apri `dist/index.html` in un browser: è un unico file, funziona anche offline s
 | 11 laboratori | Superfici 3D e limiti lungo i percorsi, gradiente, forme quadratiche, polari, Fubini, curve, campi e Green, campo di direzioni, Taylor, serie, mappa delle implicazioni |
 | Libretto | Quota, gradi, 28 timbri, punteggio stimato, impostazioni, trasferimento dei progressi |
 
-I progressi restano nel browser (`localStorage`). Per passare a un altro dispositivo: Libretto › Copia codice, poi Incolla codice sull'altro.
+## Salvataggio dei risultati
 
-## Fonti e limiti
+Aperta da claude.ai, l'app salva tutto nel tuo account con la capacità `db`, in due documenti privati
+(`data/users/<id>/stato` e `data/users/<id>/risposte`): lezioni e stelle, zaino, timbri, registro delle risposte e
+storico delle simulazioni (punteggio, giuste, sbagliate, bianche, esito per capitolo). Da un altro dispositivo, con lo
+stesso account, i progressi si ricaricano da soli; vince la copia aggiornata più di recente. Il browser tiene comunque
+una copia locale, e dal Libretto si può copiare un codice di backup. Aperta come file locale, l'app salva solo nel browser.
 
-- Programma, formato dello scritto, quesiti reali e stile delle spiegazioni vengono dal progetto "analisi" (guide dei capitoli 1–4 e prove d'esame).
-- Per i capitoli 5–10 le prove reali non erano trascritte: lezioni e quesiti sono stati scritti nello stesso formato e **ogni risultato numerico è stato verificato con SymPy**. Aggiungendo i PDF delle prove si possono importare i quesiti reali anche per questi capitoli.
-- Alcuni quesiti reali riportano solo la risposta esatta: dove le altre opzioni mancavano sono segnate come "distrattori ricostruiti".
+## Fonti e verifiche
+
+- Programma, formato dello scritto e stile delle spiegazioni vengono dal progetto "analisi".
+- Quesiti reali e risposte vengono dai fogli delle prove con le risposte ufficiali evidenziate e dalle revisioni dei test online. Ogni calcolo è stato rifatto, molti con SymPy.
+- Correzioni emerse dal confronto: 9/7/2025 fila A n. 9 (campo irrotazionale) ha risposta **A = D e B = −C**, non A = D e B = C; 5/2/2025 fila B n. 8 ha un refuso nel testo ($\log(y-2)$ al posto di $\log(y-1)$), segnalato nella spiegazione.
+- I pesi della simulazione sono la media dei quesiti per capitolo nelle 5 prove 2025 complete.
 - Il tempo della simulazione (45 minuti di default) è una stima: si può cambiare.
 
 ## Struttura

@@ -3,9 +3,9 @@ title: Integrali doppi e tripli
 short: Integrali multipli
 place: Rifugio Fubini
 alt: 1750
-weight: 1.6
+weight: 1.3
 program: Integrale doppio su rettangoli e su domini normali; formule di riduzione (teorema di Fubini); cambiamento di variabili negli integrali doppi, coordinate polari; integrali tripli per fili e per strati; coordinate cilindriche e sferiche; aree, volumi, masse e baricentri; uso delle simmetrie.
-exam: Nelle prove compare come multipla con il calcolo di un integrale, quasi sempre in **coordinate polari** su corone o settori (22 gennaio 2025, entrambe le file), e come Vero/Falso sul fattore dello Jacobiano (capitolo 4). Le opzioni sbagliate sono costruite sugli errori tipici: fattore $\rho$ dimenticato, angoli sbagliati, simmetria non vista.
+exam: In **ogni prova** c'è almeno un integrale doppio da calcolare (multipla). Tre tipi ricorrenti: domini **triangolari** dove l'ordine di integrazione è obbligato ($e^{y^2}$, $\sin(y^2)$: prima in $x$), corone e settori in **polari** (22/1/2025, 11/6/2025, 15/7/2026), **baricentri** di semidischi ($\frac{4R}{3\pi}$, la densità si semplifica). Nei test del 2026 anche Vero/Falso sugli estremi di integrazione (Fubini, integrali tripli per fili).
 
 #lesson 5.1 Integrale doppio e teorema di Fubini
 goal: Calcolare un integrale doppio su un rettangolo come due integrali in una variabile, uno dentro l'altro.
@@ -455,6 +455,154 @@ O: $2\pi(1-e^{-4})$
 O: Nessuna delle precedenti
 A: 1
 W: $2\pi\cdot\frac12(1-e^{-4})$.
+
+?mc
+Q: L'integrale doppio $I=\displaystyle\iint_T e^{y^2}\,dx\,dy$, dove $T$ è il triangolo di vertici $(0,0)$, $(0,1)$ e $(2,1)$, vale
+O: $\frac14(e-1)$
+O: $\frac12(e-1)$
+O: $e-1$
+O: Nessuna delle precedenti
+A: 3
+W: $e^{y^2}$ non si integra in $y$: si integra prima in $x$. $T=\{0\le y\le1,\ 0\le x\le2y\}$: $\int_0^12y\,e^{y^2}dy=\big[e^{y^2}\big]_0^1=e-1$.
+S: 5 febbraio 2025, fila A, n. 10
+
+?mc
+Q: L'integrale doppio $I=\displaystyle\iint_T e^{(\frac12y-1)^2}\,dx\,dy$, dove $T$ è il triangolo di vertici $(0,0)$, $(0,2)$ e $(-1,0)$, vale
+O: $e-1$
+O: $2(e-1)$
+O: $4(e-1)$
+O: Nessuna delle precedenti
+A: 1
+W: $T=\{0\le y\le2,\ \frac y2-1\le x\le0\}$, larghezza $1-\frac y2$. Con $u=\frac y2-1$: $\int_{-1}^0(-u)e^{u^2}\,2\,du=e-1$.
+S: 5 febbraio 2025, fila B, n. 7
+
+?mc
+Q: L'integrale doppio $I=\displaystyle\iint_D\frac{xy^2}{x^2+y^2}\,dx\,dy$, dove $D=\{(x,y):y\ge x,\ 1\le x^2+y^2\le9\}$, vale
+O: 0
+O: $-\frac{13\sqrt2}{9}$
+O: $-\frac{9\sqrt2}{13}$
+O: Nessuna delle precedenti
+A: 2
+W: Polari, $\theta\in[\frac\pi4,\frac{5\pi}4]$: $\int\cos\theta\sin^2\theta\,d\theta\int_1^3\rho^2d\rho=\Big[\frac{\sin^3\theta}{3}\Big]_{\pi/4}^{5\pi/4}\cdot\frac{26}{3}=-\frac{\sqrt2}{6}\cdot\frac{26}3$.
+S: 11 giugno 2025, fila A, n. 9
+
+?mc
+Q: L'integrale doppio $I=\displaystyle\iint_D\frac{x^2y}{x^2+y^2}\,dx\,dy$, dove $D=\{(x,y):y\ge|x|,\ 1\le x^2+y^2\le4\}$, vale
+O: $\frac{2}{9\sqrt2}$
+O: $\frac{7\sqrt2}{18}$
+O: $\frac{5\sqrt2}{6}$
+O: Nessuna delle precedenti
+A: 2
+W: $\theta\in[\frac\pi4,\frac{3\pi}4]$: $\int\cos^2\theta\sin\theta\,d\theta=\frac{\sqrt2}6$, $\int_1^2\rho^2d\rho=\frac73$.
+S: 11 giugno 2025, fila B, n. 8
+
+?mc
+Q: L'ascissa $x_D$ del baricentro della lamina $D$ di materiale omogeneo con densità costante $\delta>0$, dove $D=\{(x,y):x^2+y^2\le4,\ x\ge0\}$, vale
+O: $x_D=\frac{8}{3\pi}$
+O: $x_D=\frac{4\delta}{3}$
+O: $x_D=\frac{2}{3\pi}$
+O: Nessuna delle precedenti
+A: 1
+W: Semidisco di raggio $R=2$: $x_D=\frac{4R}{3\pi}$. La densità costante si semplifica: un baricentro non può dipendere da $\delta$.
+S: 11 giugno 2025, fila A, n. 13
+
+?mc
+Q: L'ordinata $y_D$ del baricentro della lamina $D$ di materiale omogeneo con densità costante $\delta>0$, dove $D=\{(x,y):x^2+y^2\le9,\ y\ge0\}$, vale
+O: $y_D=\frac{8}{\pi}$
+O: $y_D=\frac{4\delta}{\pi}$
+O: $y_D=\frac{4}{\pi}$
+O: Nessuna delle precedenti
+A: 3
+W: $\frac{4R}{3\pi}$ con $R=3$.
+S: 11 giugno 2025, fila B, n. 11
+
+?mc
+Q: Sia $T$ il triangolo di vertici $(0,0)$, $(1,0)$ e $(1,2)$. Allora $\displaystyle\iint_T x^2y^3\,dx\,dy$ vale
+O: $\frac47$
+O: $\frac57$
+O: $\frac67$
+O: Nessuna delle precedenti
+A: 1
+W: $T=\{0\le x\le1,\ 0\le y\le2x\}$: $\int_0^1x^2\frac{(2x)^4}{4}dx=\int_0^14x^6dx$.
+S: 25 giugno 2025, fila A, n. 9
+
+?mc
+Q: Sia $T$ il triangolo di vertici $(0,0)$, $(0,2)$ e $(1,2)$. Allora $\displaystyle\iint_T x^3y^2\,dx\,dy$ vale
+O: $\frac27$
+O: $\frac47$
+O: $\frac67$
+O: Nessuna delle precedenti
+A: 1
+W: $T=\{0\le y\le2,\ 0\le x\le\frac y2\}$: $\int_0^2y^2\frac{(y/2)^4}{4}dy=\int_0^2\frac{y^6}{64}dy=\frac27$.
+S: 25 giugno 2025, fila B, n. 13
+
+?mc
+Q: L'integrale $\displaystyle\iint_D\sin(y^2)\,dx\,dy$, dove $D$ è la regione delimitata dalle rette $x+y=0$, $3x-y=0$ e $y=2$, vale
+O: $\frac43[1-2\cos4]$
+O: $\frac43[1+\cos4]$
+O: $\frac23[1-\cos4]$
+O: Nessuna delle precedenti
+A: 3
+W: Normale rispetto a $y$: per $y\in[0,2]$, $-y\le x\le\frac y3$, larghezza $\frac{4y}{3}$. $\int_0^2\frac{4y}{3}\sin y^2dy=\frac23(1-\cos4)$.
+S: 9 luglio 2025, fila A, n. 7
+
+?mc
+Q: L'integrale $\displaystyle\iint_D\cos(y^2)\,dx\,dy$, dove $D$ è la regione delimitata dalle rette $x+y=0$, $5x-y=0$ e $y=-2$, vale
+O: $\frac43(1-\sin4)$
+O: $\frac35\sin4$
+O: $\frac23\sin4$
+O: Nessuna delle precedenti
+A: 2
+W: Per $y\in[-2,0]$, $\frac y5\le x\le-y$, larghezza $-\frac{6y}5$: $\int_{-2}^0-\frac{6y}5\cos y^2dy=\frac35\sin4$.
+S: 9 luglio 2025, fila B, n. 12
+
+?vf
+Q: Se $D=\{(x,y)\in\mathbb R^2:0\le y\le1,\ 0\le x\le y\}$, allora $\displaystyle\iint_Dx\,dx\,dy=\frac16$.
+A: V
+W: $\int_0^1\frac{y^2}{2}dy=\frac16$.
+S: esempio gennaio 2026, n. 2
+
+?mc
+Q: L'integrale doppio $I=\displaystyle\iint_D\frac{\arcsin(\sqrt{x^2+y^2})}{\sqrt{x^2+y^2}}\,dx\,dy$, dove $D=\{(x,y):\frac34\le x^2+y^2\le1,\ x\ge|y|\}$, vale
+O: $I=\frac\pi6(3+\sqrt3\pi)$
+O: $I=\frac{\pi}{12}\big(3\pi-(3+\sqrt3\pi)\big)$
+O: $I=\frac{\pi}{12}\big(3(\pi+1)-\sqrt2\pi\big)$
+O: Nessuna delle precedenti
+A: 2
+W: Polari: il $\rho$ dello Jacobiano semplifica il denominatore. Angoli $[-\frac\pi4,\frac\pi4]$, misura $\frac\pi2$; $\int_{\sqrt3/2}^1\arcsin\rho\,d\rho=\big[\rho\arcsin\rho+\sqrt{1-\rho^2}\big]=\frac\pi2-\frac{\sqrt3\pi}{6}-\frac12$.
+S: esempio gennaio 2026, n. 10
+
+?vf
+Q: Sia $f$ continua su $D=\{(x,y):0\le x\le1,\ x^2\le y\le x\}$. Allora $\displaystyle\iint_Df\,dx\,dy=\int_0^1\left(\int_{\sqrt y}^{y}f(x,y)\,dx\right)dy$.
+A: F
+W: Per $y$ fissato $x$ va da $y$ a $\sqrt y$ (perché $y\le x\le\sqrt y$): gli estremi sono invertiti.
+S: 1 luglio 2026, n. 6
+
+?mc
+Q: Calcolare $\displaystyle\iint_D|x|\,dx\,dy$, dove $D=\{(x,y)\in\mathbb R^2:x^2-4\le y\le2-|x|\}$.
+O: $I=\frac{16}3$
+O: $I=\frac{32}3$
+O: $I=\frac83$
+O: Nessuna delle precedenti
+A: 2
+W: Le curve si incontrano in $|x|=2$. Per simmetria $2\int_0^2x(6-x-x^2)\,dx=2\cdot\frac{16}3$.
+S: 1 luglio 2026, n. 8
+
+?vf
+Q: Sia $E=\{(x,y,z)\in\mathbb R^3:\sqrt{x^2+z^2}\le y\le2\}$ e $f$ continua su $E$. Allora $\displaystyle\iiint_Ef\,dx\,dy\,dz=\iint_{x^2+z^2\le4}\left(\int_{\sqrt{x^2+z^2}}^2f\,dy\right)dx\,dz$.
+A: V
+W: Integrazione per fili lungo $y$: l'ombra di $E$ sul piano $xz$ è il disco $x^2+z^2\le4$.
+S: 15 luglio 2026, n. 3
+
+?mc
+Q: Calcolare $I=\displaystyle\iint_D\ln(x^2+y^2)\,dx\,dy$, dove $D=\{(x,y):e^2\le x^2+y^2\le e^4,\ \frac{x}{\sqrt3}\le y\le x,\ x>0,\ y>0\}$.
+O: $I=\frac{\pi e^2}{12}(e^2+1)$
+O: $I=\frac{\pi e^2}{4}(e^2-1)$
+O: $I=\frac{\pi e^2}{24}(3e^2-1)$
+O: Nessuna delle precedenti
+A: 3
+W: Angoli da $\frac\pi6$ a $\frac\pi4$ (ampiezza $\frac\pi{12}$), $\rho\in[e,e^2]$: $\int2\rho\ln\rho\,d\rho=\big[\rho^2\ln\rho-\frac{\rho^2}2\big]_e^{e^2}=\frac{e^2}{2}(3e^2-1)$.
+S: 15 luglio 2026, n. 7
 
 #theory
 ?th

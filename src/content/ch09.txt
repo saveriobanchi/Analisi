@@ -3,9 +3,9 @@ title: Equazioni differenziali
 short: Equazioni differenziali
 place: Rifugio Cauchy
 alt: 2700
-weight: 1.4
+weight: 1.8
 program: Equazioni differenziali ordinarie; problema di Cauchy; teorema di esistenza e unicità locale e globale; equazioni a variabili separabili; equazioni lineari del primo ordine; equazioni lineari del secondo ordine a coefficienti costanti, omogenee e non omogenee (metodo di somiglianza); struttura dell'insieme delle soluzioni.
-exam: Multiple in cui si risolve un problema di Cauchy (separabili, lineari del primo ordine) o si sceglie l'integrale generale di una lineare del secondo ordine; Vero/Falso su esistenza e unicità (ipotesi di Lipschitz, soluzioni che esplodono, non unicità di $y'=\sqrt{|y|}$) e sulla struttura delle soluzioni delle lineari.
+exam: In **ogni prova** da uno a tre quesiti. Vero/Falso: segno o monotonia della soluzione letti dalle **soluzioni costanti** senza risolvere (5/2/2025, 22/1/2025), esistenza globale per le lineari, **non unicità** di $y'=\sqrt y$ (9/7/2025), linearità (somme e multipli sì, prodotti no; $\alpha y_O+\beta y_P$ risolve solo con $\beta=1$). Multiple: problemi di Cauchy **separabili** (tangenti, radici con il segno giusto) e **soluzioni particolari** di lineari del secondo ordine: spesso la risposta è "nessuna", da verificare per sostituzione.
 
 #lesson 9.1 Problema di Cauchy, esistenza e unicità
 goal: Sapere quando un problema di Cauchy ha una e una sola soluzione e riconoscere i controesempi classici.
@@ -387,6 +387,180 @@ O: $3e^{t-1}$
 O: Nessuna delle precedenti
 A: 1
 W: $\ln|y|=\ln t+c$: $y=Ct$, $C=3$.
+
+?vf
+Q: Si consideri il problema di Cauchy $y'=-y^4-1$ con dato iniziale $y(0)=1$. La soluzione $y$ è monotona crescente.
+A: F
+W: $y'=-y^4-1\le-1<0$ sempre: la soluzione è strettamente decrescente.
+S: 22 gennaio 2025, fila A, n. 6
+
+?vf
+Q: Si consideri il problema di Cauchy $y'=y^4+4$ con dato iniziale $y(0)=3$. La soluzione $y$ è monotona crescente.
+A: V
+W: $y'=y^4+4>0$: strettamente crescente (fino all'esplosione).
+S: 22 gennaio 2025, fila B, n. 5
+
+?vf
+Q: Siano $f,g$ continue da $\mathbb R$ in $\mathbb R$, $y_f$ una soluzione di $y'+y=f$ e $y_g$ una soluzione di $y'+y=g$. Allora il prodotto $y_fy_g$ è soluzione di $y'+y=fg$.
+A: F
+W: La linearità vale per somme e multipli, non per prodotti: $(y_fy_g)'+y_fy_g=y_f'y_g+y_fy_g'+y_fy_g$, che in generale non è $fg$.
+S: 5 febbraio 2025, fila A, n. 4
+
+?vf
+Q: Siano $f,g$ continue, $y_f$ soluzione di $y'+3y=f$ e $y_g$ soluzione di $y'+2y=g$. Allora $y_f-y_g$ è soluzione di $y'-y=f-g$.
+A: F
+W: $(y_f-y_g)'-(y_f-y_g)=f-g-4y_f+3y_g$, non $f-g$: le due equazioni hanno coefficienti diversi.
+S: 5 febbraio 2025, fila B, n. 4
+
+?vf
+Q: Si consideri il problema di Cauchy $y'=(y+4)(y+2)(y-2)(y-4)$, $y(0)=3$. La soluzione $y$ è positiva sul suo intero intervallo di definizione.
+A: V
+W: $y=2$ e $y=4$ sono soluzioni costanti e per unicità non possono essere attraversate: $2<y(t)<4$ per ogni $t$.
+S: 5 febbraio 2025, fila A, n. 6
+
+?vf
+Q: Si consideri il problema di Cauchy $y'=(y+4)(y+2)(y-2)(y-4)$, $y(0)=-3$. La soluzione $y$ non è mai positiva sul suo intero intervallo di definizione.
+A: V
+W: La soluzione resta intrappolata tra le costanti $-4$ e $-2$.
+S: 5 febbraio 2025, fila B, n. 1
+
+?vf
+Q: Si consideri $y''+ay'+by=f(x)$, con $f$ continua. Siano $y_O$ una soluzione dell'omogenea associata e $y_P$ una soluzione particolare. Dati $\alpha,\beta\in\mathbb R$, $\alpha y_O+\beta y_P$ è soluzione dell'equazione assegnata se e solo se $\beta=1$.
+A: V
+W: $L(\alpha y_O+\beta y_P)=\beta f$: è uguale a $f$ se e solo se $\beta=1$ (per $f\not\equiv0$).
+S: 11 giugno 2025, fila A, n. 6
+
+?vf
+Q: Si consideri $y''+ay'+by=f(x)$, con $f$ continua. Siano $y_O$ una soluzione dell'omogenea associata e $y_P$ una soluzione particolare. La soluzione generale dell'equazione assegnata è della forma $\alpha y_O+\beta y_P$, con $\alpha,\beta\in\mathbb R$.
+A: F
+W: Due errori: lo spazio dell'omogenea ha dimensione 2 (servono due soluzioni indipendenti) e il coefficiente di $y_P$ deve essere 1.
+S: 11 giugno 2025, fila B, n. 2
+
+?mc
+Q: La soluzione del problema di Cauchy $y'=(2+8y^2)(xe^{2x}-2x^2)$, $y(0)=0$ è
+O: $y=\frac12\tan\big(2xe^{2x}-e^{2x}-\frac83x^3+1\big)$
+O: $y=\frac12\tan\big(2xe^{2x}-e^{2x}+1\big)$
+O: $y=\frac12\tan\big(2xe^{2x}+e^{2x}-\frac83x^3+1\big)$
+O: Nessuna delle precedenti
+A: 1
+W: Separabile: $\int\frac{dy}{2+8y^2}=\frac14\arctan(2y)$ e $\int(xe^{2x}-2x^2)dx=\frac{(2x-1)e^{2x}}{4}-\frac23x^3$. Con $y(0)=0$: $\arctan(2y)=2xe^{2x}-e^{2x}-\frac83x^3+1$.
+S: 11 giugno 2025, fila A, n. 11
+
+?mc
+Q: La soluzione del problema di Cauchy $y'=(3+27y^2)(xe^{2x}+4x^3)$, $y(0)=0$ è
+O: $y=\frac13\tan\big(\frac34(4x^4-e^{2x}(2x-1)-1)\big)$
+O: $y=\frac13\tan\big(\frac94(4x^4+e^{2x}(2x-1)+1)\big)$
+O: $y=\frac13\tan\big(\frac94(2x^4+e^{2x}(x-1)+1)\big)$
+O: Nessuna delle precedenti
+A: 2
+W: $\int\frac{dy}{3+27y^2}=\frac19\arctan(3y)$; $\int(xe^{2x}+4x^3)dx=\frac{(2x-1)e^{2x}}4+x^4$. Con $y(0)=0$ la costante è $\frac14$: $\arctan(3y)=\frac94\big(4x^4+e^{2x}(2x-1)+1\big)$.
+S: 11 giugno 2025, fila B, n. 7
+
+?vf
+Q: L'equazione differenziale $y'+e^{-x^2}y=1$ ha almeno una soluzione definita per ogni $x\in\mathbb R$.
+A: V
+W: È lineare con coefficienti continui su $\mathbb R$: ogni soluzione è definita su tutto $\mathbb R$.
+S: 25 giugno 2025, fila A, n. 3
+
+?vf
+Q: L'equazione differenziale $y'+e^{x^2}y=1$ ha almeno una soluzione definita per ogni $x\in\mathbb R$.
+A: V
+W: Lineare con coefficienti continui: esistenza globale.
+S: 25 giugno 2025, fila B, n. 4
+
+?mc
+Q: Una soluzione particolare $y_P$ dell'equazione $y''+y=e^x(x^2-1)$ è
+O: $y_P=\left(\frac12x^2+x\right)e^x$
+O: $y_P=\frac12(x^2-x)e^x$
+O: $y_P=\left(\frac12x^2-2x\right)e^x$
+O: Nessuna delle precedenti
+A: 4
+W: Con $y_P=(ax^2+bx+c)e^x$ si ottiene $a=\frac12$, $b=-1$, $c=0$: $y_P=\left(\frac12x^2-x\right)e^x$. L'opzione 3 differisce solo nel coefficiente di $x$: va controllata per sostituzione.
+S: 25 giugno 2025, fila A, n. 12
+
+?mc
+Q: Una soluzione particolare $y_P$ dell'equazione $y''+y'=e^x(x^2-1)$ è
+O: $y_P=e^x(x^2+x-1)$
+O: $y_P=\frac14e^x(x^2-x-1)$
+O: $y_P=\frac14e^x(x^2+x+1)$
+O: Nessuna delle precedenti
+A: 4
+W: Con $y_P=(ax^2+bx+c)e^x$: $a=\frac12$, $b=-\frac32$, $c=\frac54$, cioè $y_P=\frac14e^x(2x^2-6x+5)$.
+S: 25 giugno 2025, fila B, n. 7
+
+?vf
+Q: Il problema di Cauchy $y'=2y^{1/2}$, $y(0)=0$ ha una soluzione unica definita su tutto $\mathbb R$.
+A: F
+W: $f(y)=2\sqrt y$ non è lipschitziana in 0: $y\equiv0$ e $y=t^2$ per $t\ge0$ (0 per $t<0$) sono due soluzioni.
+S: 9 luglio 2025, fila A, n. 6
+
+?vf
+Q: Il problema di Cauchy $y'=y^{1/2}$, $y(0)=0$ ha una soluzione unica definita su tutto $\mathbb R$.
+A: F
+W: Non unicità: $y\equiv0$ e $y=\frac{t^2}4$ per $t\ge0$.
+S: 9 luglio 2025, fila B, n. 3
+
+?mc
+Q: La soluzione del problema di Cauchy $y'(x)\,y(x)\,(e^x+1)=3e^x$, $y(0)=-2$ è
+O: $y=-\sqrt2\sqrt{4\ln(e^x+1)+2-4\ln2}$
+O: $y=-\sqrt2\sqrt{3\ln(e^x+1)+2-3\ln2}$
+O: $y=-\sqrt{3\ln(e^x+1)+4-3\ln2}$
+O: Nessuna delle precedenti
+A: 2
+W: $\frac{y^2}2=3\ln(e^x+1)+c$, con $y(0)=-2$: $c=2-3\ln2$. $y=-\sqrt{6\ln(e^x+1)+4-6\ln2}$ (segno meno perché $y(0)<0$).
+S: 9 luglio 2025, fila A, n. 11
+
+?mc
+Q: La soluzione del problema di Cauchy $y'(x)\,y(x)\,(e^x+2)=4e^x$, $y(0)=-2$ è
+O: $y=-2\sqrt{\ln(e^x+2)+1-\ln3}$
+O: $y=-\sqrt2\sqrt{\ln9+2-2\ln(e^x+2)}$
+O: $y=-2\sqrt{2\ln(e^x+2)+1-\ln9}$
+O: Nessuna delle precedenti
+A: 3
+W: $\frac{y^2}2=4\ln(e^x+2)+c$, $c=2-4\ln3$: $y^2=8\ln(e^x+2)+4-8\ln3=4\big(2\ln(e^x+2)+1-\ln9\big)$.
+S: 9 luglio 2025, fila B, n. 13
+
+?vf
+Q: Il problema di Cauchy $y'(t)=2ty^2$, $y(1)=2$, ammette la soluzione $y(t)=\frac{2}{3-2t^2}$.
+A: V
+W: $-\frac1y=t^2+c$, con $y(1)=2$: $c=-\frac32$, quindi $y=\frac{1}{\frac32-t^2}=\frac{2}{3-2t^2}$.
+S: esempio gennaio 2026, n. 3
+
+?mc
+Q: Sia $\alpha\in\mathbb R$ e si consideri il problema $y''-3y'+2y=t^2$, $y(0)=\alpha$, $y'(0)=0$. Si ha $\lim_{t\to+\infty}y(t)=-\infty$ quando
+O: $\alpha\ge\frac14$
+O: $\alpha\le\frac14$
+O: $\alpha>4$
+O: Nessuna delle precedenti
+A: 1
+W: $y=\left(\frac14-\alpha\right)e^{2t}+(2\alpha-2)e^t+\frac{t^2}2+\frac{3t}2+\frac74$. Se $\alpha>\frac14$ domina $e^{2t}$ con coefficiente negativo; se $\alpha=\frac14$ resta $-\frac32e^t$. In entrambi i casi $y\to-\infty$.
+S: esempio gennaio 2026, n. 8
+
+?vf
+Q: Sia $u$ una soluzione di $y''+4y'+9y=0$ e $v$ una soluzione di $y''+4y'+9y=e^t\cos t$. Allora $w=u-2v$ è soluzione di $y''+4y'+9y=e^t\cos t$.
+A: F
+W: $L(w)=L(u)-2L(v)=-2e^t\cos t$. Servirebbe $w=u+v$.
+S: 1 luglio 2026, n. 5
+
+?mc
+Q: Quale tra le seguenti funzioni è una soluzione di $y''-y=e^x+\sin(2x)$ limitata su $(-\infty,0)$?
+O: $y=-\frac12e^x+\frac12xe^x+\frac15\sin(2x)$
+O: $y=-e^{-x}+\frac12xe^x+\frac25\sin(2x)$
+O: $y=-e^x+\frac12xe^x-\frac15\sin(2x)$
+O: Nessuna delle precedenti
+A: 3
+W: Particolare: $\frac x2e^x$ (risonanza) e $-\frac15\sin2x$. Per restare limitata per $x\to-\infty$ il termine $e^{-x}$ deve sparire: $y=ce^x+\frac x2e^x-\frac15\sin2x$.
+S: 1 luglio 2026, n. 10
+
+?mc
+Q: Il problema di Cauchy $y''-5y'+6y=e^{2t}$, $y(0)=0$, $y'(0)=0$ ha come soluzione
+O: $y=2e^{3t}-2e^{2t}$
+O: $y=0$ per ogni $t$
+O: $y=e^{3t}-e^{2t}-te^{2t}$
+O: Nessuna delle precedenti
+A: 3
+W: Radici 2 e 3; $2$ è radice: $y_P=Ate^{2t}$ con $A=-1$. Dai dati: $c_1+c_2=0$, $2c_1+3c_2-1=0$, quindi $c_2=1$, $c_1=-1$.
+S: 15 luglio 2026, n. 12
 
 #theory
 ?th

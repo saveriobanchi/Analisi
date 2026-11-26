@@ -27,7 +27,6 @@ function route() {
     console.error(err);
     v.innerHTML = `<div class="wrap narrow"><div class="empty">${icon('warning')}<b>Questa pagina non si è caricata</b><span class="muted">${esc(err.message)}</span><a class="btn" href="#mappa">Torna alla mappa</a></div></div>`;
   }
-  S.lastRoute = h; save();
   refreshChrome();
   typeset(v);
   if (!/^(lez|parete)/.test(h) || !document.activeElement || document.activeElement === document.body) window.scrollTo({ top: 0 });
@@ -36,6 +35,7 @@ function boot() {
   loadState(); applyTheme(); loadContent();
   window.addEventListener('hashchange', route);
   route();
+  cloudInit(() => { applyTheme(); route(); toast('Progressi caricati dal tuo account.', { icon: 'cloud-check' }); });
   matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { if (currentMap) currentMap.schedule(); });
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();

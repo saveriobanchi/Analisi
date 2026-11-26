@@ -29,8 +29,16 @@ function refreshChrome() {
   $('#railFoot').innerHTML = `<div class="panel flat" style="padding:12px;gap:8px">
       <div class="row spread"><span class="sign">${esc(r.name)}</span><span class="mono small">${S.xp || 0} m</span></div>
       <div class="meter" role="img" aria-label="Avanzamento verso ${esc(r.next)}"><i style="width:${pct}%"></i></div>
-      <div class="row spread small muted"><span>${icon('fire')} ${S.streak.n || 0} giorni</span><span>→ ${esc(r.next)}</span></div></div>`;
-  $('#topStats').innerHTML = `<span class="stat-chip" title="Quota: punti esperienza">${icon('mountains')}${S.xp || 0} m</span><span class="stat-chip streak" title="Giorni consecutivi">${icon('fire')}${S.streak.n || 0}</span>`;
+      <div class="row spread small muted"><span>${icon('fire')} ${S.streak.n || 0} giorni</span><span>→ ${esc(r.next)}</span></div>
+      <a href="#libretto" class="sync-line" data-sync="line">${syncBadge('line')}</a></div>`;
+  $('#topStats').innerHTML = `<span class="stat-chip" title="Quota: punti esperienza">${icon('mountains')}${S.xp || 0} m</span><span class="stat-chip streak" title="Giorni consecutivi">${icon('fire')}${S.streak.n || 0}</span><a class="stat-chip sync-chip" href="#libretto" data-sync="icon">${syncBadge('icon')}</a>`;
+}
+/* stato del salvataggio: 'icon' solo icona, 'line' riga breve, 'full' riga con dettaglio */
+function syncBadge(kind = 'line') {
+  const [ic, t, d] = syncLabel(), cls = CLOUD.status === 'cloud' ? 'ok' : CLOUD.status === 'error' || CLOUD.status === 'local' ? 'warn' : '';
+  if (kind === 'icon') return `<span class="sync ${cls}" title="${esc(t)}${d ? ' · ' + esc(d) : ''}">${icon(ic)}<span class="sr">${esc(t)}</span></span>`;
+  if (kind === 'full') return `<span class="sync ${cls}">${icon(ic)} <b>${esc(t)}</b></span>${d ? `<br><span class="muted small">${esc(d)}</span>` : ''}`;
+  return `<span class="sync ${cls}">${icon(ic)} ${esc(t)}</span>`;
 }
 
 /* ---------------- MAPPA ---------------- */
@@ -110,6 +118,7 @@ function viewChapter(v, n) {
       <div class="eyebrow">Capitolo ${c.n} · ${esc(c.place)} · ${c.alt} m</div>
       <h1 class="h-display" style="font-size:clamp(30px,4.6vw,50px)">${esc(c.title)}</h1>
       <div class="ch-meta"><span class="chip ok">${done}/${c.lessons.length} lezioni</span><span class="chip amber">${icon('star')} ${stars}/${c.lessons.length * 3}</span>
+        <span class="chip red" title="Media sulle 5 prove complete 2025">≈ ${String(c.weight).replace('.', ',')} quesiti a prova</span>
         <span class="chip">${c.bank.length} quesiti di parete${real ? ` · ${real} da prove reali` : ''}</span></div></header>
     <div class="info2">
       <div class="panel flat"><div class="eyebrow">Voci del programma</div><div class="prose small">${md(c.program)}</div></div>
@@ -238,19 +247,24 @@ function viewLesson(v, n, i, tab = 'studio') {
 function viewBoss(v, n) {
   const c = chapter(n); if (!c) return viewMap(v);
   if (!bossUnlocked(c)) { location.hash = 'cap-' + n; return; }
-  const max = c.bank.reduce((s, q) => s + (q.k === 'vf' ? 2 : 3), 0);
+  // ogni attacco estrae un mini-scritto: fino a 6 V/F e 7 multiple, privilegiando i quesiti delle prove reali
+  const pickBoss = () => {
+    const take = (k, n2) => { const real = shuffle(c.bank.filter(q => q.k === k && q.real)), other = shuffle(c.bank.filter(q => q.k === k && !q.real)); const nr = Math.min(real.length, Math.ceil(n2 * .7)); return real.slice(0, nr).concat(other).concat(real.slice(nr)).slice(0, n2); };
+    return shuffle(take('vf', 6).concat(take('mc', 7)));
+  };
+  const items = pickBoss(), max = items.reduce((s, q) => s + (q.k === 'vf' ? 2 : 3), 0);
   v.innerHTML = `<div class="wrap narrow"><a class="eyebrow" href="#cap-${n}" style="text-decoration:none">Capitolo ${n} · ${esc(c.place)}</a>
     <h1 class="h-display" style="font-size:clamp(32px,5vw,52px)">Parete d'esame <em>${n}</em></h1>
     <div id="bossBody" class="stack"></div></div>`;
   const body = $('#bossBody', v);
   body.innerHTML = `<div class="rules">
-      <div class="rule"><b>${c.bank.length}</b><span>quesiti, in ordine casuale</span></div>
+      <div class="rule"><b>${items.length}</b><span>quesiti estratti a ogni attacco, su ${c.bank.length} della parete</span></div>
       <div class="rule"><b>+2 / −1</b><span>Vero/Falso</span></div><div class="rule"><b>+3 / −1</b><span>risposta multipla</span></div>
       <div class="rule"><b>0</b><span>se salti: rispondi solo quando puoi escludere qualcosa</span></div></div>
-    <p class="muted">${c.bank.filter(q => q.real).length} quesiti vengono dalle prove reali, con la risposta della chiave ufficiale. Per il timbro serve il 60% dei punti (${Math.ceil(max * .6)}/${max}).</p>
+    <p class="muted">${c.bank.filter(q => q.real).length} quesiti della parete vengono dalle prove reali, con la risposta della chiave ufficiale, e hanno la precedenza nell'estrazione. Per il timbro serve il 60% dei punti (${Math.ceil(max * .6)}/${max}).</p>
     <div class="row"><button type="button" class="btn primary" id="startBoss">${icon('play')} Attacca la parete</button></div>`;
   $('#startBoss').onclick = () => runQuiz(body, {
-    items: shuffle(c.bank), title: 'Parete ' + n, mode: 'boss', allowSkip: true, onDone: r => {
+    items, title: 'Parete ' + n, mode: 'boss', allowSkip: true, onDone: r => {
       const frac = Math.max(0, r.points) / max, prev = S.bosses[n]?.best || 0;
       S.bosses[n] = { best: Math.max(prev, frac), t: Date.now() }; save();
       if (frac >= .6) award('par' + n);
@@ -320,7 +334,7 @@ function viewZaino(v) {
     ${entries.length ? `<a class="btn primary" href="#ripasso">${icon('play')} Ripassa ora</a>` : ''}</div>
     <p class="muted">Ogni domanda sbagliata entra qui al livello 1. Quando la rifai giusta sale di livello e torna dopo 1, 3, 7, 16 giorni; al quinto livello esce dallo zaino.</p>
     ${entries.length ? Object.keys(by).sort((a, b) => a - b).map(ch => `<section class="panel flat"><div class="eyebrow">Capitolo ${ch} · ${esc(chapter(ch).short)}</div>
-      <div class="review">${by[ch].map(([q, it]) => `<div class="rv ko"><span class="m">${it.box + 1}</span><details><summary>${inline(q.Q.split('\n')[0].slice(0, 150))}</summary><div>${feedbackHTML(q, false)}</div></details>
+      <div class="review">${by[ch].map(([q, it]) => `<div class="rv ko"><span class="m">${it.box + 1}</span><details><summary>${inline(clip(q.Q, 150))}</summary><div>${feedbackHTML(q, false)}</div></details>
       <span class="small muted mono" style="grid-column:2">${it.due <= dayNum() ? 'da ripassare oggi' : 'torna tra ' + (it.due - dayNum()) + ' g'} · sbagliata ${it.wrong}×</span></div>`).join('')}</div></section>`).join('')
       : `<div class="empty">${icon('backpack')}<b>Zaino vuoto</b><span class="muted">Le domande che sbagli finiscono qui e tornano nei giorni giusti.</span><a class="btn" href="#mappa">Vai alla mappa</a></div>`}
     ${entries.length ? `<div class="row"><button type="button" class="btn ghost small" id="emptyZ">${icon('x')} Svuota lo zaino</button></div>` : ''}</div>`;
@@ -437,17 +451,30 @@ function viewEsame(v) {
     <p class="lead">Stessa struttura della prova: puoi saltare, tornare indietro e cambiare le risposte fino alla consegna. Le soluzioni arrivano alla fine.</p></div>
     <div class="rules"><div class="rule"><b>13</b><span>quesiti: 6 Vero/Falso e 7 a risposta multipla</span></div><div class="rule"><b>+2 / −1</b><span>Vero/Falso</span></div>
       <div class="rule"><b>+3 / −1</b><span>multipla; l'ultima opzione è sempre «Nessuna delle precedenti»</span></div><div class="rule"><b>16/33</b><span>soglia; all'appello si aggiungono 2 domande di teoria</span></div></div>
+    <p class="foot-note">Punteggio delle prove cartacee 2025. Nei test online di luglio 2026 il Vero/Falso valeva 1 punto (massimo 27).</p>
     <div class="panel"><div class="set-row"><span><b>Tempo</b><br><span class="muted small">Il default di 45 minuti è una stima: usa quello del tuo appello se lo conosci.</span></span>
       <div class="seg" id="tSel">${[30, 45, 60, 90, 0].map(m => `<button type="button" data-m="${m}" aria-pressed="${S.settings.timer === m}">${m ? m + "'" : '∞'}</button>`).join('')}</div></div>
       <div class="set-row"><span><b>Domande</b><br><span class="muted small">Il mix pesa i capitoli come allo scritto. «Solo prove reali» usa solo i quesiti delle prove ufficiali.</span></span>
       <div class="seg" id="srcSel"><button type="button" data-r="0" aria-pressed="true">Tutto il programma</button><button type="button" data-r="1" aria-pressed="false">Solo prove reali</button></div></div>
       <div class="row"><button type="button" class="btn primary" id="examGo">${icon('flag-pennant')} Inizia la simulazione</button></div></div>
-    ${hist.length ? `<section class="panel"><div class="eyebrow">Le tue simulazioni</div><div class="chart-host" id="simHost"></div></section>` : ''}
+    ${hist.length ? `<section class="panel"><div class="eyebrow">Le tue simulazioni</div><div class="chart-host" id="simHost"></div>${simTable()}</section>` : ''}
   </div>`;
   $$('#tSel button').forEach(b => b.onclick = () => { S.settings.timer = +b.dataset.m; save(); $$('#tSel button').forEach(x => x.setAttribute('aria-pressed', x === b)); });
   let realOnly = false; $$('#srcSel button').forEach(b => b.onclick = () => { realOnly = b.dataset.r === '1'; $$('#srcSel button').forEach(x => x.setAttribute('aria-pressed', x === b)); });
   $('#examGo').onclick = () => runExam(v, buildExam(realOnly));
   if (hist.length) fitChart($('#simHost'), w => simChart(hist, w));
+}
+/* storico delle simulazioni salvate (più recenti in alto) e capitoli più deboli nelle simulazioni */
+function simTable() {
+  const rows = S.sims.slice().reverse().slice(0, 12);
+  const agg = {}; S.sims.forEach(s => Object.entries(s.ch || {}).forEach(([c, [ok, tot]]) => { const a = agg[c] = agg[c] || [0, 0]; a[0] += ok; a[1] += tot; }));
+  const weak = Object.entries(agg).filter(([, [, t]]) => t >= 3).map(([c, [o, t]]) => [c, o / t, t]).sort((a, b) => a[1] - b[1]).slice(0, 3);
+  return `<div class="tw"><table class="t"><thead><tr><th>Data</th><th>Punti</th><th>V/F giuste</th><th>Multiple giuste</th><th>Sbagliate</th><th>Bianche</th></tr></thead><tbody>
+    ${rows.map(s => `<tr><td>${new Date(s.t).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })} ${new Date(s.t).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}</td>
+      <td><b class="mono" style="color:${s.score >= 16 ? 'var(--ok)' : 'var(--bad)'}">${s.score}</b>/33</td>
+      <td class="mono">${s.vf ? s.vf[0] + '/6' : '—'}</td><td class="mono">${s.mc ? s.mc[0] + '/7' : '—'}</td>
+      <td class="mono">${s.vf ? s.vf[1] + s.mc[1] : '—'}</td><td class="mono">${s.vf ? s.vf[2] + s.mc[2] : '—'}</td></tr>`).join('')}</tbody></table></div>
+    ${weak.length ? `<p class="small"><b>Dove perdi più punti nelle simulazioni:</b> ${weak.map(([c, p]) => `<a href="#cap-${c}">cap. ${c} · ${esc(chapter(c)?.short || '')}</a> (${Math.round(p * 100)}% giuste)`).join(' · ')}</p>` : ''}`;
 }
 function simChart(hist, W = 640) {
   const H = 200, pl = 30, pr = 12, pt = 14, pb = 28, n = hist.length;
@@ -460,7 +487,7 @@ function simChart(hist, W = 640) {
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Punteggi delle simulazioni">${g}</svg>`;
 }
 function runExam(v, items) {
-  const st = { i: 0, ans: items.map(() => null), flag: items.map(() => false), end: S.settings.timer ? Date.now() + S.settings.timer * 60000 : null, done: false };
+  const st = { i: 0, ans: items.map(() => null), flag: items.map(() => false), start: Date.now(), end: S.settings.timer ? Date.now() + S.settings.timer * 60000 : null, done: false };
   let timer = null;
   const draw = () => {
     const q = items[st.i];
@@ -501,11 +528,16 @@ function runExam(v, items) {
       const a = st.ans[k]; if (a === null) return { skip: true, ok: false };
       const ok = isRight(q, a); score += ok ? (q.k === 'vf' ? 2 : 3) : -1; record(q, ok, 'sim'); return { ok, picked: a };
     });
-    S.sims.push({ t: Date.now(), score, n: items.length }); addXP(Math.max(0, score) * 10); save();
-    if (score >= 16) award('vetta'); if (score >= 30) award('lode');
-    if (score >= 16) SFX.fanfare();
     const vf = items.map((q, k) => [q, res[k]]).filter(([q]) => q.k === 'vf'), mc = items.map((q, k) => [q, res[k]]).filter(([q]) => q.k === 'mc');
     const cnt = (arr, f) => arr.filter(([, r]) => f(r)).length;
+    const perCh = {}; items.forEach((q, k) => { const p = perCh[q.ch] = perCh[q.ch] || [0, 0]; p[1]++; if (res[k].ok) p[0]++; });
+    S.sims.push({ t: Date.now(), score, n: items.length, min: Math.round((Date.now() - st.start) / 60000), timeout: !!timeout,
+      vf: [cnt(vf, r => r.ok), cnt(vf, r => !r.ok && !r.skip), cnt(vf, r => r.skip)], mc: [cnt(mc, r => r.ok), cnt(mc, r => !r.ok && !r.skip), cnt(mc, r => r.skip)],
+      ch: perCh, q: items.map((q, k) => [q.id, res[k].skip ? 0 : res[k].ok ? 1 : -1]) });
+    if (S.sims.length > 60) S.sims.splice(0, S.sims.length - 60);
+    addXP(Math.max(0, score) * 10); save();
+    if (score >= 16) award('vetta'); if (score >= 30) award('lode');
+    if (score >= 16) SFX.fanfare();
     v.innerHTML = `<div class="wrap narrow"><div class="result">
       <div class="eyebrow">${timeout ? 'Tempo scaduto · ' : ''}Esito della simulazione</div><div class="score">${score}<small>/33</small></div>
       <span class="chip ${score >= 16 ? 'ok' : 'red'}">${score >= 16 ? icon('check') + ' Sopra la soglia di 16' : icon('x') + ' Sotto la soglia di 16'}</span>
@@ -558,15 +590,18 @@ function viewLibretto(v) {
       <div class="set-row"><span><b>Tema</b></span><div class="seg" id="thSel">${[['system', 'Sistema'], ['light', 'Chiaro'], ['dark', 'Scuro']].map(([k, t]) => `<button type="button" data-t="${k}" aria-pressed="${S.settings.theme === k}">${t}</button>`).join('')}</div></div>
       <div class="set-row"><label for="sndT"><b>Suoni</b><br><span class="muted small">Brevi segnali per giusto, sbagliato e timbri</span></label><span class="switch"><input type="checkbox" id="sndT" ${S.settings.sound ? 'checked' : ''}><span></span></span></div>
       <div class="set-row"><label for="unlT"><b>Sblocca tutto</b><br><span class="muted small">Apre tutte le lezioni e le pareti, se hai già studiato e vuoi saltare</span></label><span class="switch"><input type="checkbox" id="unlT" ${S.settings.unlockAll ? 'checked' : ''}><span></span></span></div>
-      <div class="set-row"><span><b>Sposta i progressi</b><br><span class="muted small">I progressi restano in questo browser. Copia il codice e incollalo sull'altro dispositivo.</span></span>
+      <div class="set-row"><span data-sync="full">${syncBadge('full')}</span>
+        ${CLOUD.db ? `<button type="button" class="btn small" id="syncB">${icon('cloud-arrow-up')} Salva ora</button>` : ''}</div>
+      <div class="set-row"><span><b>Codice di backup</b><br><span class="muted small">Una copia di tutti i progressi in un testo: utile per tenerla da parte o per un browser che non è collegato al tuo account.</span></span>
         <div class="row"><button type="button" class="btn small" id="expB">${icon('copy')} Copia codice</button><button type="button" class="btn small ghost" id="impB">Incolla codice</button></div></div>
       <div class="set-row"><span><b>Azzera</b><br><span class="muted small">Cancella quota, stelle, zaino e timbri</span></span><button type="button" class="btn small ghost" id="rstB">${icon('arrow-counter-clockwise')} Azzera tutto</button></div>
     </section>
-    <p class="foot-note">Contenuti costruiti sul programma ufficiale e sulle otto prove disponibili (gennaio 2025 – luglio 2026). Le risposte dei quesiti reali seguono le chiavi ufficiali. Icone: Phosphor (MIT).</p>
+    <p class="foot-note">Contenuti costruiti sul programma ufficiale e sulle prove disponibili: 5 appelli 2025 (fila A e B, con le risposte ufficiali evidenziate), l'esempio di gennaio 2026 e i test online di luglio 2026. Le risposte dei quesiti reali seguono le chiavi ufficiali. Icone: Phosphor (MIT).</p>
   </div>`;
   $$('#thSel button').forEach(b => b.onclick = () => { S.settings.theme = b.dataset.t; save(); applyTheme(); viewLibretto(v); });
   $('#sndT').onchange = e => { S.settings.sound = e.target.checked; save(); if (e.target.checked) SFX.ok(); };
   $('#unlT').onchange = e => { S.settings.unlockAll = e.target.checked; save(); toast(e.target.checked ? 'Tutte le lezioni e le pareti sono aperte.' : 'Progressione normale ripristinata.', { icon: 'lock-open' }); };
+  const sb = $('#syncB'); if (sb) sb.onclick = () => { S.updatedAt = Date.now(); persistLocal(); cloudPush().then(() => toast(CLOUD.status === 'cloud' ? 'Progressi salvati nel tuo account.' : 'Salvataggio non riuscito: riprova tra poco.', { icon: CLOUD.status === 'cloud' ? 'cloud-check' : 'cloud-slash' })); };
   $('#expB').onclick = () => {
     const code = btoa(unescape(encodeURIComponent(JSON.stringify(S))));
     const done = () => toast('Codice copiato negli appunti.', { icon: 'copy' });

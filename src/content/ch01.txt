@@ -3,7 +3,7 @@ title: Lo spazio ℝⁿ, limiti e continuità
 short: Limiti e continuità
 place: Rifugio Weierstrass
 alt: 700
-weight: 1.5
+weight: 1.4
 program: Lo spazio $\mathbb R^k$; norma, distanza e prodotto scalare; disuguaglianza di Schwarz; topologia di $\mathbb R^k$; insiemi limitati; successioni in $\mathbb R^k$; funzioni reali di più variabili; insiemi di livello; limiti finiti e infiniti; limiti direzionali; continuità; teorema delle funzioni combinate; teorema di Weierstrass.
 exam: In **tutte le otto prove** c'è almeno un quesito su limiti o continuità: un limite da calcolare (multipla), un Vero/Falso su un limite o sulla teoria dei limiti e, soprattutto, il primo passo della **funzione definita a tratti**, che è in ogni prova. È una parte stabile del punteggio: impararla bene paga sempre.
 
@@ -590,6 +590,16 @@ O: Nessuna delle precedenti
 A: 3
 W: Pesi invertiti: prova $y=x^3$. Numeratore $2x\sqrt{x^4}=2x^3$, denominatore $|x|^3+3|x|^3=4|x|^3$: $f=\pm\frac12\ne0$.
 S: 22 gennaio 2025, fila B, n. 11
+
+?mc
+Q: $\displaystyle\lim_{(x,y)\to(0,2)}\frac{x^2\log(y-1)+2\log\big(1+x^2+(y-2)^2\big)}{x^2+(y-2)^2}$ vale
+O: non esiste
+O: 0
+O: 2
+O: Nessuna delle precedenti
+A: 3
+W: Con $v=y-2$, $\rho^2=x^2+v^2$: $\frac{x^2}{\rho^2}\log(1+v)\to0$ (limitata per infinitesima) e $\frac{2\log(1+\rho^2)}{\rho^2}\to2$. Totale 2. Nel foglio originale c'è un refuso, $\log(y-2)$, con cui il limite non esisterebbe: la chiave ufficiale (2) corrisponde a $\log(y-1)$, come nella fila A con $\log x$.
+S: 5 febbraio 2025, fila B, n. 8
 
 #theory
 ?th

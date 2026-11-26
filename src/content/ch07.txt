@@ -3,9 +3,9 @@ title: Campi vettoriali, lavoro e formula di Green
 short: Campi e lavoro
 place: Colle Green
 alt: 2200
-weight: 1.2
+weight: 1.4
 program: Integrale curvilineo di seconda specie (lavoro); orientazione di una curva; campi conservativi e potenziale; caratterizzazione con il lavoro lungo curve chiuse; campi irrotazionali; insiemi semplicemente connessi; formula di Gauss-Green nel piano e calcolo di aree.
-exam: Ricorrenti: decidere se un campo è conservativo (rotore + dominio), trovare un potenziale e usarlo per un lavoro, il controesempio del **campo vortice** $\frac{(-y,x)}{x^2+y^2}$ (irrotazionale ma non conservativo), e Green per trasformare una circuitazione in un integrale doppio. Il rotore di un campo con parametri è uscito il 9 luglio 2025 (capitolo 4).
+exam: In **ogni prova** almeno due quesiti. Multiple: un potenziale da trovare e valutare (5/2/2025), un **lavoro** lungo una curva dall'aspetto terribile che conta solo per gli estremi (9/7/2025: 77 e 92), o un campo "conservativo più un resto" (25/6/2025), campi con parametri da rendere conservativi. Vero/Falso: irrotazionale ⇔ conservativo (falso senza dominio semplicemente connesso), lavoro nullo su **una** curva chiusa (non basta), Green con il rotore e non con la divergenza.
 
 #lesson 7.1 Lavoro di un campo lungo una curva
 goal: Calcolare $\int_\gamma F\cdot dr$ con una parametrizzazione, sapendo che dipende dal verso.
@@ -314,6 +314,164 @@ W: $Q_x-P_y=y^2-x^2$: per simmetria $\iint_D(y^2-x^2)=0$.
 Q: Se $\operatorname{rot}F\ne0$ in un punto del dominio, allora $F$ non è conservativo.
 A: V
 W: Conservativo ⇒ irrotazionale ovunque.
+
+?vf
+Q: Sia $F:\mathbb R^2\to\mathbb R^2$ un campo di classe $C^1$ e sia $\gamma:[0,1]\to\mathbb R^2$ una curva regolare chiusa. Se $\int_\gamma F\cdot d\gamma=0$, allora il campo è conservativo.
+A: F
+W: Serve lavoro nullo lungo **ogni** curva chiusa, non lungo una sola. Esempio: $F=(-y,x)$ ha lavoro nullo sull'"otto" $\gamma(t)=(\sin t,\sin t\cos t)$, regolare e chiusa, perché i due lobi sono percorsi in versi opposti; ma sulla circonferenza unitaria il lavoro è $2\pi$, quindi $F$ non è conservativo.
+S: 11 giugno 2025, fila A, n. 4
+
+?vf
+Q: Sia $F:\mathbb R^2\to\mathbb R^2$ di classe $C^1$ e irrotazionale su tutto $\mathbb R^2$. Allora per ogni curva $\gamma$ regolare, semplice e chiusa si ha $\int_\gamma F\cdot d\gamma=0$.
+A: V
+W: $\mathbb R^2$ è semplicemente connesso: irrotazionale implica conservativo.
+S: 11 giugno 2025, fila B, n. 4
+
+?mc
+Q: Sia $F(x,y)=\left(\frac23xy,\ \frac{x^2}{3}\right)$. Allora $F$ è conservativo
+O: su $\mathbb R^2$ e un potenziale è $U(x,y)=\frac{x^2y}{6}$
+O: su $\mathbb R^2\setminus\{(0,0)\}$ ma non su $\mathbb R^2$
+O: su $\mathbb R^2$ e un potenziale è $U(x,y)=\frac{x^2y}{3}$
+O: Nessuna delle precedenti
+A: 3
+W: $\partial_x\frac{x^2y}{3}=\frac23xy$, $\partial_y\frac{x^2y}3=\frac{x^2}3$. Il campo è polinomiale: niente problemi nell'origine.
+S: 11 giugno 2025, fila A, n. 12
+
+?mc
+Q: Sia $F(x,y)=\left(\frac{y^2}{3},\ \frac{2xy}{3}+1\right)$. Allora $F$
+O: è conservativo su $\mathbb R^2$ e un potenziale è $U=\frac{xy^2}{3}+x$
+O: non è conservativo su $\mathbb R^2$
+O: è conservativo su $\mathbb R^2$ e un potenziale è $U=\frac{xy^2}{3}+y$
+O: Nessuna delle precedenti
+A: 3
+W: $U_x=\frac{y^2}3$, $U_y=\frac{2xy}3+1$: il "+1" sta nella seconda componente, quindi si aggiunge $y$, non $x$.
+S: 11 giugno 2025, fila B, n. 12
+
+?vf
+Q: Un campo vettoriale $F$ è irrotazionale in un insieme $D\subseteq\mathbb R^3$ se e solo se è conservativo in $D$.
+A: F
+W: Conservativo ⇒ irrotazionale vale sempre ($C^1$); il viceversa richiede $D$ semplicemente connesso.
+S: 25 giugno 2025, fila A, n. 1
+
+?vf
+Q: Un campo vettoriale $F$ è conservativo in $D\subseteq\mathbb R^3$ se e solo se per ogni coppia di punti $p,q\in D$ esiste una curva regolare $\gamma$ da $p$ a $q$ con $\int_\gamma F\cdot d\ell=0$.
+A: F
+W: La caratterizzazione giusta: il lavoro tra $p$ e $q$ **non dipende dalla curva** (equivalente: è nullo su ogni curva chiusa). "Esiste una curva con lavoro nullo" non dice nulla.
+S: 25 giugno 2025, fila B, n. 3
+
+?mc
+Q: Il lavoro compiuto dal campo $F(x,y,z)=\big(e^{xz}(xz+yz+\alpha),\ e^{xz},\ e^{xz}(x^2+xy)\big)$, al variare di $\alpha\in\mathbb R$, lungo la curva $\gamma=\{y=x^2,\ xz=1,\ 1\le x\le2\}$ percorsa nel verso delle $x$ crescenti vale
+O: $e(\alpha+1)$
+O: $e(\alpha+2)$
+O: $e(\alpha+3)$
+O: Nessuna delle precedenti
+A: 3
+W: $F=\nabla\big(e^{xz}(x+y)\big)+\big((\alpha-1)e^{xz},0,0\big)$. Il gradiente dà $U(2,4,\frac12)-U(1,1,1)=6e-2e=4e$; sulla curva $e^{xz}=e$, quindi il resto vale $\int_1^2(\alpha-1)e\,dx$. Totale $e(\alpha+3)$.
+S: 25 giugno 2025, fila A, n. 10
+
+?mc
+Q: Il lavoro compiuto dal campo $F(x,y,z)=\big(e^{xy}(yz+y^3),\ e^{xy}(xz+3z+\alpha),\ e^{xy}\big)$, al variare di $\alpha\in\mathbb R$, lungo la curva $\gamma=\{z=y^2,\ xy=2,\ 1\le y\le3\}$ percorsa nel verso delle $y$ crescenti vale
+O: $2e^2(\alpha+12)$
+O: $2e^2(\alpha+13)$
+O: $2e^2(\alpha+14)$
+O: Nessuna delle precedenti
+A: 2
+W: $F=\nabla(ze^{xy})+e^{xy}(y^3,\,3z+\alpha,\,0)$. Il gradiente dà $9e^2-e^2=8e^2$; sulla curva $e^{xy}=e^2$, $dx=-\frac{2}{y^2}dy$: $e^2\int_1^3(-2y+3y^2+\alpha)\,dy=e^2(18+2\alpha)$. Totale $2e^2(\alpha+13)$.
+S: 25 giugno 2025, fila B, n. 9
+
+?mc
+Q: Sia $U:\mathbb R^3\to\mathbb R$ un potenziale del campo $F(x,y,z)=\big(2xy-e^{yz},\ x^2-xze^{yz},\ -xye^{yz}\big)$ tale che $U(0,0,0)=1$. Quanto vale $U(1,2,0)$?
+O: 1
+O: 2
+O: 3
+O: Nessuna delle precedenti
+A: 2
+W: $U=x^2y-xe^{yz}+1$: $U(1,2,0)=2-1+1=2$.
+S: 5 febbraio 2025, fila A, n. 11
+
+?mc
+Q: Sia $U:\mathbb R^3\to\mathbb R$ un potenziale del campo $F(x,y,z)=\big(2xz-yze^{xz},\ -e^{xz},\ x^2-xye^{xz}\big)$ tale che $U(0,0,0)=2$. Quanto vale $U(2,0,1)$?
+O: 2
+O: 4
+O: 6
+O: Nessuna delle precedenti
+A: 3
+W: $U=x^2z-ye^{xz}+2$: $U(2,0,1)=4-0+2=6$.
+S: 5 febbraio 2025, fila B, n. 9
+
+?vf
+Q: Se $\gamma=\partial^+D$ è regolare (a tratti), con $D\subseteq\mathbb R^2$ normale rispetto a entrambi gli assi, e $F:\mathbb R^2\to\mathbb R^2$ è di classe $C^1$, allora $\int_\gamma F\cdot d\gamma=\iint_D\operatorname{rot}(F)\cdot e_3\,dx\,dy$, con $e_3=(0,0,1)$.
+A: V
+W: È la formula di Green: $\operatorname{rot}F\cdot e_3=Q_x-P_y$.
+S: 9 luglio 2025, fila A, n. 2
+
+?vf
+Q: Se $\gamma=\partial^+D$ è regolare (a tratti), con $D\subseteq\mathbb R^2$ normale rispetto a entrambi gli assi, e $F:\mathbb R^2\to\mathbb R^2$ è di classe $C^1$, allora $\int_\gamma F\cdot d\gamma=\iint_D\operatorname{div}(F)\,dx\,dy$.
+A: F
+W: La circuitazione è legata al rotore, non alla divergenza. Con la divergenza si ottiene il **flusso** uscente attraverso $\partial D$.
+S: 9 luglio 2025, fila B, n. 5
+
+?mc
+Q: Il lavoro del campo $F(x,y)=(12x^3y^3+6x^2y^2+5y^7,\ 9x^4y^2+4x^3y+35xy^6+3)$ lungo la curva $\gamma(t)=\big(t^4-t^2\cos(2\pi t)+2te^{t-1},\ t^6-t^5+t+e^t\sin(\pi t)\big)$, $t\in[0,1]$, vale
+O: 64
+O: 73
+O: 77
+O: Nessuna delle precedenti
+A: 3
+W: $P_y=Q_x$ su $\mathbb R^2$: conservativo, $U=3x^4y^3+2x^3y^2+5xy^7+3y$. La curva va da $\gamma(0)=(0,0)$ a $\gamma(1)=(2,1)$: $U(2,1)=48+16+10+3=77$. La parametrizzazione complicata serve solo a spaventare.
+S: 9 luglio 2025, fila A, n. 10
+
+?mc
+Q: Il lavoro del campo $F(x,y)=(16x^3y^3+6x^2y^2+5y^7,\ 12x^4y^2+4x^3y+35xy^6+2)$ lungo la curva $\gamma(t)=\big(t^3-t^2\cos(2\pi t)+2te^{t-1},\ t^6-t^5+t+2e^t\sin(\pi t)\big)$, $t\in[0,1]$, vale
+O: 84
+O: 86
+O: 92
+O: Nessuna delle precedenti
+A: 3
+W: Potenziale $U=4x^4y^3+2x^3y^2+5xy^7+2y$; da $(0,0)$ a $(2,1)$: $64+16+10+2=92$.
+S: 9 luglio 2025, fila B, n. 9
+
+?mc
+Q: Si consideri $F_{a,b}(x,y)=\left(\frac{ax}{x^2+y^2},\ \frac{by}{x^2+y^2}-y^{1/2}\right)$ in $D=\{(x,y):y>0\}$. Per quali $(a,b)$ il campo è conservativo con potenziale $U_{a,b}$?
+O: Se $(a,b)=(3,3)$, allora $U_{3,3}=\frac32\ln(x^2+y^2)+y^{3/2}$
+O: Se $(a,b)=(2,2)$, allora $U_{2,2}=\ln(x^2+y^2)-\frac23y^{3/2}$
+O: Se $(a,b)=(2,-2)$, allora $U_{2,-2}=\frac12\ln(x^2+y^2)-\frac23y^{3/2}$
+O: Nessuna delle precedenti
+A: 2
+W: $P_y=Q_x$ richiede $a=b$. Potenziale: $\frac a2\ln(x^2+y^2)-\frac23y^{3/2}$. Con $a=2$ è la seconda; la prima ha il segno di $y^{3/2}$ sbagliato.
+S: esempio gennaio 2026, n. 13
+
+?vf
+Q: Il campo $F(x,y)=\left(\frac{y}{x^2+4y^2},\ \frac{-x}{x^2+4y^2}\right)$ ammette un potenziale su $A=\{(x,y):x>0\}$.
+A: V
+W: $P_y=Q_x=\frac{x^2-4y^2}{(x^2+4y^2)^2}$: irrotazionale, e il semipiano $x>0$ è semplicemente connesso.
+S: 1 luglio 2026, n. 3
+
+?mc
+Q: Si consideri $F(x,y)=\left(\alpha-\beta\frac{y^3}{x^2},\ \gamma y-\delta\frac{y^2}{x}\right)$ su $D=\{x<0\}$. Per quali parametri $F$ è conservativo su $D$?
+O: Se $\alpha=1$, $\beta=1$, $\gamma=0$, $\delta=-1$, un potenziale è $U=x+\frac{y^3}{x}+1$
+O: Se $\alpha=1$, $\beta=-1$, $\gamma=1$, $\delta=3$, un potenziale è $U=x-\frac{y^3}{x}+\frac{y^2}{2}+2$
+O: Se $\alpha=0$, $\beta=-\frac13$, $\gamma=1$, $\delta=-1$, un potenziale è $U=-\frac{y^3}{3x}-2$
+O: Nessuna delle precedenti
+A: 2
+W: Con $\beta=-1$, $\delta=3$: $P_y=\frac{3y^2}{x^2}=Q_x$. Verifica: $U_x=1+\frac{y^3}{x^2}$, $U_y=-\frac{3y^2}{x}+y$. Le altre due coppie non sono irrotazionali.
+S: 1 luglio 2026, n. 13
+
+?vf
+Q: Sia $F(x,y)=\left(\frac{x}{(x^2+y^2)^{3/2}},\ \frac{y}{(x^2+y^2)^{3/2}}\right)$ su $\mathbb R^2\setminus\{(0,0)\}$. Allora $F$ ammette potenziale su $\{x>0\}$.
+A: V
+W: $F=\nabla\left(-\frac{1}{\sqrt{x^2+y^2}}\right)$: ha potenziale su tutto il piano bucato, quindi anche sul semipiano.
+S: 15 luglio 2026, n. 5
+
+?mc
+Q: Sia $F(x,y)=(1+ye^{xy},\ x+xe^{xy})$ e $\gamma(t)=(\cos t,\ 2\sin t)$, $t\in[-\pi,\pi]$. Allora il lavoro $\int_\gamma\langle F,T\rangle\,ds$ vale
+O: 0
+O: $2\pi$
+O: $-2$
+O: Nessuna delle precedenti
+A: 2
+W: $F=\nabla(x+e^{xy})+(0,x)$. Su una curva chiusa il gradiente non lavora; resta $\oint x\,dy=$ area dell'ellisse di semiassi 1 e 2 (verso antiorario) $=2\pi$.
+S: 15 luglio 2026, n. 11
 
 #theory
 ?th

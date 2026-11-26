@@ -177,7 +177,7 @@ const starsFor = f => f >= 1 ? 3 : f >= .75 ? 2 : f >= .5 ? 1 : 0;
 function reviewHTML(items, res) {
   return `<div class="review">${items.map((q, i) => {
     const r = res[i] || { skip: true }, cls = r.skip ? 'skip' : r.ok ? 'ok' : 'ko';
-    return `<div class="rv ${cls}"><span class="m">${i + 1}</span><details ${r.ok ? '' : 'open'}><summary>${inline(q.Q.split('\n')[0].slice(0, 160))}${q.Q.length > 160 ? '…' : ''}</summary>
+    return `<div class="rv ${cls}"><span class="m">${i + 1}</span><details ${r.ok ? '' : 'open'}><summary>${inline(clip(q.Q, 160))}</summary>
       <div>${renderQuestion(q, { locked: true }).replace(/<div class="opts[\s\S]*$/, '')}${feedbackHTML(q, r.ok, r.skip)}</div></details></div>`;
   }).join('')}</div>`;
 }

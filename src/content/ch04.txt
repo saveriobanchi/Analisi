@@ -253,11 +253,11 @@ Nel piano, con $F=(P,Q)$, il rotore è lo scalare $Q_x-P_y$. Laplaciano: $\Delta
 + B: $x\cdot\nabla f$ è S; $x-\nabla f$ è V e la sua divergenza è S ($=3-\Delta f$). S + S = S. Vero.
 = A falso, B vero.
 
-::example esame 9 luglio 2025, A n. 9: $F=\Big(\frac{Ax-By}{x^2+y^2},\frac{Cx+Dy}{x^2+y^2}\Big)$ è irrotazionale quando?
-+ Q_x: $\frac{C(y^2-x^2)-2Dxy}{(x^2+y^2)^2}$.
-+ P_y: $\frac{B(y^2-x^2)-2Axy}{(x^2+y^2)^2}$.
-+ Rotore: $Q_x-P_y=\frac{(C-B)(y^2-x^2)+2(A-D)xy}{(x^2+y^2)^2}$.
-= Nullo ovunque se e solo se $A=D$ e $B=C$. Irrotazionale non vuol dire conservativo: capitolo 7.
+::example esame 9 luglio 2025, fila A n. 9: $F=\Big(\frac{Ax+By}{x^2+y^2},\frac{Cx+Dy}{x^2+y^2}\Big)$ è irrotazionale quando?
++ Q_x: $\frac{C(x^2+y^2)-2x(Cx+Dy)}{(x^2+y^2)^2}=\frac{C(y^2-x^2)-2Dxy}{(x^2+y^2)^2}$.
++ P_y: $\frac{B(x^2+y^2)-2y(Ax+By)}{(x^2+y^2)^2}=\frac{B(x^2-y^2)-2Axy}{(x^2+y^2)^2}$.
++ Rotore: $Q_x-P_y=\frac{(C+B)(y^2-x^2)+2(A-D)xy}{(x^2+y^2)^2}$.
+= Nullo ovunque se e solo se $A=D$ e $B=-C$ (chiave ufficiale: opzione 1). Nella fila B il campo ha $Ax-By$: cambia il segno di $B$ e la risposta diventa $A=D$, $B=C$. Attenzione ai segni in $P_y$: è lì che si sbaglia. Irrotazionale non vuol dire conservativo: capitolo 7.
 
 ::trap
 - La divergenza è un numero: $\operatorname{div}(x,y,z)=3$, non $(1,1,1)$.
@@ -323,14 +323,24 @@ W: $x\cdot\nabla f$ è S; $\operatorname{div}(x-\nabla f)=3-\Delta f$ è S.
 S: 22 gennaio 2025, fila B, n. 1
 
 ?mc
-Q: Il campo $F(x,y)=\left(\dfrac{Ax-By}{x^2+y^2},\ \dfrac{Cx+Dy}{x^2+y^2}\right)$ su $\mathbb R^2\setminus\{(0,0)\}$ è irrotazionale quando
+Q: Si consideri il campo vettoriale $F(x,y)=\left(\dfrac{Ax+By}{x^2+y^2},\ \dfrac{Cx+Dy}{x^2+y^2}\right)$ con $A,B,C,D\in\mathbb R$, definito su $\mathbb R^2\setminus\{(0,0)\}$. Allora il campo è irrotazionale quando
+O: $A=D$ e $B=-C$
+O: $A=D$ e $B=C$
+O: $A=C$ e $B=-D$
+O: Nessuna delle precedenti
+A: 1
+W: $P_y=\frac{B(x^2-y^2)-2Axy}{(x^2+y^2)^2}$, $Q_x=\frac{C(y^2-x^2)-2Dxy}{(x^2+y^2)^2}$, quindi $Q_x-P_y=\frac{(C+B)(y^2-x^2)+2(A-D)xy}{(x^2+y^2)^2}$: nullo se e solo se $A=D$ e $B=-C$.
+S: 9 luglio 2025, fila A, n. 9
+
+?mc
+Q: Si consideri il campo vettoriale $F(x,y)=\left(\dfrac{Ax-By}{x^2+y^2},\ \dfrac{Cx+Dy}{x^2+y^2}\right)$ con $A,B,C,D\in\mathbb R$, definito su $\mathbb R^2\setminus\{(0,0)\}$. Allora il campo è irrotazionale quando
 O: $A=D$ e $B=-C$
 O: $A=D$ e $B=C$
 O: $A=C$ e $B=-D$
 O: Nessuna delle precedenti
 A: 2
-W: $Q_x-P_y=\frac{(C-B)(y^2-x^2)+2(A-D)xy}{(x^2+y^2)^2}$: nullo se e solo se $C=B$ e $A=D$ (risposta ricavata dal calcolo).
-S: 9 luglio 2025, fila A, n. 9
+W: Con $-B$ al posto di $B$: $Q_x-P_y=\frac{(C-B)(y^2-x^2)+2(A-D)xy}{(x^2+y^2)^2}$, nullo se e solo se $A=D$ e $B=C$.
+S: 9 luglio 2025, fila B, n. 7
 
 ?vf
 Q: Se $f:\mathbb R^3\to\mathbb R$ è $C^2$, allora $\Phi(x)=\Delta f(x)+\|x\|^2$ va da $\mathbb R^3$ a $\mathbb R$.

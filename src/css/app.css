@@ -37,6 +37,11 @@
 [hidden]:not([hidden=until-found i]){display:none!important}
 .prose,.blk-b,.qcard,.feedback,.ex-steps,.stack,.wrap,.panel,.blocks,.quiz,.lessons,.review,.controls,.th-card,.result,.next-card{grid-template-columns:minmax(0,1fr)}
 .chart-host{min-width:0;width:100%}
+.sync{display:inline-flex;align-items:center;gap:5px;color:var(--muted)}
+.sync.ok{color:var(--ok)} .sync.warn{color:var(--amber-ink)}
+.sync-line{font-size:12.5px;text-decoration:none;border-top:1px solid var(--line);padding-top:7px;margin-top:2px}
+.sync-chip{text-decoration:none;padding:6px 7px}
+.sync-chip .ico{color:inherit}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--paper);color:var(--ink);font:400 16px/1.6 var(--f-text);-webkit-font-smoothing:antialiased;
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);

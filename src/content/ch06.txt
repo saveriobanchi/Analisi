@@ -3,9 +3,9 @@ title: Curve e integrali curvilinei
 short: Curve
 place: Cresta Jordan
 alt: 1950
-weight: 0.9
+weight: 0.6
 program: Curve parametriche nel piano e nello spazio; curve regolari, chiuse, semplici; vettore e versore tangente; lunghezza di una curva; curve cartesiane e in coordinate polari; integrale curvilineo di prima specie; massa e baricentro di un filo.
-exam: Si presta a Vero/Falso sulle definizioni (regolare, chiusa, semplice; invarianza per riparametrizzazione) e a multiple di calcolo: una lunghezza o un integrale di prima specie su segmenti, archi di circonferenza o eliche. Il calcolo è breve se sai la formula e la velocità $|\gamma'(t)|$.
+exam: Uscito in quasi tutte le prove: integrale di prima specie sulla **spirale** $(2t\cos t,2t\sin t)$ (22/1/2025, entrambe le file), **baricentro di una semicirconferenza** (5/2/2025: è un filo, $\frac{2R}\pi$, non una lamina), Vero/Falso sulla **lunghezza del grafico** $\int\sqrt{1+f'^2}$ e sull'**invarianza** della prima specie rispetto al verso (test luglio 2026).
 
 #lesson 6.1 Curve parametriche
 goal: Riconoscere se una curva è regolare, chiusa, semplice e calcolarne il vettore tangente.
@@ -269,6 +269,64 @@ O: 4
 O: Nessuna delle precedenti
 A: 2
 W: $|\gamma'|^2=(1-\cos t)^2+\sin^2t=2-2\cos t=4\sin^2\frac t2$; $\int_0^{2\pi}2\sin\frac t2\,dt=8$.
+
+?mc
+Q: Calcolare l'integrale curvilineo $I=\displaystyle\int_\gamma\sqrt{x^2+y^2}\,ds$, dove $\gamma(t)=(2t\cos t,\ 2t\sin t)$, $t\in[0,2\pi]$.
+O: $I=\frac23\big[(1+\pi^2)^{3/2}-1\big]$
+O: $I=\frac13\big[(1+4\pi^2)^{3/2}+1\big]$
+O: $I=\frac43\big[(1+4\pi^2)^{3/2}-1\big]$
+O: Nessuna delle precedenti
+A: 3
+W: $\sqrt{x^2+y^2}=2t$; $\gamma'=(2\cos t-2t\sin t,\ 2\sin t+2t\cos t)$, $|\gamma'|=2\sqrt{1+t^2}$. $\int_0^{2\pi}4t\sqrt{1+t^2}\,dt=\frac43\big[(1+t^2)^{3/2}\big]_0^{2\pi}$.
+S: 22 gennaio 2025, fila A, n. 13
+
+?mc
+Q: Calcolare l'integrale curvilineo $I=\displaystyle\int_\gamma3\sqrt{x^2+y^2}\,ds$, dove $\gamma(t)=(2t\sin t,\ 2t\cos t)$, $t\in[0,\pi]$.
+O: $I=(1+4\pi^2)^{3/2}-1$
+O: $I=4\big[(1+\pi^2)^{3/2}-1\big]$
+O: $I=3\big[(1+\pi^2)^{3/2}+1\big]$
+O: Nessuna delle precedenti
+A: 2
+W: $3\sqrt{x^2+y^2}=6t$, $|\gamma'|=2\sqrt{1+t^2}$: $\int_0^\pi12t\sqrt{1+t^2}\,dt=4\big[(1+t^2)^{3/2}\big]_0^\pi$.
+S: 22 gennaio 2025, fila B, n. 13
+
+?mc
+Q: Si consideri l'insieme $\Gamma=\{(x,y):x^2+y^2=1,\ y\ge0\}$ con densità costante uguale a 2. Indicato con $G_\Gamma=(x_\Gamma,y_\Gamma)$ il suo baricentro, vale
+O: $y_\Gamma=\frac{1}{2\pi}$
+O: $y_\Gamma=\frac{2}{\pi}$
+O: $y_\Gamma=\frac{4}{\pi}$
+O: Nessuna delle precedenti
+A: 2
+W: È un filo (curva), non una lamina: $y_\Gamma=\frac{\int y\,ds}{L}=\frac{2}{\pi}$. La densità costante si semplifica.
+S: 5 febbraio 2025, fila A, n. 13
+
+?mc
+Q: Si consideri l'insieme $\Gamma=\{(x,y):x^2+y^2=4,\ x\ge0\}$ con densità costante uguale a 2. Indicato con $G_\Gamma=(x_\Gamma,y_\Gamma)$ il suo baricentro, vale
+O: $x_\Gamma=\frac{1}{2\pi}$
+O: $x_\Gamma=\frac{2}{\pi}$
+O: $x_\Gamma=\frac{4}{\pi}$
+O: Nessuna delle precedenti
+A: 3
+W: Semicirconferenza di raggio $R=2$: $x_\Gamma=\frac{2R}{\pi}=\frac4\pi$.
+S: 5 febbraio 2025, fila B, n. 10
+
+?vf
+Q: Sia $f:(1,2)\to\mathbb R$ con $f\in C^1((1,2))$. Definita la curva $\gamma(t)=(t,f(t))$, $t\in(1,2)$, la lunghezza di $\gamma$ è $\ell_\gamma=\displaystyle\int_1^2\sqrt{1+(f'(t))^2}\,dt$.
+A: V
+W: È la formula della lunghezza di un grafico: $|\gamma'(t)|=\sqrt{1+f'(t)^2}$.
+S: esempio gennaio 2026, n. 4
+
+?vf
+Q: Sia $\vec\gamma$ una curva equivalente ma non equiorientata (discorde) a $\vec\psi$, e sia $\displaystyle\int_{\vec\gamma}x\,ds=3$. Allora $\displaystyle\int_{\vec\psi}x\,ds=-3$.
+A: F
+W: L'integrale di prima specie non dipende dal verso: vale 3 anche su $\vec\psi$.
+S: 1 luglio 2026, n. 1
+
+?vf
+Q: Sia $f\in C^1([a,b])$ e $\gamma(t)=(t,f(t))$. Allora la lunghezza della curva è $\ell_\gamma=\displaystyle\int_a^b\sqrt{t^2+(f'(t))^2}\,dt$.
+A: F
+W: $\gamma'(t)=(1,f'(t))$: sotto radice c'è $1+f'(t)^2$, non $t^2+f'(t)^2$.
+S: 15 luglio 2026, n. 1
 
 #theory
 ?th

@@ -3,9 +3,9 @@ title: Superfici, flusso, teoremi di Gauss e Stokes
 short: Superfici
 place: Ghiacciaio Stokes
 alt: 2450
-weight: 1.0
+weight: 0.6
 program: Superfici parametriche regolari; piano tangente e versore normale; superfici cartesiane; area di una superficie; integrali di superficie; orientazione e flusso di un campo vettoriale; teorema della divergenza (Gauss); teorema di Stokes (del rotore).
-exam: Tipicamente una multipla di calcolo (area di una superficie, integrale di superficie su sfera o grafico, **flusso** attraverso una superficie chiusa, quasi sempre più rapido con la divergenza) e Vero/Falso sugli enunciati di Gauss e Stokes e sulle identità $\operatorname{div}\operatorname{rot}=0$.
+exam: Nelle prove compare come multipla di calcolo: **area di una porzione di sfera** individuata da una condizione sugli angoli (22/1/2025), **integrali di superficie** su un piano $z=ax+by$ sopra un disco (esempio gennaio 2026), su una calotta sferica (1/7/2026) o su un cilindro (15/7/2026). Basta parametrizzare bene e ricordare l'elemento d'area. Flusso, Gauss e Stokes completano il programma: preparali per i Vero/Falso e per la teoria.
 
 #lesson 8.1 Superfici parametriche e versore normale
 goal: Parametrizzare sfera, cilindro, cono e grafici e calcolare il vettore normale $r_u\times r_v$.
@@ -338,6 +338,56 @@ O: $2\sqrt2\,\pi$
 O: Nessuna delle precedenti
 A: 1
 W: $\sqrt2\cdot\text{area del disco unitario}$.
+
+?mc
+Q: Calcolare l'area $A$ della porzione di superficie sferica $\Sigma=\{x^2+y^2+z^2=1,\ x\ge0,\ y\ge0,\ z\ge0\}$ che si proietta ortogonalmente su $D=\{x^2+y^2\le1,\ x\ge y\}$.
+O: $A=\frac{3\pi}2$
+O: $A=\frac\pi4$
+O: $A=4\pi$
+O: Nessuna delle precedenti
+A: 2
+W: In sferiche $dS=\sin\varphi\,d\varphi\,d\theta$, $\varphi\in[0,\frac\pi2]$; nel primo quadrante $x\ge y$ dà $\theta\in[0,\frac\pi4]$: $\frac\pi4\int_0^{\pi/2}\sin\varphi\,d\varphi=\frac\pi4$.
+S: 22 gennaio 2025, fila A, n. 11
+
+?mc
+Q: Calcolare l'area $A$ della porzione di superficie sferica $\Sigma=\{x^2+y^2+z^2=1,\ x\ge0,\ y\ge0,\ z\ge0\}$ che si proietta ortogonalmente su $D=\{x^2+y^2\le1,\ y\ge-x\}$.
+O: $A=\pi$
+O: $A=\frac\pi3$
+O: $A=\frac\pi2$
+O: Nessuna delle precedenti
+A: 3
+W: Nel primo quadrante la condizione $y\ge-x$ è sempre vera: $\theta\in[0,\frac\pi2]$, area $\frac\pi2$ (un ottavo di sfera).
+S: 22 gennaio 2025, fila B, n. 10
+
+?mc
+Q: L'integrale di superficie $J=\displaystyle\iint_\Sigma x\,d\sigma$, dove $\Sigma=\{(x,y,z):x^2+y^2-2y\le0,\ x\ge0,\ z=2(x+y)\}$, vale
+O: $J=\frac23$
+O: $J=3$
+O: $J=2$
+O: Nessuna delle precedenti
+A: 3
+W: Grafico di $z=2x+2y$: $d\sigma=\sqrt{1+4+4}\,dx\,dy=3\,dx\,dy$. $D$ è il mezzo disco di centro $(0,1)$, raggio 1, con $x\ge0$: $\iint_Dx=\frac{4}{3\pi}\cdot\frac\pi2=\frac23$. $J=3\cdot\frac23$.
+S: esempio gennaio 2026, n. 11
+
+?mc
+Q: Calcolare l'integrale di superficie $I=\displaystyle\iint_S2z^{3/2}\,d\sigma$, dove $S=\{x^2+y^2+z^2=1,\ z\ge0,\ x^2+y^2\le1,\ y\ge-x\}$.
+O: $I=\frac{3\pi}{10}$
+O: $I=\frac{2\pi}5$
+O: $I=\frac{4\pi}5$
+O: Nessuna delle precedenti
+A: 3
+W: Metà della semisfera ($y\ge-x$ è un semipiano per l'origine): $\theta$ su un intervallo di ampiezza $\pi$. $\pi\int_0^{\pi/2}2\cos^{3/2}\varphi\sin\varphi\,d\varphi=\pi\cdot2\cdot\frac25$.
+S: 1 luglio 2026, n. 11
+
+?mc
+Q: Calcolare l'integrale di superficie $I=\displaystyle\iint_\Sigma2|x|\,y\,e^y\,d\sigma$, dove $\Sigma=\{x^2+z^2=9,\ 0\le y\le2\}$ (cilindro di asse $y$).
+O: $I=36(e^2-1)$
+O: $I=72(e^2+1)$
+O: $I=48(e^2+3)$
+O: Nessuna delle precedenti
+A: 2
+W: $x=3\cos\theta$, $z=3\sin\theta$, $d\sigma=3\,d\theta\,dy$. $\int_0^{2\pi}6|\cos\theta|\cdot3\,d\theta=72$ e $\int_0^2ye^y\,dy=e^2+1$.
+S: 15 luglio 2026, n. 8
 
 #theory
 ?th

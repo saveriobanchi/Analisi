@@ -3,7 +3,7 @@ title: Massimi e minimi
 short: Massimi e minimi
 place: Sella di Fermat
 alt: 1300
-weight: 1.6
+weight: 2
 program: Massimi e minimi relativi; condizione necessaria per i punti estremanti (teorema di Fermat); matrice hessiana (in due variabili); condizione sufficiente per i punti estremanti; ricerca di massimi e minimi assoluti in insiemi chiusi e limitati.
 exam: In **tutte le prove** c'è almeno un quesito: trovare i punti critici e stabilirne la natura (il più frequente), una forma quadratica da classificare, oppure un Vero/Falso sulle definizioni. Nelle prove più recenti compaiono funzioni con **valori assoluti** e massimi e minimi su un **triangolo**.
 
@@ -69,12 +69,12 @@ W: Può essere una sella, come per $x^2-y^2$.
 ?mc
 Q: I punti critici di $f=e^{2x+2y}(x^2+y^2-1)$ sono
 O: $(-1,-1)$ e $(\frac12,\frac12)$
-O: $(1,1)$ e $(-\frac12,-\frac12)$
-O: $(0,0)$ e $(1,1)$
+O: $(-1,-1)$ e $(-\frac12,-\frac12)$
+O: $(1,1)$ e $(-\frac32,-\frac32)$
 O: Nessuna delle precedenti
 A: 1
 W: $x^2+y^2-1+x=0$, $x^2+y^2-1+y=0\Rightarrow x=y$, $2x^2+x-1=0\Rightarrow x=\frac12$ o $x=-1$.
-S: 9 luglio 2025, fila B, n. 11 (distrattori ricostruiti)
+S: 9 luglio 2025, fila B, n. 11
 
 #lesson 3.2 Forme quadratiche e matrici 2×2
 goal: Classificare una matrice simmetrica 2×2 con determinante e primo elemento, anche con un parametro.
@@ -195,14 +195,14 @@ A: V
 W: Minimo o massimo secondo il segno di $f_{xx}$.
 
 ?mc
-Q: Natura di $(0,0)$ per $f=4x^2y^2-xy-x^2-y^2$:
-O: minimo locale
-O: massimo locale
+Q: Il punto $(0,0)$ per la funzione $f=4x^2y^2-xy-x^2-y^2$ è di
 O: sella
+O: massimo locale
+O: minimo locale
 O: Nessuna delle precedenti
 A: 2
 W: Termini di grado 2: $-x^2-xy-y^2$, $H=\begin{pmatrix}-2&-1\\-1&-2\end{pmatrix}$, $\det=3>0$, $f_{xx}<0$.
-S: 11 giugno 2025, fila B, n. 9 (opzioni ricostruite)
+S: 11 giugno 2025, fila B, n. 9
 
 #lesson 3.4 Casi dubbi e valori assoluti
 goal: Stabilire la natura di un punto con determinante Hessiano nullo e trattare funzioni con valori assoluti.
@@ -256,10 +256,10 @@ A: 1
 W: $f=(y-x^2)^2\ge0$, nulla su tutta la parabola $y=x^2$: minimo non stretto.
 
 ?mc
-Q: Quanti punti critici ha $f=|xy|(y-2)$?
-O: 1
-O: 2
-O: 3
+Q: Si consideri la funzione $f(x,y)=|xy|(y-2)$. La funzione ha esattamente
+O: 1 punto critico
+O: 2 punti critici
+O: 4 punti critici
 O: Nessuna delle precedenti
 A: 2
 W: Fuori dagli assi nessuno. Sull'asse $x$ solo $(0,0)$; sull'asse $y$: $(0,0)$ e $(0,2)$. Totale 2.
@@ -416,34 +416,34 @@ W: $\det=1$, $a_{11}>0$: definita positiva.
 S: 9 luglio 2025, fila B, n. 1
 
 ?mc
-Q: Per $f(x,y)=x^2+xy+y^2-3x^2y^2$ il punto $(0,0)$ è
-O: di minimo locale
-O: di massimo locale
-O: di sella
+Q: Il punto $(0,0)$ per la funzione $f(x,y)=x^2+xy+y^2-3x^2y^2$ è di
+O: massimo locale
+O: minimo locale
+O: sella
 O: Nessuna delle precedenti
-A: 1
+A: 2
 W: $H(0,0)=\begin{pmatrix}2&1\\1&2\end{pmatrix}$, $\det=3>0$, $f_{xx}>0$.
-S: 11 giugno 2025, fila A, n. 8 (opzioni ricostruite)
+S: 11 giugno 2025, fila A, n. 8
 
 ?mc
-Q: Per $f(x,y)=4x^2y^2-xy-x^2-y^2$ il punto $(0,0)$ è
-O: di minimo locale
-O: di massimo locale
-O: di sella
+Q: Il punto $(0,0)$ per la funzione $f(x,y)=4x^2y^2-xy-x^2-y^2$ è di
+O: sella
+O: massimo locale
+O: minimo locale
 O: Nessuna delle precedenti
 A: 2
 W: $H(0,0)=\begin{pmatrix}-2&-1\\-1&-2\end{pmatrix}$, $\det=3>0$, $f_{xx}<0$.
-S: 11 giugno 2025, fila B, n. 9 (opzioni ricostruite)
+S: 11 giugno 2025, fila B, n. 9
 
 ?mc
-Q: I punti stazionari di $f(x,y)=e^{2x-2y}(x^2+y^2-3)$ sono
-O: $(-1,1)$ e $(\frac32,-\frac32)$
-O: $(1,1)$ e $(-\frac32,-\frac32)$
+Q: I punti stazionari (critici) della funzione $f(x,y)=e^{2x-2y}(x^2+y^2-3)$ sono
+O: $(-1,1)$ e $(-\frac32,\frac32)$
+O: $(1,-1)$ e $(-\frac12,\frac12)$
 O: $(1,-1)$ e $(-\frac32,\frac32)$
 O: Nessuna delle precedenti
 A: 3
-W: Sommando le equazioni semplificate: $x+y=0$; poi $2x^2+x-3=0$.
-S: 9 luglio 2025, fila A, n. 8 (distrattori ricostruiti)
+W: Sommando le equazioni semplificate: $x+y=0$; poi $2x^2+x-3=0$, cioè $x=1$ o $x=-\frac32$.
+S: 9 luglio 2025, fila A, n. 8
 
 ?mc
 Q: Sia $f(x,y)=y^3+x^2-6xy+3x+6y-10$. Allora
@@ -476,14 +476,34 @@ W: In $(-2,0)$ $\det H=-16$: sella. Sulla retta $x=0$ il determinante è sempre 
 S: 22 gennaio 2025, fila A, n. 10
 
 ?mc
-Q: La funzione $f(x,y)=|xy|(x+y-2)$ ha
-O: esattamente 2 punti critici
-O: esattamente 3 punti critici
-O: esattamente 4 punti critici
+Q: Si consideri la funzione $f(x,y)=|xy|(x+y-2)$. La funzione ha esattamente
+O: 1 punto critico
+O: 2 punti critici
+O: 4 punti critici
 O: Nessuna delle precedenti
 A: 3
 W: $(0,0)$, $(2,0)$, $(0,2)$ sugli assi e $(\frac23,\frac23)$ fuori.
-S: 5 febbraio 2025, fila A, n. 8 (opzioni ricostruite)
+S: 5 febbraio 2025, fila A, n. 8
+
+?mc
+Q: Sia $f(x,y)=(|x|-1)^2+(|y|-1)^2+(|x+y|-2)^2$. Allora
+O: $f$ ha minimo assoluto in $(1,1)$ e un minimo locale in $(-\frac53,\frac13)$
+O: $f$ ha minimo assoluto in $(-1,-1)$ e un massimo locale in $(-\frac53,\frac13)$
+O: $(-\frac53,\frac13)$ non è un punto critico per $f$
+O: Nessuna delle precedenti
+A: 1
+W: $f=0$ in $(1,1)$ e $(-1,-1)$: minimi assoluti. In $(-\frac53,\frac13)$: $x<0<y$, $x+y<0$, quindi $f=(x+1)^2+(y-1)^2+(x+y+2)^2$, gradiente nullo e Hessiana $\begin{pmatrix}4&2\\2&4\end{pmatrix}$: minimo locale.
+S: 25 giugno 2025, fila B, n. 10
+
+?mc
+Q: Si consideri la funzione $f(x,y)=x^2y(x-y+1)$ su $\mathbb R^2$. Allora
+O: $(-1,0)$ è un punto di massimo relativo
+O: $\exists\,y_0\in\mathbb R$ tale che $\det H_f(0,y_0)\ne0$
+O: sulla retta $x=0$ non ci sono punti di sella
+O: Nessuna delle precedenti
+A: 4
+W: In $(-1,0)$: $f_{xx}=0$, $f_{xy}=1$, $f_{yy}=-2$, $\det=-1$: sella. Sulla retta $x=0$ l'Hessiana ha sempre determinante 0, e il segno di $f=x^2\cdot y(x-y+1)$ vicino a $(0,0)$ è quello di $y$, che cambia: sella.
+S: 22 gennaio 2025, fila B, n. 12
 
 ?mc
 Q: Sia $f(x,y)=(|x|-1)^2+(|y|-1)^2+(|x-y|-2)^2$. Allora

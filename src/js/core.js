@@ -12,6 +12,19 @@ const sample = (a, n) => shuffle(a).slice(0, n);
 const DAY = 86400000;
 const todayKey = (d = new Date()) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 const dayNum = (d = new Date()) => Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / DAY);
+/* accorcia un testo senza spezzare le formule $...$ */
+function clip(s, n = 150) {
+  s = String(s).split('\n')[0];
+  if (s.length <= n) return s;
+  let out = '', inMath = false, mathStart = 0;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === '$') { if (!inMath) mathStart = out.length; inMath = !inMath; }
+    out += s[i];
+    if (out.length >= n && !inMath) break;
+  }
+  if (inMath) out = out.slice(0, mathStart);
+  return out.trimEnd() + (out.length < s.length ? '…' : '');
+}
 const fmt = (x, d = 2) => (Math.abs(x) < 1e-9 ? 0 : x).toFixed(d).replace('-', '−');
 
 /* ---------------- stato persistente ---------------- */
@@ -19,7 +32,7 @@ const STORE_KEY = 'monte-analisi-v1';
 const DEFAULT_STATE = () => ({
   v: 1, xp: 0, lessons: {}, studied: {}, bosses: {}, srs: {}, log: [], sims: [], sprintBest: 0,
   streak: { last: null, n: 0, best: 0 }, stamps: {}, theory: {},
-  settings: { theme: 'system', sound: true, unlockAll: false, timer: 45 }, lastRoute: null
+  settings: { theme: 'system', sound: true, unlockAll: false, timer: 45 }, updatedAt: 0
 });
 let S = DEFAULT_STATE();
 function loadState() {
@@ -30,11 +43,72 @@ function loadState() {
   } catch (e) { S = DEFAULT_STATE(); }
 }
 let saveTimer = null;
+function persistLocal() { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { } }
+/* ogni modifica: copia nel browser subito, copia nell'account claude.ai dopo qualche secondo */
 function save() {
+  S.updatedAt = Date.now();
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { } }, 120);
+  saveTimer = setTimeout(persistLocal, 120);
+  cloudSchedule();
 }
-function resetState() { S = DEFAULT_STATE(); try { localStorage.removeItem(STORE_KEY); } catch (e) { } }
+function resetState() { S = DEFAULT_STATE(); S.updatedAt = Date.now(); try { localStorage.removeItem(STORE_KEY); } catch (e) { } cloudSchedule(true); }
+
+/* ---------------- salvataggio nel tuo account claude.ai (capability db) ----------------
+   Due documenti privati per persona: data/users/<id>/stato (tutto tranne il registro) e
+   data/users/<id>/risposte (registro delle risposte). Vince la copia aggiornata più di recente. */
+const CLOUD = { db: null, base: null, status: 'connecting', lastSync: null, busy: false, again: false, timer: null, logSig: '' };
+const withTimeout = (p, ms = 10000) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej({ code: 'timeout' }), ms))]);
+async function cloudInit(onRemoteNewer) {
+  if (!window.claude || typeof window.claude.use !== 'function') { CLOUD.status = 'local'; refreshSync(); return; }
+  try {
+    const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]);
+    const uid = user && db ? await user.id() : null;
+    if (!db || !uid) { CLOUD.status = 'local'; refreshSync(); return; }
+    CLOUD.db = db; CLOUD.base = 'data/users/' + uid;
+    const [s1, s2] = await withTimeout(Promise.all([db.doc(CLOUD.base + '/stato').get(), db.doc(CLOUD.base + '/risposte').get()]));
+    const remote = s1.exists ? JSON.parse(s1.data().json || 'null') : null;
+    if (remote && (remote.updatedAt || 0) > (S.updatedAt || 0)) {
+      const log = s2.exists ? JSON.parse(s2.data().json || '[]') : [];
+      S = Object.assign(DEFAULT_STATE(), remote, { log });
+      S.settings = Object.assign(DEFAULT_STATE().settings, S.settings || {});
+      CLOUD.logSig = log.length + ':' + (log[log.length - 1]?.t || 0);
+      persistLocal(); CLOUD.status = 'cloud'; CLOUD.lastSync = Date.now();
+      onRemoteNewer && onRemoteNewer();
+    } else { CLOUD.status = 'cloud'; await cloudPush(); }
+  } catch (e) { CLOUD.status = 'error'; CLOUD.error = e && (e.code || e.message); }
+  refreshSync();
+}
+function cloudSchedule(now = false) {
+  if (!CLOUD.db) return;
+  clearTimeout(CLOUD.timer);
+  CLOUD.timer = setTimeout(cloudPush, now ? 50 : 2500);
+}
+async function cloudPush() {
+  if (!CLOUD.db) return;
+  if (CLOUD.busy) { CLOUD.again = true; return; }
+  CLOUD.busy = true; CLOUD.status = 'saving'; refreshSync();
+  try {
+    if (S.log.length > 2500) S.log.splice(0, S.log.length - 2500);
+    const { log, ...rest } = S;
+    await withTimeout(CLOUD.db.doc(CLOUD.base + '/stato').set({ json: JSON.stringify(rest), updatedAt: S.updatedAt || Date.now(), v: 1 }));
+    const sig = log.length + ':' + (log[log.length - 1]?.t || 0);
+    if (sig !== CLOUD.logSig) { await withTimeout(CLOUD.db.doc(CLOUD.base + '/risposte').set({ json: JSON.stringify(log), n: log.length, updatedAt: S.updatedAt || Date.now() })); CLOUD.logSig = sig; }
+    CLOUD.status = 'cloud'; CLOUD.lastSync = Date.now();
+  } catch (e) { CLOUD.status = 'error'; CLOUD.error = e && (e.code || e.message); }
+  CLOUD.busy = false; refreshSync();
+  if (CLOUD.again) { CLOUD.again = false; cloudSchedule(); }
+}
+function syncLabel() {
+  const t = CLOUD.lastSync ? new Date(CLOUD.lastSync).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }) : '';
+  return {
+    cloud: ['cloud-check', 'Salvato nel tuo account', t ? 'ultimo salvataggio ' + t : ''],
+    saving: ['cloud-arrow-up', 'Salvataggio…', ''],
+    connecting: ['cloud-arrow-up', 'Collegamento all’account…', ''],
+    local: ['cloud-slash', 'Solo in questo browser', 'apri l’app da claude.ai per salvarla nell’account'],
+    error: ['cloud-slash', 'Salvataggio nell’account non riuscito', 'i progressi restano in questo browser e riprovo alla prossima risposta']
+  }[CLOUD.status];
+}
+function refreshSync() { if (typeof syncBadge !== 'function') return; document.querySelectorAll('[data-sync]').forEach(el => { el.innerHTML = syncBadge(el.dataset.sync); }); }
 
 /* ---------------- contenuti: parser del formato .txt ---------------- */
 const CH = [];          // capitoli
