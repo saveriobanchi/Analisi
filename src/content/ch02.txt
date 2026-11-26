@@ -1,0 +1,698 @@
+#chapter 2
+title: Derivate e differenziabilità
+short: Differenziabilità
+place: Forcella Schwarz
+alt: 1000
+weight: 3
+program: Derivate parziali; gradiente; derivate direzionali; differenziabilità e sue conseguenze; piano tangente; teorema del differenziale totale; derivate parziali di ordine superiore; teorema di Schwarz.
+exam: È l'argomento **più frequente in assoluto**: circa un quesito su quattro nelle prove disponibili. In ogni prova c'è la funzione definita a tratti in $(0,0)$ ("continua? derivabile? differenziabile?"), quasi sempre un Vero/Falso sulle implicazioni, spesso un piano tangente o una derivata direzionale. Anche la domanda di teoria dell'esempio di gennaio 2026 era su questo capitolo.
+
+#lesson 2.1 Derivate parziali
+goal: Calcolare le derivate parziali con le regole di Analisi 1 nei punti normali e con la definizione nei punti speciali.
+
+::idea
+Blocca $y=y_0$ e fai variare solo $x$: $x\mapsto f(x,y_0)$ è una funzione di una variabile, il cui grafico è la **sezione** della superficie con il piano $y=y_0$. La sua derivata è la pendenza lungo l'asse $x$.
+
+::def Derivate parziali e gradiente
+$$\frac{\partial f}{\partial x}(x_0,y_0)=\lim_{t\to0}\frac{f(x_0+t,y_0)-f(x_0,y_0)}{t},\qquad \frac{\partial f}{\partial y}(x_0,y_0)=\lim_{t\to0}\frac{f(x_0,y_0+t)-f(x_0,y_0)}{t}.$$
+$f$ è **derivabile** in $P_0$ se esistono finite entrambe. Il **gradiente** è $\nabla f(P_0)=(f_x(P_0),f_y(P_0))$.
+
+::method Quale strada usare
+1. Punto normale (vicino al punto vale un'unica formula derivabile): deriva rispetto a $x$ con $y$ costante, e viceversa.
+2. Punto speciale (la formula cambia, ci sono $|\cdot|$, radici di zero): usa la definizione, cioè restringi $f$ agli assi. Nell'origine: $f_x(0,0)=\lim_{t\to0}\frac{f(t,0)-f(0,0)}{t}$.
+
+::example medio $f=\dfrac{xy}{x^2+y^2}$, $f(0,0)=0$: esistono le parziali in $(0,0)$?
++ Assi: $f(t,0)=0$ e $f(0,t)=0$ per ogni $t$.
++ Definizione: $f_x(0,0)=\lim\frac{0-0}{t}=0$, e allo stesso modo $f_y(0,0)=0$.
+= Derivabile con $\nabla f=(0,0)$, eppure **non continua** (capitolo 1). Derivabile non implica continua.
+
+::example esame 15 luglio 2026, n. 10: $f=\dfrac{\cos(x^2+y^2)-1}{(4x^2+y^2)^{3/2}}$, $f(0,0)=0$. Esiste $f_x(0,0)$?
++ Asse x: $f(t,0)=\frac{\cos t^2-1}{8|t|^3}\sim\frac{-t^4/2}{8|t|^3}=-\frac{|t|}{16}$.
++ Rapporto: $\frac{f(t,0)}{t}\sim-\frac{|t|}{16t}$: $-\frac1{16}$ per $t>0$, $+\frac1{16}$ per $t<0$.
+= $f_x(0,0)$ **non esiste**. La funzione è continua ($|f|\le\frac{r^4/2}{r^3}\to0$) ma ha una piega, come $|x|$ in una variabile.
+
+::trap
+- Nei punti speciali non derivi la formula e poi sostituisci: la formula vale solo fuori dal punto.
+- Nella definizione al numeratore c'è $f(0,0)$, il **valore assegnato**, che non sempre è 0.
+- Con un valore assoluto controlla separatamente $t\to0^+$ e $t\to0^-$.
+
+#quiz
+?mc
+Q: Il gradiente di $f=\ln(x^2+y^2)$ in $(1,1)$ è
+O: $(2,2)$
+O: $(1,1)$
+O: $(\frac12,\frac12)$
+O: Nessuna delle precedenti
+A: 2
+W: $f_x=\frac{2x}{x^2+y^2}$, $f_y=\frac{2y}{x^2+y^2}$: in $(1,1)$ valgono 1 e 1.
+
+?vf
+Q: $f(x,y)=\sqrt{x^2+y^2}$ è derivabile in $(0,0)$.
+A: F
+W: $\frac{f(t,0)}{t}=\frac{|t|}{t}=\pm1$: il limite non esiste.
+
+?vf
+Q: Se $f$ è derivabile in $P_0$, allora $f$ è continua in $P_0$.
+A: F
+W: Controesempio $\frac{xy}{x^2+y^2}$, $f(0,0)=0$: parziali nulle, non continua.
+S: 11 giugno 2025, fila B, n. 3
+
+?mc
+Q: $f=\dfrac{x^2y+ax^3}{x^2+y^2}$, $f(0,0)=0$. Per quale $a$ vale $f_x(0,0)=2$?
+O: $a=1$
+O: $a=2$
+O: per nessun $a$
+O: Nessuna delle precedenti
+A: 2
+W: $f(t,0)=\frac{at^3}{t^2}=at$, quindi $f_x(0,0)=a$.
+
+#lesson 2.2 Derivate direzionali e gradiente
+goal: Calcolare la derivata in una direzione qualunque, con la definizione oppure con il gradiente quando è lecito.
+
+::idea
+Le parziali sono le pendenze lungo gli assi. Da un punto ti puoi muovere in qualunque direzione $v$: la pendenza in quella direzione è la **derivata direzionale**. Si ottiene restringendo $f$ alla retta per $P_0$ di direzione $v$.
+
+::def Derivata direzionale
+Per un **versore** $v$ ($\|v\|=1$):
+$$\frac{\partial f}{\partial v}(P_0)=\lim_{t\to0}\frac{f(P_0+tv)-f(P_0)}{t}=g'(0),\qquad g(t)=f(P_0+tv).$$
+
+::thm Formula del gradiente (solo se $f$ è differenziabile in $P_0$)
+$$\frac{\partial f}{\partial v}(P_0)=\nabla f(P_0)\cdot v .$$
+La derivata direzionale è massima nella direzione del gradiente e vale $\|\nabla f(P_0)\|$; è nulla nelle direzioni ortogonali al gradiente, cioè tangenti alla curva di livello. **Il gradiente è ortogonale alle curve di livello.**
+
+::example esame 1 luglio 2026, n. 7: $f=xe^{xy}-ye^x$, $w=(\frac35,\frac45)$. Quanto vale $\frac{\partial f}{\partial w}(-1,1)$?
++ Derivate: $f_x=e^{xy}+xye^{xy}-ye^x$, in $(-1,1)$: $e^{-1}-e^{-1}-e^{-1}=-\frac1e$. $\ f_y=x^2e^{xy}-e^x=e^{-1}-e^{-1}=0$.
++ Formula: $f\in C^1$, quindi $\frac{\partial f}{\partial w}=-\frac1e\cdot\frac35+0=-\frac{3}{5e}$.
+= Opzioni: $\frac1{5e}$, $-\frac1{5e}$, $-\frac{12}{5e}$: **Nessuna delle precedenti**. Le sbagliate nascono da segni o componenti scambiate.
+
+::example medio $f=\dfrac{x^2y}{x^2+y^2}$, $f(0,0)=0$: tutte le direzionali in $(0,0)$.
++ Definizione: con $v=(\cos\theta,\sin\theta)$: $\frac{f(t\cos\theta,t\sin\theta)}{t}=\cos^2\theta\sin\theta$.
++ Confronto: le parziali sono 0, quindi $\nabla f\cdot v=0$, ma per $\theta=\pi/4$ la derivata vale $\frac{1}{2\sqrt2}\ne0$.
+= Esistono tutte le direzionali, ma la formula del gradiente fallisce: $f$ **non è differenziabile** in $(0,0)$.
+
+::lab gradiente
+
+::trap
+- La direzione va normalizzata: con $(1,1)$ si usa $\frac{(1,1)}{\sqrt2}$.
+- $\nabla f\cdot v$ si usa solo se $f$ è differenziabile; nei punti speciali torni alla definizione.
+
+#quiz
+?vf
+Q: $f(x,y)=x-y$, $v=\frac{(1,1)}{\sqrt2}$. Allora $\frac{\partial f}{\partial v}(0,0)=\sqrt2$.
+A: F
+W: $\nabla f=(1,-1)$, $\nabla f\cdot v=\frac{1-1}{\sqrt2}=0$.
+S: esempio gennaio 2026, n. 1
+
+?mc
+Q: Se $f$ è differenziabile in $P_0$ con $\nabla f(P_0)=(3,4)$, la massima derivata direzionale in $P_0$ vale
+O: 7
+O: 5
+O: 25
+O: Nessuna delle precedenti
+A: 2
+W: È $\|\nabla f\|=\sqrt{9+16}=5$, nella direzione $(\frac35,\frac45)$.
+
+?mc
+Q: La derivata di $f=xy^2$ in $(2,1)$ nella direzione di $(1,-1)$ vale
+O: $-3$
+O: $-\frac{3}{\sqrt2}$
+O: $\frac{5}{\sqrt2}$
+O: Nessuna delle precedenti
+A: 2
+W: $v=\frac{(1,-1)}{\sqrt2}$, $\nabla f=(y^2,2xy)=(1,4)$: $\frac{1-4}{\sqrt2}$.
+
+?vf
+Q: Se $f$ è differenziabile in $P_0$ e $\nabla f(P_0)\ne0$, esiste una direzione in cui la derivata direzionale è nulla.
+A: V
+W: Le direzioni ortogonali al gradiente, tangenti alla curva di livello.
+
+?vf
+Q: Se esiste $\frac{\partial f}{\partial v}(P_0)$, allora $g(t)=f(P_0+tv)$ è continua in $t=0$.
+A: V
+W: $g$ è derivabile in 0, quindi continua in 0.
+S: 5 febbraio 2025, fila A, n. 1
+
+#lesson 2.3 Differenziabilità
+goal: Capire cosa vuol dire differenziabile, verificarlo con il limite della definizione e conoscere le condizioni che lo garantiscono.
+
+::idea
+In una variabile derivabile vuol dire che il grafico, ingrandito, diventa una retta. In due variabili deve diventare **un piano, in tutte le direzioni insieme**. Le parziali guardano solo due direzioni: per questo non bastano.
+
+::def Differenziabilità in $P_0=(x_0,y_0)$
+$f$ è differenziabile in $P_0$ se è derivabile e
+$$\lim_{(h,k)\to(0,0)}\frac{f(x_0+h,y_0+k)-f(x_0,y_0)-f_x(P_0)\,h-f_y(P_0)\,k}{\sqrt{h^2+k^2}}=0 .$$
+Il numeratore è l'errore commesso sostituendo il piano tangente alla funzione: deve andare a zero **più in fretta** della distanza. La parte lineare $df(P_0)(h,k)=f_xh+f_yk$ è il **differenziale**.
+
+::thm Conseguenze della differenziabilità
+Se $f$ è differenziabile in $P_0$: è continua in $P_0$; è derivabile; ha tutte le derivate direzionali con $\frac{\partial f}{\partial v}=\nabla f\cdot v$; il grafico ha piano tangente.
+
+::thm Teorema del differenziale totale
+Se le derivate parziali esistono in un intorno di $P_0$ e sono continue in $P_0$, allora $f$ è differenziabile in $P_0$. In particolare **ogni $f\in C^1$ è differenziabile**: polinomi, esponenziali, seni e loro combinazioni lo sono dove sono definiti con le derivate.
+
+::method Differenziabilità in un punto speciale
+1. Se $f$ non è continua, non è differenziabile: fine.
+2. Calcola $f_x(P_0)$, $f_y(P_0)$ con la definizione. Se una non esiste: non differenziabile.
+3. Studia il limite di $R(h,k)=\dfrac{f(P_0+(h,k))-f(P_0)-f_xh-f_yk}{\sqrt{h^2+k^2}}$: tende a 0 (stima) oppure trovi una direzione in cui non tende a 0.
+Scorciatoia per il no: se in una direzione $\frac{\partial f}{\partial v}(P_0)\ne\nabla f(P_0)\cdot v$, non è differenziabile.
+
+::example medio $f=\sqrt{|xy|}$: differenziabile in $(0,0)$?
++ Continuità e parziali: $\sqrt{|xy|}\le\frac{r}{\sqrt2}\to0$; sugli assi è nulla: $\nabla f=(0,0)$.
++ Rapporto: $R=\frac{\sqrt{|hk|}}{\sqrt{h^2+k^2}}$; su $k=h$: $R=\frac{|h|}{\sqrt2|h|}=\frac1{\sqrt2}\not\to0$.
+= Continua, derivabile, **non differenziabile**.
+
+::example esame 25 giugno 2025, n. 8: $f=|x(y+1)|$. Quale è vera? derivabile in $(0,0)$ · differenziabile in $(0,-1)$ · derivabile ma non differenziabile in $(0,-1)$ · nessuna.
++ In (0,0): $f(t,0)=|t|$: $f_x(0,0)$ non esiste. La prima è falsa.
++ In (0,−1): $f(t,-1)=0$, $f(0,-1+t)=0$: $\nabla f=(0,0)$. Con $h=x$, $k=y+1$: $R=\frac{|h||k|}{\sqrt{h^2+k^2}}\le\frac r2\to0$.
+= Risposta: **differenziabile in $(0,-1)$**. Il modulo crea una piega dove un solo fattore cambia segno; dove se ne annullano due il prodotto è "piccolo al quadrato".
+
+::lab superfici f=dir path=line
+
+#quiz
+?vf
+Q: $f=\dfrac{x^2y^2}{x^2+y^2}$, $f(0,0)=0$, è differenziabile in $(0,0)$.
+A: V
+W: $\nabla f(0,0)=(0,0)$ e $|f|\le\frac{(r^2/2)^2}{r^2}=\frac{r^2}{4}$: $|R|\le\frac r4\to0$.
+
+?vf
+Q: Una funzione $C^1$ su $\mathbb R^2$ può non essere differenziabile in qualche punto.
+A: F
+W: Teorema del differenziale totale: $C^1$ implica differenziabile ovunque.
+
+?vf
+Q: $f=|\sin(x)\,y|$ è differenziabile in $(0,0)$.
+A: V
+W: $\nabla f=(0,0)$ e $|f|\le|x||y|\le\frac{r^2}2$, quindi $R\to0$.
+S: 1 luglio 2026, n. 4
+
+?mc
+Q: $f=x|y|$. In $(0,0)$
+O: non è derivabile
+O: è derivabile ma non differenziabile
+O: è differenziabile
+O: Nessuna delle precedenti
+A: 3
+W: Sugli assi $f=0$: $\nabla f=(0,0)$. $|R|=\frac{|x||y|}{r}\le\frac r2\to0$.
+
+?mc
+Q: Per quali $\alpha>0$ la funzione $f=|xy|^\alpha$ è differenziabile in $(0,0)$?
+O: $\alpha\ge\frac12$
+O: $\alpha>\frac12$
+O: $\alpha>1$
+O: Nessuna delle precedenti
+A: 2
+W: $\nabla f=0$; $|R|\le\frac{(r^2/2)^\alpha}{r}\sim r^{2\alpha-1}\to0$ se $\alpha>\frac12$. Con $\alpha=\frac12$ è $\sqrt{|xy|}$, non differenziabile.
+
+#lesson 2.4 La mappa delle implicazioni
+goal: Rispondere senza esitare ai Vero/Falso "se … allora …" e avere un controesempio per ogni freccia che manca.
+
+::idea
+Tutte le frecce partono da **differenziabile**, o ci arrivano da $C^1$. Nessuna si inverte, e tra "continua" e "derivabile" non c'è alcun legame. Tocca le frecce nel laboratorio qui sotto e verifica.
+
+::lab implicazioni
+
+::table
+Affermazione ¦ Vera? ¦ Controesempio o motivo
+differenziabile ⇒ continua, derivabile, tutte le direzionali ¦ Vera ¦ teorema
+$C^1$ ⇒ differenziabile ¦ Vera ¦ differenziale totale
+derivabile ⇒ continua ¦ Falsa ¦ $\frac{xy}{x^2+y^2}$, $f(0,0)=0$
+continua ⇒ derivabile ¦ Falsa ¦ $\sqrt{x^2+y^2}$ oppure $|x|$
+derivabile ⇒ differenziabile ¦ Falsa ¦ $\sqrt{|xy|}$
+continua + derivabile + tutte le direzionali ⇒ differenziabile ¦ Falsa ¦ $\frac{x^2y}{x^2+y^2}$
+tutte le direzionali, uguali a $\nabla f\cdot v$ ⇒ differenziabile ¦ Falsa ¦ $\frac{x^3y}{x^4+y^2}$: su $y=x^2$, $R\to\pm\frac12$
+differenziabile ⇒ $C^1$ ¦ Falsa ¦ esistono controesempi (non serve costruirli)
+
+::exam
+Individua le due proprietà del "se … allora …" e cerca la freccia. Se non c'è, la risposta è Falso e devi saper dire il controesempio. Uscite esattamente: continua ⇒ derivabile (Falso, 11/6/2025), derivabile ⇒ continua (Falso, 11/6/2025), continua + derivabile + direzionali ⇒ differenziabile (Falso, 25/6/2025), differenziabile ⇒ direzionali (Vero, 25/6/2025).
+
+#quiz
+?vf
+Q: Se $f$ è continua in $(x_0,y_0)$, allora è derivabile in $(x_0,y_0)$.
+A: F
+W: $\sqrt{x^2+y^2}$ in $(0,0)$: continua, non derivabile.
+S: 11 giugno 2025, fila A, n. 2
+
+?vf
+Q: Se $f$ è continua, derivabile e dotata di tutte le derivate direzionali in $(x_0,y_0)$, allora è differenziabile in $(x_0,y_0)$.
+A: F
+W: Controesempio $\frac{x^2y}{x^2+y^2}$, $f(0,0)=0$.
+S: 25 giugno 2025, fila A, n. 5
+
+?vf
+Q: Se $f$ è differenziabile in $(x_0,y_0)$, esistono tutte le derivate direzionali in $(x_0,y_0)$.
+A: V
+W: E valgono $\nabla f\cdot v$.
+S: 25 giugno 2025, fila B, n. 6
+
+?vf
+Q: Se esistono tutte le derivate direzionali di $f$ in $P_0$, allora $f$ è continua in $P_0$.
+A: F
+W: $\frac{x^2y}{x^4+y^2}$, $f(0,0)=0$: tutte le direzionali esistono, ma lungo $y=x^2$ vale $\frac12$.
+
+?vf
+Q: Se $f$ è differenziabile in $P_0$, allora le sue derivate parziali sono continue in $P_0$.
+A: F
+W: Differenziabile non implica $C^1$: la freccia va solo da $C^1$ a differenziabile.
+
+#lesson 2.5 Piano tangente
+goal: Scrivere l'equazione del piano tangente al grafico senza errori di calcolo.
+
+::def Piano tangente al grafico in $(x_0,y_0,f(x_0,y_0))$, $f$ differenziabile
+$$z=f(x_0,y_0)+f_x(x_0,y_0)\,(x-x_0)+f_y(x_0,y_0)\,(y-y_0).$$
+Un vettore normale al piano (e al grafico) è $(f_x,f_y,-1)$.
+
+::method
+1. Calcola $f(x_0,y_0)$.
+2. Calcola $f_x$, $f_y$ e valutale nel punto, un termine alla volta: molti termini si annullano.
+3. Sostituisci nella formula e confronta con le opzioni.
+
+::example esame 25 giugno 2025, fila A, n. 11: $f=y^3\sin(x^2+y^2)+x$, piano tangente in $(0,\sqrt\pi)$.
++ Valore: $f(0,\sqrt\pi)=\pi^{3/2}\sin\pi+0=0$.
++ $f_x$: $2xy^3\cos(x^2+y^2)+1$; in $x=0$ vale 1.
++ $f_y$: $3y^2\sin(x^2+y^2)+2y^4\cos(x^2+y^2)$; in $(0,\sqrt\pi)$: $0+2\pi^2\cos\pi=-2\pi^2$.
+= $z=x-2\pi^2(y-\sqrt\pi)$.
+
+::example base $f=xe^y$ in $(1,0)$.
++ Valori: $f=1$, $f_x=e^y=1$, $f_y=xe^y=1$.
+= $z=1+(x-1)+y$, cioè $z=x+y$.
+
+::trap
+- Dimenticare il termine noto $f(x_0,y_0)$ o scrivere $x$ al posto di $(x-x_0)$.
+- Usare la formula dove $f$ non è differenziabile: lì il piano tangente non esiste.
+
+#quiz
+?mc
+Q: Il piano tangente al grafico di $f=x^2+y^2$ in $(1,2)$ è
+O: $z=2x+4y-5$
+O: $z=2x+4y+5$
+O: $z=2x+4y$
+O: Nessuna delle precedenti
+A: 1
+W: $f=5$, $f_x=2$, $f_y=4$: $z=5+2(x-1)+4(y-2)=2x+4y-5$.
+
+?mc
+Q: Il piano tangente al grafico di $f=e^x\cos y+xy$ in $(0,0)$ è
+O: $z=x$
+O: $z=1+x$
+O: $z=1+x+y$
+O: Nessuna delle precedenti
+A: 2
+W: $f(0,0)=1$, $f_x=e^x\cos y+y=1$, $f_y=-e^x\sin y+x=0$.
+
+?mc
+Q: Il piano tangente al grafico di $f=x^2y+e^{x-1}$ in $(1,2,f(1,2))$ è
+O: $z=5x+y-4$
+O: $z=4x+y-3$
+O: $z=5x+y+3$
+O: Nessuna delle precedenti
+A: 1
+W: $f(1,2)=3$, $f_x=2xy+e^{x-1}=5$, $f_y=x^2=1$: $z=3+5(x-1)+(y-2)$.
+
+?vf
+Q: Il piano tangente al grafico di $f=\ln(1+x^2+2y^2)$ in $(1,1)$ è $z=\ln4+\frac12(x-1)+(y-1)$.
+A: V
+W: $f_x=\frac{2x}{1+x^2+2y^2}=\frac12$, $f_y=\frac{4y}{1+x^2+2y^2}=1$.
+
+#lesson 2.6 Il quesito della funzione a tratti
+goal: Rispondere con sicurezza al quesito presente in tutte le prove: continua? derivabile? differenziabile in $(0,0)$?
+
+::idea
+Il quesito ha sempre la stessa forma: $f=g(x,y)$ fuori dall'origine, $f(0,0)=a$, e quattro opzioni che combinano continuità, gradiente (spesso con il valore) e differenziabilità. Si risponde **in tre passi, in ordine**, fermandosi appena una proprietà fallisce.
+
+::method Metodo in tre passi
+1. **Continuità**: $\lim_{(0,0)}g=a$? Se no: non continua, quindi non differenziabile (la derivabilità va controllata a parte se un'opzione la nomina).
+2. **Derivabilità**: $f_x(0,0)=\lim\frac{f(t,0)-a}{t}$, $f_y(0,0)=\lim\frac{f(0,t)-a}{t}$. Annota i valori: spesso un'opzione dice "$\nabla f(0,0)=\dots$".
+3. **Differenziabilità**: studia $R(h,k)$. Per il no basta una direzione, di solito $k=h$ o $k=2h$.
+
+::table
+$d=p-q$ (gradi dopo gli equivalenti, con $a=0$) ¦ Di solito ¦ Esempio
+$d\le0$ ¦ non continua ¦ $\frac{(x+y)^2}{x^2+y^2}$
+$0<d<1$ ¦ continua, non differenziabile ($R\sim r^{d-1}$) ¦ $|xy|^{1/3}$
+$d=1$ ¦ continua; derivabile; differenziabile quasi mai ¦ $\frac{x^5}{(x^2+3y^2)^2}$, $\sqrt{|xy|}$
+$d>1$ ¦ differenziabile con $\nabla f=0$: basta $|f|\le Cr^d$ ¦ $\frac{x^3y^3-\ln(1+x^6)}{(4x^2+y^2)^2}$
+
+::example medio 11 giugno 2025, A n. 10: $f=\dfrac{x^5}{(x^2+3y^2)^2}$, $f(0,0)=0$.
++ Continuità: $d=1$. $|x^5|\le r^5$, $(x^2+3y^2)^2\ge r^4$: $|f|\le r\to0$.
++ Parziali: $f(t,0)=t$: $f_x=1$. $f(0,t)=0$: $f_y=0$. $\nabla f=(1,0)$.
++ Differenziabilità: su $h=k=t$: $f(t,t)=\frac{t^5}{16t^4}=\frac t{16}$, il piano dà $t$: $R=\frac{t/16-t}{\sqrt2|t|}\not\to0$.
+= **Continua ma non differenziabile.**
+
+::example esame esempio gennaio 2026, n. 9: $f=\dfrac{\sin(x^2)y+x^3}{\sqrt{3x^2+y^2}}$, $f(0,0)=0$. Opzioni: non continua · $\nabla f=(\frac1{\sqrt3},0)$ · continua ma non differenziabile · nessuna.
++ Gradi: numeratore grado 3, denominatore 1: $d=2>1$.
++ Stima: $|\sin(x^2)y|\le r^3$, $|x^3|\le r^3$, $\sqrt{3x^2+y^2}\ge r$: $|f|\le2r^2$.
++ Conseguenze: $|f(t,0)/t|\le2|t|\to0$: $\nabla f=(0,0)$. $|R|\le2r\to0$: differenziabile.
+= **Nessuna delle precedenti**: è differenziabile e nessuna opzione lo dice.
+
+::example esame 9 luglio 2025, n. 12: $f=\dfrac{(x+y)^2}{x^2+y^2}$, $f(0,0)=1$. Opzioni: continua · non esistono le parziali · non differenziabile · nessuna.
++ Continuità: su $y=-x$ vale 0, su $y=0$ vale 1: non continua.
++ Parziali: $f(t,0)=1=f(0,0)$: $f_x(0,0)=0$; anche $f_y(0,0)=0$. Esistono.
+= **Non differenziabile.** Il valore assegnato $a=1$ è decisivo: con $a=0$ le parziali non esisterebbero.
+
+::trap
+- Scegliere "continua e derivabile ma non differenziabile" senza aver controllato che le parziali esistano davvero.
+- Se $f(t,t)$ coincide per caso con il piano, prova $k=2h$ o $k=-h$.
+- In multipla "Nessuna delle precedenti" è giusta molto spesso: non scartarla per partito preso.
+
+#quiz
+?mc
+Q: $f=\dfrac{x^3y}{x^2+y^2}$, $f(0,0)=0$. In $(0,0)$ la funzione è
+O: non continua
+O: continua ma non differenziabile
+O: differenziabile con $\nabla f=(0,0)$
+O: Nessuna delle precedenti
+A: 3
+W: $d=2$: $|f|\le\frac{r^4}{r^2}=r^2$, quindi $\nabla f=0$ e $|R|\le r\to0$.
+
+?mc
+Q: $f=\dfrac{x^2y}{x^2+y^2}$, $f(0,0)=0$. In $(0,0)$ la funzione è
+O: non derivabile
+O: differenziabile
+O: continua, derivabile, non differenziabile
+O: Nessuna delle precedenti
+A: 3
+W: $|f|\le|y|$: continua. $\nabla f=0$, ma $f(t,t)=\frac t2\ne0$: $R\not\to0$.
+
+?mc
+Q: $f=\dfrac{x^3-y^3}{x^2+y^2}$, $f(0,0)=0$. In $(0,0)$
+O: non è derivabile
+O: è differenziabile con $\nabla f=(1,-1)$
+O: è continua, ha $\nabla f=(1,-1)$ e non è differenziabile
+O: Nessuna delle precedenti
+A: 3
+W: $f(t,0)=t$, $f(0,t)=-t$. Su $k=h$ non si vede nulla ($f(t,t)=0$ come il piano), ma su $k=2h$: $f=-\frac75t$ contro il piano $-t$: $R\not\to0$.
+
+?mc
+Q: $f=\dfrac{\sin^2(x+y)}{x^2+y^2}$, $f(0,0)=1$. Allora $f$
+O: è continua in $(0,0)$
+O: non ha derivate parziali in $(0,0)$
+O: non è differenziabile in $(0,0)$
+O: Nessuna delle precedenti
+A: 3
+W: Su $y=-x$ vale 0: non continua, quindi non differenziabile. Le parziali esistono: $\frac{f(t,0)-1}{t}=\frac{\sin^2t-t^2}{t^3}\to0$.
+S: 9 luglio 2025, fila B, n. 10 (opzioni come la fila A)
+
+#lesson 2.7 Funzioni composte, derivate seconde, Schwarz
+goal: Derivare $f$ lungo una curva con la regola della catena, calcolare l'Hessiana e sapere quando è simmetrica.
+
+::thm Regola della catena lungo una curva
+Se $\gamma(t)=(x(t),y(t))$ è derivabile in $t_0$ e $f$ è **differenziabile** in $\gamma(t_0)$, allora $g(t)=f(\gamma(t))$ è derivabile in $t_0$ e
+$$g'(t_0)=\nabla f(\gamma(t_0))\cdot\gamma'(t_0)=f_x\,x'(t_0)+f_y\,y'(t_0).$$
+
+::example medio 5 febbraio 2025, A n. 3 e B n. 5. Con $f\in C^1$: (A) $\gamma(t)=(2t+1,t^2)$, $g'(0)=2\partial_xf(1,0)$? (B) $\gamma(t)=((t-1)^2,3t-1)$, $g'(1)=2\partial_xf(0,2)+3\partial_yf(0,2)$?
++ A: $\gamma(0)=(1,0)$, $\gamma'(0)=(2,0)$: $g'(0)=2f_x(1,0)$. Vero.
++ B: $\gamma(1)=(0,2)$, $\gamma'(1)=(0,3)$: $g'(1)=3f_y(0,2)$. Falso: il termine $2\partial_xf$ sparisce perché $x'(1)=0$.
+= A vero, B falso.
+
+::def Derivate seconde e Hessiana
+$$H_f(P)=\begin{pmatrix}f_{xx}&f_{xy}\\ f_{yx}&f_{yy}\end{pmatrix}.$$
+$f\in C^2$ se tutte le derivate seconde esistono e sono continue.
+
+::thm Teorema di Schwarz
+Se $f_{xy}$ e $f_{yx}$ esistono in un intorno di $P$ e sono continue in $P$ (in particolare se $f\in C^2$), allora $f_{xy}(P)=f_{yx}(P)$: l'Hessiana è simmetrica.
+Senza continuità può fallire: per $f=\frac{xy(x^2-y^2)}{x^2+y^2}$, $f(0,0)=0$, si ha $f_{xy}(0,0)=-1\ne f_{yx}(0,0)=1$.
+
+::example base Hessiana di $f=x^3y-2y^2+e^x$.
++ Prime: $f_x=3x^2y+e^x$, $f_y=x^3-4y$.
++ Seconde: $f_{xx}=6xy+e^x$, $f_{xy}=f_{yx}=3x^2$, $f_{yy}=-4$.
+= $H_f=\begin{pmatrix}6xy+e^x&3x^2\\3x^2&-4\end{pmatrix}$, simmetrica come previsto.
+
+::trap
+- $\nabla f$ va calcolato in $\gamma(t_0)$, $\gamma'$ in $t_0$.
+- "Derivabile due volte in un punto ⇒ Hessiana simmetrica" è falso: serve la continuità delle miste.
+
+#quiz
+?mc
+Q: $f\in C^1$ con $\nabla f(1,1)=(2,-1)$, $\gamma(t)=(t^2,t^3)$. Quanto vale $\frac{d}{dt}f(\gamma(t))$ in $t=1$?
+O: 1
+O: 7
+O: $-1$
+O: Nessuna delle precedenti
+A: 1
+W: $\gamma(1)=(1,1)$, $\gamma'(1)=(2,3)$: $2\cdot2+(-1)\cdot3=1$.
+
+?mc
+Q: $f\in C^1$ con $\nabla f(1,2)=(2,-1)$ e $g(t)=f(t^2,1+t)$. Allora $g'(1)$ vale
+O: 1
+O: 3
+O: 5
+O: Nessuna delle precedenti
+A: 2
+W: $\gamma(1)=(1,2)$, $\gamma'(1)=(2,1)$: $4-1=3$. La 1 dimentica il fattore 2 di $\frac{d}{dt}t^2$.
+
+?vf
+Q: Se $f\in C^2(\mathbb R^2)$, l'Hessiana di $f$ è simmetrica in ogni punto.
+A: V
+W: Teorema di Schwarz.
+S: 22 gennaio 2025, fila A, n. 3
+
+?vf
+Q: Se $f$ è derivabile due volte in un punto, allora l'Hessiana in quel punto è simmetrica.
+A: F
+W: Serve la continuità delle derivate miste.
+S: 22 gennaio 2025, fila B, n. 3
+
+#bank
+?vf
+Q: Se esiste $\partial_\nu f(p)$, allora la funzione $g(t)=f(p+t\nu)$ è continua in $t=0$.
+A: V
+W: $g$ è derivabile in 0, quindi continua.
+S: 5 febbraio 2025, fila A, n. 1
+
+?vf
+Q: Se la funzione $g(t)=f(p+t\nu)$ è continua in $t=0$, allora esiste $\partial_\nu f(p)$.
+A: F
+W: Continua non implica derivabile: $f=\sqrt{x^2+y^2}$, $p=0$.
+S: 5 febbraio 2025, fila B, n. 6
+
+?vf
+Q: Sia $f\in C^1(\mathbb R^2)$, $v=(v_1,v_2)$ un versore e $g(t)=f(3+tv_1,5+tv_2)$. Allora $\frac{\partial f}{\partial v}(3,5)=g'(0)$.
+A: V
+W: È la definizione di derivata direzionale.
+S: 11 giugno 2025, fila A, n. 1
+
+?vf
+Q: Se $f$ è continua in $(x_0,y_0)$, allora $f$ è derivabile in $(x_0,y_0)$.
+A: F
+W: $\sqrt{x^2+y^2}$ in $(0,0)$.
+S: 11 giugno 2025, fila A, n. 2
+
+?vf
+Q: Se esistono $\partial_xf(x_0,y_0)$ e $\partial_yf(x_0,y_0)$, allora $f$ è continua in $(x_0,y_0)$.
+A: F
+W: $\frac{xy}{x^2+y^2}$, $f(0,0)=0$.
+S: 11 giugno 2025, fila B, n. 3
+
+?vf
+Q: Se $f$ è continua, derivabile e dotata di tutte le derivate direzionali in $(x_0,y_0)$, allora $f$ è differenziabile in $(x_0,y_0)$.
+A: F
+W: $\frac{x^2y}{x^2+y^2}$, $f(0,0)=0$.
+S: 25 giugno 2025, fila A, n. 5
+
+?vf
+Q: Se $f$ è differenziabile in $(x_0,y_0)$, allora esistono tutte le derivate direzionali di $f$ in $(x_0,y_0)$.
+A: V
+W: E valgono $\nabla f\cdot v$.
+S: 25 giugno 2025, fila B, n. 6
+
+?vf
+Q: Sia $f(x,y)=x-y$ e $v=\frac{1}{\sqrt2}(1,1)$. Allora $\frac{\partial f}{\partial v}(0,0)=\sqrt2$.
+A: F
+W: $\nabla f\cdot v=\frac{1-1}{\sqrt2}=0$.
+S: esempio gennaio 2026, n. 1
+
+?vf
+Q: Se $f\in C^2(\mathbb R^2)$, la matrice Hessiana di $f$ è simmetrica in ogni punto.
+A: V
+W: Teorema di Schwarz.
+S: 22 gennaio 2025, fila A, n. 3
+
+?vf
+Q: Se $f$ è derivabile due volte in un punto, la matrice Hessiana di $f$ in quel punto è simmetrica.
+A: F
+W: Serve la continuità delle derivate seconde miste.
+S: 22 gennaio 2025, fila B, n. 3
+
+?vf
+Q: Sia $f\in C^1(\mathbb R^2)$, $\gamma(t)=(2t+1,t^2)$ e $g(t)=f(\gamma(t))$. Allora $g'(0)=2\,\partial_xf(1,0)$.
+A: V
+W: $\gamma(0)=(1,0)$, $\gamma'(0)=(2,0)$.
+S: 5 febbraio 2025, fila A, n. 3
+
+?vf
+Q: Sia $f\in C^1(\mathbb R^2)$, $\gamma(t)=((t-1)^2,3t-1)$ e $g(t)=f(\gamma(t))$. Allora $g'(1)=2\,\partial_xf(0,2)+3\,\partial_yf(0,2)$.
+A: F
+W: $\gamma'(1)=(0,3)$: $g'(1)=3\,\partial_yf(0,2)$.
+S: 5 febbraio 2025, fila B, n. 5
+
+?mc
+Q: Sia $f(x,y)=xe^{xy}-ye^x$ e $w=(\frac35,\frac45)$. Allora $\frac{\partial f}{\partial w}(-1,1)$ vale
+O: $\frac{1}{5e}$
+O: $-\frac{1}{5e}$
+O: $-\frac{12}{5e}$
+O: Nessuna delle precedenti
+A: 4
+W: $\nabla f(-1,1)=(-\frac1e,0)$: $\frac{\partial f}{\partial w}=-\frac{3}{5e}$.
+S: 1 luglio 2026, n. 7
+
+?mc
+Q: Il piano tangente al grafico di $f(x,y)=y^3\sin(x^2+y^2)+x$ nel punto $(0,\sqrt\pi,f(0,\sqrt\pi))$ ha equazione
+O: $z=x+2\pi^2(y-\sqrt\pi)$
+O: $z=1+x-2\pi^2(y-\sqrt\pi)$
+O: $z=x-2\pi^2(y-\sqrt\pi)$
+O: Nessuna delle precedenti
+A: 3
+W: $f=0$, $f_x=1$, $f_y=2\pi^2\cos\pi=-2\pi^2$.
+S: 25 giugno 2025, fila A, n. 11 (distrattori ricostruiti)
+
+?mc
+Q: Il piano tangente al grafico di $f(x,y)=x^2\cos(x^2+y^2)+y$ nel punto $(\sqrt\pi,0,f(\sqrt\pi,0))$ ha equazione
+O: $z=-\pi-2\sqrt\pi(x-\sqrt\pi)+y$
+O: $z=\pi-2\sqrt\pi(x-\sqrt\pi)+y$
+O: $z=-\pi+2\sqrt\pi(x-\sqrt\pi)+y$
+O: Nessuna delle precedenti
+A: 1
+W: $f=\pi\cos\pi=-\pi$; $f_x=2x\cos(x^2+y^2)-2x^3\sin(x^2+y^2)=-2\sqrt\pi$; $f_y=1$.
+S: 25 giugno 2025, fila B, n. 8 (distrattori ricostruiti)
+
+?mc
+Q: Sia $f(x,y)=|x(y+1)|$. Quale affermazione è vera?
+O: $f$ è derivabile in $(0,0)$
+O: $f$ è differenziabile in $(0,-1)$
+O: $f$ è derivabile ma non differenziabile in $(0,-1)$
+O: Nessuna delle precedenti
+A: 2
+W: In $(0,0)$: $f(t,0)=|t|$, niente $f_x$. In $(0,-1)$: $\nabla f=0$ e $|R|\le\frac r2$.
+S: 25 giugno 2025, fila A, n. 8
+
+?mc
+Q: Sia $f(x,y)=|(x-1)y|$. Quale affermazione è vera?
+O: $f$ è derivabile in $(0,0)$
+O: $f$ è differenziabile in $(1,0)$
+O: $f$ è derivabile ma non differenziabile in $(1,0)$
+O: Nessuna delle precedenti
+A: 2
+W: In $(0,0)$: $f(0,t)=|t|$, niente $f_y$. In $(1,0)$: $\nabla f=0$ e $|R|\le\frac r2\to0$.
+S: 25 giugno 2025, fila B, n. 12
+
+?vf
+Q: La funzione $f(x,y)=|\sin(x)\,y|$ è differenziabile in $(0,0)$.
+A: V
+W: $\nabla f=0$ e $|f|\le\frac{r^2}{2}$.
+S: 1 luglio 2026, n. 4
+
+?mc
+Q: Sia $f(x,y)=\dfrac{x^2y^3-\sin(x^5)}{(2x^2+3y^2)^2}$ per $(x,y)\ne(0,0)$, $f(0,0)=0$. Allora
+O: $f$ non è continua in $(0,0)$
+O: $f$ è continua e derivabile ma non differenziabile in $(0,0)$
+O: $f$ è differenziabile in $(0,0)$
+O: Nessuna delle precedenti
+A: 2
+W: $|f|\le\frac{2r^5}{4r^4}$: continua. $\nabla f=(-\frac14,0)$. Su $h=k=t$: $f(t,t)\approx0$ contro il piano $-\frac t4$: $R\not\to0$.
+S: 5 febbraio 2025, fila A, n. 9
+
+?mc
+Q: Sia $f(x,y)=\dfrac{x^3y^3-\ln(1+x^6)}{(4x^2+y^2)^2}$ per $(x,y)\ne(0,0)$, $f(0,0)=0$. Allora
+O: $f$ non è continua in $(0,0)$
+O: $f$ è continua e derivabile ma non differenziabile in $(0,0)$
+O: $f$ è differenziabile in $(0,0)$
+O: Nessuna delle precedenti
+A: 3
+W: $|x^3y^3|\le r^6$, $\ln(1+x^6)\le r^6$, denominatore $\ge r^4$: $|f|\le2r^2$, quindi $\nabla f=0$ e $|R|\le2r\to0$.
+S: 5 febbraio 2025, fila B, n. 13
+
+?mc
+Q: Sia $f(x,y)=\dfrac{x^5}{(x^2+3y^2)^2}$ per $(x,y)\ne(0,0)$, $f(0,0)=0$. Allora
+O: $f$ è differenziabile in $(0,0)$
+O: $f$ è continua ma non differenziabile in $(0,0)$
+O: $f$ è continua e $\nabla f(0,0)=(0,0)$
+O: Nessuna delle precedenti
+A: 2
+W: $|f|\le r$; $\nabla f=(1,0)$; $f(t,t)=\frac{t}{16}$ contro il piano $t$.
+S: 11 giugno 2025, fila A, n. 10
+
+?mc
+Q: Sia $f(x,y)=\dfrac{y^5}{(2x^2+y^2)^2}$ per $(x,y)\ne(0,0)$, $f(0,0)=0$. Allora
+O: $f$ è differenziabile in $(0,0)$
+O: $f$ è continua ma non differenziabile in $(0,0)$
+O: $f$ è derivabile ma non continua in $(0,0)$
+O: Nessuna delle precedenti
+A: 2
+W: $|f|\le r$; $f_x=0$, $f_y=1$; $f(t,t)=\frac t9$ contro il piano $t$.
+S: 11 giugno 2025, fila B, n. 13
+
+?mc
+Q: Sia $f(x,y)=\dfrac{\sin(x^2)\,y+x^3}{\sqrt{3x^2+y^2}}$ per $(x,y)\ne(0,0)$, $f(0,0)=0$. Allora
+O: $f$ non è continua in $(0,0)$
+O: $\nabla f(0,0)=(\frac{1}{\sqrt3},0)$
+O: $f$ è continua ma non differenziabile in $(0,0)$
+O: Nessuna delle precedenti
+A: 4
+W: $|f|\le2r^2$: differenziabile con gradiente nullo.
+S: esempio gennaio 2026, n. 9
+
+?mc
+Q: Sia $f(x,y)=\dfrac{\cos(x^2+y^2)-1}{(4x^2+y^2)^{3/2}}$ per $(x,y)\ne(0,0)$, $f(0,0)=0$. Allora
+O: $f$ non è continua in $(0,0)$
+O: $\nabla f(0,0)=(0,0)$
+O: $f$ è differenziabile in $(0,0)$
+O: Nessuna delle precedenti
+A: 4
+W: Continua, ma $\frac{f(t,0)}{t}\sim-\frac{|t|}{16t}$: $f_x(0,0)$ non esiste, quindi né la 2 né la 3.
+S: 15 luglio 2026, n. 10
+
+?mc
+Q: Sia $f(x,y)=\dfrac{(x+y)^2}{x^2+y^2}$ per $(x,y)\ne(0,0)$, $f(0,0)=1$. Allora
+O: $f$ è continua in $(0,0)$
+O: non esistono le derivate parziali di $f$ in $(0,0)$
+O: $f$ non è differenziabile in $(0,0)$
+O: Nessuna delle precedenti
+A: 3
+W: Non continua (0 su $y=-x$), quindi non differenziabile. Le parziali esistono e valgono 0.
+S: 9 luglio 2025, fila A, n. 12
+
+#theory
+?th
+Q: Discuti le implicazioni tra continuità, derivabilità e differenziabilità. È vero che se esistono le derivate parziali in un punto allora $f$ è continua in quel punto?
+A: Sia $f:A\to\mathbb R$, $A\subseteq\mathbb R^2$ aperto, $P_0\in A$. $f$ è **derivabile** in $P_0$ se esistono finite $f_x(P_0)$ e $f_y(P_0)$; è **differenziabile** se è derivabile e
+$$\lim_{(h,k)\to(0,0)}\frac{f(x_0+h,y_0+k)-f(x_0,y_0)-f_x(P_0)h-f_y(P_0)k}{\sqrt{h^2+k^2}}=0.$$
+
+**Implicazioni vere.** Se $f$ è differenziabile in $P_0$, allora è continua, derivabile, ammette tutte le derivate direzionali e $\frac{\partial f}{\partial v}(P_0)=\nabla f(P_0)\cdot v$. Se le parziali esistono in un intorno di $P_0$ e sono continue in $P_0$ (in particolare se $f\in C^1$), allora $f$ è differenziabile (teorema del differenziale totale).
+
+**Implicazioni false.** Continuità e derivabilità non sono legate in nessun verso: $\sqrt{x^2+y^2}$ è continua in $(0,0)$ ma non derivabile; la derivabilità non implica la differenziabilità: $\sqrt{|xy|}$.
+
+L'affermazione è **falsa**. Controesempio: $f=\frac{xy}{x^2+y^2}$, $f(0,0)=0$. Poiché $f(t,0)=f(0,t)=0$, si ha $f_x(0,0)=f_y(0,0)=0$; ma sulla retta $y=x$ vale $\frac12$, quindi $f$ non è continua. Le parziali guardano solo le due rette degli assi, la continuità riguarda tutti i punti vicini.
+K: Definizioni di derivabile e differenziabile (con il limite del resto)
+K: Conseguenze della differenziabilità, inclusa $\frac{\partial f}{\partial v}=\nabla f\cdot v$
+K: Teorema del differenziale totale ($C^1$ ⇒ differenziabile)
+K: Controesempi: $\sqrt{x^2+y^2}$ e $\sqrt{|xy|}$
+K: Risposta "falso" con il controesempio $\frac{xy}{x^2+y^2}$ verificato
+
+?th
+Q: Enuncia il teorema di Schwarz.
+A: Se $f$ ammette derivate seconde miste $f_{xy}$ e $f_{yx}$ in un intorno di $P_0$ e queste sono continue in $P_0$, allora $f_{xy}(P_0)=f_{yx}(P_0)$. In particolare, se $f\in C^2(A)$, la matrice Hessiana è simmetrica in ogni punto di $A$. Senza l'ipotesi di continuità la tesi può fallire: $f=\frac{xy(x^2-y^2)}{x^2+y^2}$, $f(0,0)=0$, ha $f_{xy}(0,0)=-1$ e $f_{yx}(0,0)=1$.
+K: Ipotesi: miste esistenti in un intorno e continue in $P_0$
+K: Tesi: $f_{xy}(P_0)=f_{yx}(P_0)$
+K: Conseguenza: $C^2$ ⇒ Hessiana simmetrica
+K: Controesempio senza continuità
+
+?th
+Q: Cosa dice il teorema del differenziale totale? Definisci il piano tangente al grafico.
+A: Se $f$ ammette derivate parziali in un intorno di $P_0$, continue in $P_0$, allora $f$ è differenziabile in $P_0$. La condizione è sufficiente ma non necessaria. Se $f$ è differenziabile in $(x_0,y_0)$, il piano tangente al grafico nel punto $(x_0,y_0,f(x_0,y_0))$ è
+$$z=f(x_0,y_0)+f_x(x_0,y_0)(x-x_0)+f_y(x_0,y_0)(y-y_0),$$
+ed è il piano che approssima $f$ con errore $o(\sqrt{h^2+k^2})$.
+K: Ipotesi: parziali in un intorno, continue nel punto
+K: Tesi: differenziabile; sufficiente ma non necessaria
+K: Formula del piano tangente con il termine noto
+K: Il piano esiste solo dove $f$ è differenziabile
+
+#sheet
+Argomento ¦ Da ricordare
+Parziali nei punti speciali ¦ $f_x(0,0)=\lim\frac{f(t,0)-f(0,0)}{t}$, con il valore assegnato
+Direzionale ¦ $\lim\frac{f(P_0+tv)-f(P_0)}{t}$, $v$ versore; $=\nabla f\cdot v$ solo se differenziabile
+Differenziabile ¦ $R=\frac{f-f(P_0)-f_xh-f_yk}{\sqrt{h^2+k^2}}\to0$
+Conseguenze ¦ continua, derivabile, tutte le direzionali, piano tangente
+Condizione sufficiente ¦ $C^1$ ⇒ differenziabile (differenziale totale)
+Controesempi ¦ $\frac{xy}{x^2+y^2}$ derivabile non continua; $\sqrt{x^2+y^2}$ continua non derivabile; $\sqrt{|xy|}$ derivabile non differenziabile; $\frac{x^2y}{x^2+y^2}$ tutte le direzionali, non differenziabile
+Piano tangente ¦ $z=f(P_0)+f_x(x-x_0)+f_y(y-y_0)$; normale $(f_x,f_y,-1)$
+Funzione a tratti ¦ continuità → parziali → $R$; $d>1$ differenziabile, $d=1$ quasi mai
+Catena ¦ $(f\circ\gamma)'=\nabla f(\gamma)\cdot\gamma'$
+Schwarz ¦ $C^2$ ⇒ $f_{xy}=f_{yx}$

@@ -1,0 +1,348 @@
+#chapter 7
+title: Campi vettoriali, lavoro e formula di Green
+short: Campi e lavoro
+place: Colle Green
+alt: 2200
+weight: 1.2
+program: Integrale curvilineo di seconda specie (lavoro); orientazione di una curva; campi conservativi e potenziale; caratterizzazione con il lavoro lungo curve chiuse; campi irrotazionali; insiemi semplicemente connessi; formula di Gauss-Green nel piano e calcolo di aree.
+exam: Ricorrenti: decidere se un campo è conservativo (rotore + dominio), trovare un potenziale e usarlo per un lavoro, il controesempio del **campo vortice** $\frac{(-y,x)}{x^2+y^2}$ (irrotazionale ma non conservativo), e Green per trasformare una circuitazione in un integrale doppio. Il rotore di un campo con parametri è uscito il 9 luglio 2025 (capitolo 4).
+
+#lesson 7.1 Lavoro di un campo lungo una curva
+goal: Calcolare $\int_\gamma F\cdot dr$ con una parametrizzazione, sapendo che dipende dal verso.
+
+::idea
+Il lavoro somma la componente del campo **lungo la direzione del moto**. Se cammini controvento il lavoro è negativo; se il campo è perpendicolare al cammino non conta. A differenza della prima specie, invertire il verso cambia il segno.
+
+::def Integrale curvilineo di seconda specie (lavoro)
+Per $F$ continuo e $\gamma:[a,b]\to\mathbb R^n$ regolare:
+$$\int_\gamma F\cdot dr=\int_a^b F\big(\gamma(t)\big)\cdot\gamma'(t)\,dt .$$
+Nel piano si scrive anche $\int_\gamma P\,dx+Q\,dy$. Con l'orientazione opposta $-\gamma$: $\int_{-\gamma}F\cdot dr=-\int_\gamma F\cdot dr$. Una curva chiusa nel piano è **orientata positivamente** se è percorsa in senso antiorario (la regione resta a sinistra).
+
+::example base Lavoro di $F=(-y,x)$ lungo la circonferenza unitaria antioraria.
++ Parametrizza: $\gamma=(\cos t,\sin t)$, $\gamma'=(-\sin t,\cos t)$, $F(\gamma)=(-\sin t,\cos t)$.
++ Prodotto: $F\cdot\gamma'=\sin^2t+\cos^2t=1$.
+= $\int_0^{2\pi}1\,dt=2\pi$. Il campo gira insieme alla curva: lavoro positivo a ogni passo.
+
+::example medio Lavoro di $F=(x+y,\ x)$ lungo il segmento da $(0,0)$ a $(1,2)$.
++ Parametrizza: $\gamma=(t,2t)$, $\gamma'=(1,2)$, $F(\gamma)=(3t,t)$.
++ Calcolo: $\int_0^1(3t+2t)\,dt$.
+= $\frac52$.
+
+::trap
+- Il prodotto è scalare con $\gamma'(t)$, non con $|\gamma'(t)|$: qui non c'è il modulo.
+- Controlla il verso richiesto: orario o antiorario cambiano il segno.
+
+#quiz
+?mc
+Q: Il lavoro di $F=(y,0)$ lungo la circonferenza unitaria percorsa in senso antiorario è
+O: $\pi$
+O: $-\pi$
+O: 0
+O: Nessuna delle precedenti
+A: 2
+W: $F\cdot\gamma'=\sin t\cdot(-\sin t)$; $\int_0^{2\pi}-\sin^2t\,dt=-\pi$.
+
+?vf
+Q: Invertendo il verso di percorrenza di una curva, il lavoro di un campo cambia segno.
+A: V
+W: $\int_{-\gamma}F\cdot dr=-\int_\gamma F\cdot dr$.
+
+?mc
+Q: Il lavoro di $F=(x+y,x)$ lungo il segmento da $(0,0)$ a $(1,2)$ è
+O: $\frac52$
+O: 2
+O: 3
+O: Nessuna delle precedenti
+A: 1
+W: $\int_0^1(3t\cdot1+t\cdot2)\,dt=\frac52$.
+
+?mc
+Q: Il lavoro di $F=(-y,x)$ lungo la circonferenza unitaria percorsa in senso **orario** è
+O: $2\pi$
+O: $-2\pi$
+O: 0
+O: Nessuna delle precedenti
+A: 2
+W: In verso antiorario vale $2\pi$; il verso orario cambia il segno.
+
+#lesson 7.2 Campi conservativi e potenziale
+goal: Riconoscere un campo conservativo, trovarne un potenziale e calcolare il lavoro come differenza di potenziale.
+
+::def Campo conservativo e potenziale
+$F$ continuo su un aperto $A$ è **conservativo** se esiste $U\in C^1(A)$ con $\nabla U=F$; $U$ è un **potenziale** (definito a meno di una costante su ogni componente connessa).
+
+::thm Caratterizzazione dei campi conservativi
+Per $F$ continuo su un aperto connesso $A$ sono equivalenti:
+1. $F$ è conservativo;
+2. il lavoro lungo ogni curva chiusa (regolare a tratti) in $A$ è nullo;
+3. il lavoro tra due punti non dipende dalla curva che li unisce.
+In tal caso $\int_\gamma F\cdot dr=U(\gamma(b))-U(\gamma(a))$.
+
+::method Trovare il potenziale di $F=(P,Q)$
+1. Integra $P$ in $x$: $U=\int P\,dx+c(y)$.
+2. Deriva in $y$ e imponi $U_y=Q$: trovi $c'(y)$.
+3. Integra $c'(y)$. Controllo finale: $\nabla U=F$.
+In tre variabili: stesso procedimento, con $c(y,z)$ e poi $d(z)$.
+
+::example medio $F=(2x+y,\ x+2y)$: potenziale e lavoro da $(0,0)$ a $(1,1)$.
++ Integra P: $U=x^2+xy+c(y)$.
++ Imponi Q: $U_y=x+c'(y)=x+2y\Rightarrow c(y)=y^2$.
++ Potenziale: $U=x^2+xy+y^2$.
+= Lavoro $=U(1,1)-U(0,0)=3$, lungo qualunque curva.
+
+::trap
+- La condizione necessaria $Q_x=P_y$ non basta da sola: serve anche il dominio giusto (lezione 7.3).
+- Il lavoro come differenza di potenziale vale solo se il campo è conservativo.
+
+#quiz
+?mc
+Q: Un potenziale di $F=(2xy,\ x^2)$ è
+O: $x^2y$
+O: $x^2y+y^2$
+O: $2x^2y$
+O: Nessuna delle precedenti
+A: 1
+W: $\partial_x(x^2y)=2xy$, $\partial_y(x^2y)=x^2$.
+
+?mc
+Q: Il lavoro di $F=(2xy,x^2)$ lungo una curva da $(0,0)$ a $(1,2)$ è
+O: 1
+O: 2
+O: 4
+O: Nessuna delle precedenti
+A: 2
+W: $U=x^2y$: $U(1,2)-U(0,0)=2$.
+
+?mc
+Q: Il lavoro di $F=(y^2,\ 2xy+1)$ lungo $\gamma(t)=(t,t^2)$, $t\in[0,1]$, è
+O: 1
+O: 2
+O: 3
+O: Nessuna delle precedenti
+A: 2
+W: Potenziale $U=xy^2+y$: $U(1,1)-U(0,0)=2$.
+
+?vf
+Q: Se $F$ è conservativo su un aperto connesso, il suo lavoro lungo ogni curva chiusa è nullo.
+A: V
+W: È una delle condizioni equivalenti: $U(\gamma(b))-U(\gamma(a))=0$ se $\gamma(a)=\gamma(b)$.
+
+?vf
+Q: Il campo $F=(x,y)$ ha lavoro nullo lungo ogni curva chiusa.
+A: V
+W: È conservativo, con potenziale $\frac{x^2+y^2}{2}$.
+
+#lesson 7.3 Irrotazionale e conservativo
+goal: Usare il rotore come test, sapere quando basta e conoscere il controesempio del campo vortice.
+
+::thm Condizione necessaria
+Se $F\in C^1(A)$ è conservativo, allora è **irrotazionale**: nel piano $Q_x=P_y$; nello spazio $\operatorname{rot}F=0$ (per Schwarz sul potenziale).
+
+::thm Condizione sufficiente
+Se $A$ è aperto e **semplicemente connesso** (ogni curva chiusa in $A$ si può restringere a un punto restando in $A$: niente buchi) e $F\in C^1(A)$ è irrotazionale, allora $F$ è conservativo in $A$. Esempi semplicemente connessi: $\mathbb R^2$, un disco, un semipiano, un insieme convesso o stellato. Non lo è $\mathbb R^2\setminus\{(0,0)\}$.
+
+::example esame Il campo vortice $F=\left(\dfrac{-y}{x^2+y^2},\dfrac{x}{x^2+y^2}\right)$ su $\mathbb R^2\setminus\{0\}$.
++ Rotore: $Q_x=\frac{y^2-x^2}{(x^2+y^2)^2}=P_y$: irrotazionale.
++ Lavoro: sulla circonferenza unitaria antioraria $F(\gamma)\cdot\gamma'=\sin^2t+\cos^2t=1$: lavoro $2\pi\ne0$.
+= **Non è conservativo** sul piano bucato. Su un semipiano (semplicemente connesso) invece lo è: lì un potenziale è l'angolo $\theta$.
+
+::lab campi f=buco
+
+::trap
+- "Irrotazionale ⇒ conservativo" è falso senza l'ipotesi sul dominio: è la domanda trabocchetto per eccellenza.
+- Un campo non irrotazionale non è mai conservativo: basta $Q_x\ne P_y$ in un punto.
+
+#quiz
+?vf
+Q: Ogni campo $C^1$ irrotazionale su $\mathbb R^2\setminus\{(0,0)\}$ è conservativo.
+A: F
+W: Il campo vortice $\frac{(-y,x)}{x^2+y^2}$ è irrotazionale ma ha lavoro $2\pi$ sulla circonferenza unitaria.
+
+?vf
+Q: Ogni campo $C^1$ irrotazionale su $\mathbb R^2$ è conservativo.
+A: V
+W: $\mathbb R^2$ è semplicemente connesso.
+
+?mc
+Q: Il campo $F=(y,\ 2x)$ su $\mathbb R^2$
+O: è conservativo con potenziale $xy$
+O: è conservativo con potenziale $2xy$
+O: non è conservativo
+O: Nessuna delle precedenti
+A: 3
+W: $Q_x-P_y=2-1=1\ne0$: non irrotazionale, quindi non conservativo.
+
+?vf
+Q: Se $F$ è conservativo e di classe $C^1$, allora $\operatorname{rot}F=0$.
+A: V
+W: $F=\nabla U$ e $\operatorname{rot}\nabla U=0$ per Schwarz.
+
+?mc
+Q: Quale di questi insiemi **non** è semplicemente connesso?
+O: il semipiano $\{y>0\}$
+O: il disco $\{x^2+y^2<1\}$
+O: la corona $\{1<x^2+y^2<4\}$
+O: Nessuna delle precedenti
+A: 3
+W: Una circonferenza attorno al buco non si può restringere a un punto restando nella corona.
+
+#lesson 7.4 Formula di Green
+goal: Trasformare una circuitazione sul bordo in un integrale doppio, e calcolare aree con un integrale curvilineo.
+
+::thm Formula di Gauss-Green nel piano
+Sia $D$ un dominio regolare del piano con bordo $\partial D$ orientato positivamente (antiorario, regione a sinistra) e $P,Q\in C^1$ su un aperto che contiene $D$. Allora
+$$\oint_{\partial D}P\,dx+Q\,dy=\iint_D\big(Q_x-P_y\big)\,dx\,dy .$$
+
+::thm Area con Green
+$$\text{area}(D)=\oint_{\partial D}x\,dy=-\oint_{\partial D}y\,dx=\frac12\oint_{\partial D}(x\,dy-y\,dx).$$
+
+::example medio $\oint_{\partial D}(-y^3\,dx+x^3\,dy)$, $D$ disco unitario.
++ Green: $Q_x-P_y=3x^2+3y^2$.
++ Polari: $\int_0^{2\pi}\!\int_0^13\rho^2\cdot\rho\,d\rho\,d\theta=2\pi\cdot\frac34$.
+= $\frac{3\pi}2$. Diretto sarebbe stato molto più lungo.
+
+::example base Area dell'ellisse $\frac{x^2}{a^2}+\frac{y^2}{b^2}\le1$ con Green.
++ Bordo: $(a\cos t,b\sin t)$: $x\,dy-y\,dx=ab(\cos^2t+\sin^2t)\,dt$.
+= $\frac12\int_0^{2\pi}ab\,dt=\pi ab$.
+
+::lab campi f=vortice
+
+::trap
+- Green richiede $P,Q$ di classe $C^1$ **su tutto $D$**: con il campo vortice e $D$ contenente l'origine non si applica (il laboratorio lo mostra).
+- Orientazione negativa: cambia il segno.
+
+#quiz
+?mc
+Q: $\oint_{\partial Q}(xy\,dx+x^2\,dy)$, con $Q=[0,1]^2$ orientato positivamente, vale
+O: 1
+O: $\frac12$
+O: 0
+O: Nessuna delle precedenti
+A: 2
+W: $Q_x-P_y=2x-x=x$; $\iint_Qx=\frac12$.
+
+?mc
+Q: $\oint_{\partial D}(-y^3\,dx+x^3\,dy)$ con $D$ disco unitario orientato positivamente vale
+O: $\frac{3\pi}{2}$
+O: $3\pi$
+O: $\frac{\pi}{2}$
+O: Nessuna delle precedenti
+A: 1
+W: $\iint_D3(x^2+y^2)=3\cdot\frac\pi2$.
+
+?vf
+Q: Per ogni dominio regolare $D$, $\text{area}(D)=\oint_{\partial D}x\,dy$ con $\partial D$ orientato positivamente.
+A: V
+W: Green con $P=0$, $Q=x$: $Q_x-P_y=1$.
+
+?vf
+Q: Con $F=\frac{(-y,x)}{x^2+y^2}$ e $D$ il disco unitario, Green dà $\oint_{\partial D}F\cdot dr=\iint_D0=0$.
+A: F
+W: $F$ non è $C^1$ in $(0,0)\in D$: Green non si applica, e infatti la circuitazione vale $2\pi$.
+
+?mc
+Q: L'area dell'ellisse $\frac{x^2}{9}+\frac{y^2}{4}\le1$ calcolata con Green vale
+O: $6\pi$
+O: $36\pi$
+O: $13\pi$
+O: Nessuna delle precedenti
+A: 1
+W: $\pi ab=\pi\cdot3\cdot2$.
+
+#bank
+?vf
+Q: Il campo $F(x,y)=\left(\dfrac{-y}{x^2+y^2},\dfrac{x}{x^2+y^2}\right)$ è conservativo su $\mathbb R^2\setminus\{(0,0)\}$.
+A: F
+W: Irrotazionale ma con lavoro $2\pi$ sulla circonferenza unitaria antioraria.
+
+?vf
+Q: Se $F$ è un campo $C^1$ irrotazionale su un aperto semplicemente connesso, allora $F$ è conservativo.
+A: V
+W: Condizione sufficiente.
+
+?mc
+Q: Un potenziale di $F=(2x+y,\ x+2y)$ è
+O: $x^2+2xy+y^2$
+O: $x^2+xy+y^2$
+O: $2x^2+xy+2y^2$
+O: Nessuna delle precedenti
+A: 2
+W: $U_x=2x+y$, $U_y=x+2y$.
+
+?mc
+Q: Il lavoro del campo $F=(2x,\ 2y)$ lungo una curva qualsiasi da $(1,0)$ a $(0,2)$ è
+O: 1
+O: 3
+O: 5
+O: Nessuna delle precedenti
+A: 2
+W: $U=x^2+y^2$: $4-1=3$.
+
+?mc
+Q: Il lavoro di $F=(-y,x)$ lungo la circonferenza unitaria antioraria è
+O: 0
+O: $\pi$
+O: $2\pi$
+O: Nessuna delle precedenti
+A: 3
+W: $F\cdot\gamma'=1$; anche con Green: $\iint_D2=2\pi$.
+
+?vf
+Q: Il lavoro di un campo conservativo lungo una curva dipende solo dagli estremi della curva.
+A: V
+W: È la differenza di potenziale.
+
+?mc
+Q: Il campo $F=(ay,\ x)$ è conservativo su $\mathbb R^2$ se e solo se
+O: $a=0$
+O: $a=1$
+O: $a=-1$
+O: Nessuna delle precedenti
+A: 2
+W: $Q_x-P_y=1-a$; con $a=1$ il potenziale è $xy$.
+
+?mc
+Q: $\oint_{\partial D}(x^2y\,dx+xy^2\,dy)$ con $D$ disco unitario orientato positivamente vale
+O: $\pi$
+O: $\frac\pi2$
+O: 0
+O: Nessuna delle precedenti
+A: 3
+W: $Q_x-P_y=y^2-x^2$: per simmetria $\iint_D(y^2-x^2)=0$.
+
+?vf
+Q: Se $\operatorname{rot}F\ne0$ in un punto del dominio, allora $F$ non è conservativo.
+A: V
+W: Conservativo ⇒ irrotazionale ovunque.
+
+#theory
+?th
+Q: Definisci campo conservativo e potenziale. Quali condizioni lo caratterizzano?
+A: Un campo $F$ continuo su un aperto $A\subseteq\mathbb R^n$ è conservativo se esiste $U\in C^1(A)$ con $\nabla U=F$; $U$ si chiama potenziale ed è unico a meno di una costante su ogni componente connessa. Su un aperto connesso sono equivalenti: (1) $F$ conservativo; (2) $\oint_\gamma F\cdot dr=0$ per ogni curva chiusa regolare a tratti in $A$; (3) il lavoro tra due punti non dipende dal cammino. In tal caso $\int_\gamma F\cdot dr=U(\gamma(b))-U(\gamma(a))$.
+
+Se $F\in C^1$ è conservativo allora è irrotazionale ($Q_x=P_y$, ovvero $\operatorname{rot}F=0$); il viceversa vale se $A$ è semplicemente connesso. Controesempio sul piano bucato: $\frac{(-y,x)}{x^2+y^2}$, irrotazionale con circuitazione $2\pi$ attorno all'origine.
+K: Definizione di potenziale con $\nabla U=F$
+K: Le tre condizioni equivalenti
+K: Lavoro come differenza di potenziale
+K: Irrotazionale: necessaria; sufficiente su semplicemente connessi
+K: Controesempio del campo vortice
+
+?th
+Q: Enuncia la formula di Gauss-Green nel piano e mostrane un'applicazione.
+A: Sia $D\subset\mathbb R^2$ un dominio regolare con frontiera $\partial D$ orientata positivamente (percorrendola, $D$ resta a sinistra) e siano $P,Q$ di classe $C^1$ in un aperto contenente $D$. Allora
+$$\oint_{\partial D}P\,dx+Q\,dy=\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)dx\,dy .$$
+Applicazione: con $P=-\frac y2$, $Q=\frac x2$ si ottiene $\text{area}(D)=\frac12\oint_{\partial D}(x\,dy-y\,dx)$; per l'ellisse di semiassi $a,b$ dà $\pi ab$.
+K: Ipotesi: dominio regolare, bordo orientato positivamente, $P,Q\in C^1$ su $D$
+K: Formula con $Q_x-P_y$
+K: Formula dell'area o un altro esempio
+
+#sheet
+Argomento ¦ Da ricordare
+Lavoro ¦ $\int_\gamma F\cdot dr=\int_a^bF(\gamma)\cdot\gamma'\,dt$; cambia segno con il verso
+Conservativo ¦ $F=\nabla U$; lavoro $=U(B)-U(A)$; nullo su curve chiuse
+Potenziale ¦ integra $P$ in $x$, poi imponi $U_y=Q$
+Necessaria ¦ conservativo $C^1$ ⇒ irrotazionale ($Q_x=P_y$)
+Sufficiente ¦ irrotazionale su semplicemente connesso ⇒ conservativo
+Controesempio ¦ $\frac{(-y,x)}{x^2+y^2}$: irrotazionale, circuitazione $2\pi$
+Green ¦ $\oint_{\partial D}P\,dx+Q\,dy=\iint_D(Q_x-P_y)$, bordo antiorario
+Area ¦ $\oint x\,dy=-\oint y\,dx=\frac12\oint(x\,dy-y\,dx)$

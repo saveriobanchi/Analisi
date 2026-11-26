@@ -1,0 +1,453 @@
+#chapter 10
+title: Serie numeriche e serie di potenze
+short: Serie
+place: Punta Taylor
+alt: 2950
+weight: 1.4
+program: Serie numeriche, somme parziali, convergenza; condizione necessaria; serie geometrica, telescopica, armonica generalizzata; serie a termini positivi: confronto, confronto asintotico, rapporto, radice; convergenza assoluta; criterio di Leibniz; serie di potenze, raggio e insieme di convergenza; derivazione e integrazione termine a termine; serie di Taylor e sviluppi notevoli.
+exam: Vero/Falso sui criteri (condizione necessaria, assoluta ⇒ semplice e non viceversa, Leibniz) e multiple su carattere di una serie, somma di una geometrica o telescopica, raggio e **insieme** di convergenza di una serie di potenze (con lo studio degli estremi), coefficienti di uno sviluppo di Taylor.
+
+#lesson 10.1 Serie numeriche e condizione necessaria
+goal: Sapere cosa vuol dire che una serie converge, usare la condizione necessaria e sommare geometriche e telescopiche.
+
+::idea
+Una serie è una **somma infinita**: si sommano i primi $n$ termini (somma parziale $S_n$) e si guarda dove va $S_n$. Converge se $S_n$ tende a un numero; diverge se va a $\pm\infty$; è indeterminata se oscilla.
+
+::def Serie, somma parziale, carattere
+$\sum_{n=1}^\infty a_n$ converge a $S$ se $S_n=a_1+\dots+a_n\to S\in\mathbb R$. Il carattere (convergente, divergente, indeterminata) non cambia modificando un numero finito di termini.
+
+::thm Condizione necessaria
+Se $\sum a_n$ converge, allora $a_n\to0$. Il viceversa è **falso**: la serie armonica $\sum\frac1n$ diverge pur con $\frac1n\to0$.
+
+::table
+Serie ¦ Carattere ¦ Somma
+geometrica $\sum_{n\ge0}q^n$ ¦ converge se e solo se $\lvert q\rvert<1$ ¦ $\frac1{1-q}$
+telescopica $\sum\frac1{n(n+1)}$ ¦ converge ¦ 1 ($S_n=1-\frac1{n+1}$)
+armonica generalizzata $\sum\frac1{n^p}$ ¦ converge se e solo se $p>1$ ¦ ($p=2$: $\frac{\pi^2}6$)
+
+::lab serie
+
+::example base $\sum_{n=1}^\infty\frac{2}{3^n}$.
++ Riconosci: geometrica di ragione $\frac13$ che parte da $n=1$.
++ Somma: $2\cdot\frac{1/3}{1-1/3}=2\cdot\frac12$.
+= 1. Attenzione all'indice di partenza: da $n=0$ sarebbe 3.
+
+::trap
+- $a_n\to0$ non basta per convergere: è solo necessaria.
+- La formula $\frac1{1-q}$ vale partendo da $n=0$; da $n=1$ è $\frac{q}{1-q}$.
+
+#quiz
+?vf
+Q: Se $a_n\to0$, allora $\sum a_n$ converge.
+A: F
+W: Serie armonica: $\frac1n\to0$ ma $\sum\frac1n=+\infty$.
+
+?mc
+Q: $\displaystyle\sum_{n=1}^\infty\frac{1}{n(n+1)}$ vale
+O: $\frac12$
+O: 1
+O: diverge
+O: Nessuna delle precedenti
+A: 2
+W: Telescopica: $\frac1n-\frac1{n+1}$, $S_n=1-\frac1{n+1}\to1$.
+
+?mc
+Q: $\displaystyle\sum_{n=0}^\infty\frac{3}{4^n}$ vale
+O: 3
+O: 4
+O: $\frac34$
+O: Nessuna delle precedenti
+A: 2
+W: $3\cdot\frac{1}{1-1/4}=4$.
+
+?vf
+Q: La serie $\sum_{n\ge1}(-1)^n\frac{n}{n+1}$ converge.
+A: F
+W: $|a_n|\to1$: il termine generale non tende a 0, quindi non converge (è indeterminata).
+
+#lesson 10.2 Serie a termini positivi: i criteri
+goal: Stabilire il carattere di una serie a termini positivi scegliendo il criterio giusto.
+
+::idea
+Con termini positivi le somme parziali crescono: o si fermano sotto un tetto (converge) o vanno all'infinito. Mai indeterminata. Per decidere si confronta con serie note o si guarda come cresce il termine generale.
+
+::thm I criteri (termini $a_n\ge0$)
+**Confronto**: se $a_n\le b_n$ e $\sum b_n$ converge, converge $\sum a_n$; se $\sum a_n$ diverge, diverge $\sum b_n$.
+**Confronto asintotico**: se $a_n\sim b_n$ (cioè $a_n/b_n\to\ell\in(0,\infty)$), le due serie hanno lo stesso carattere.
+**Rapporto**: se $\frac{a_{n+1}}{a_n}\to\ell$: $\ell<1$ converge, $\ell>1$ diverge, $\ell=1$ non decide.
+**Radice**: se $\sqrt[n]{a_n}\to\ell$: stesse conclusioni.
+
+::method Quale criterio
+1. Controlla $a_n\to0$: se no, diverge.
+2. Frazioni di polinomi, radici, logaritmi: confronto asintotico con $\frac1{n^p}$.
+3. Fattoriali ed esponenziali: rapporto.
+4. Potenze $n$-esime ($(\dots)^n$): radice.
+
+::example medio $\sum\frac{n}{n^2+1}$ e $\sum\frac{n!}{n^n}$.
++ Prima: $\frac{n}{n^2+1}\sim\frac1n$: diverge come l'armonica.
++ Seconda: $\frac{a_{n+1}}{a_n}=\frac{n^n}{(n+1)^n}=\frac{1}{(1+1/n)^n}\to\frac1e<1$: converge.
+= Prima diverge, seconda converge.
+
+::trap
+- Rapporto o radice con limite 1 non decidono: per $\frac1n$ e $\frac1{n^2}$ il limite è 1 in entrambi i casi.
+- Il confronto asintotico vale per termini (definitivamente) positivi.
+
+#quiz
+?mc
+Q: La serie $\sum_{n\ge1}\frac{n}{n^2+1}$
+O: converge
+O: diverge
+O: è indeterminata
+O: Nessuna delle precedenti
+A: 2
+W: $\sim\frac1n$: diverge.
+
+?mc
+Q: La serie $\sum_{n\ge1}\frac{n!}{n^n}$
+O: converge
+O: diverge
+O: il criterio del rapporto non decide
+O: Nessuna delle precedenti
+A: 1
+W: Rapporto $\to\frac1e<1$.
+
+?vf
+Q: $\sum_{n\ge1}\frac1{n^p}$ converge se e solo se $p>1$.
+A: V
+W: Armonica generalizzata.
+
+?mc
+Q: $\displaystyle\sum_{n\ge1}\frac{2^n}{n!}$ vale
+O: $e^2$
+O: $e^2-1$
+O: diverge
+O: Nessuna delle precedenti
+A: 2
+W: $\sum_{n\ge0}\frac{2^n}{n!}=e^2$; togliendo il termine $n=0$ resta $e^2-1$.
+
+?vf
+Q: Per $\sum\frac1{n^2}$ il criterio del rapporto dà limite 1 e quindi non decide.
+A: V
+W: $\frac{n^2}{(n+1)^2}\to1$: serve il confronto con l'armonica generalizzata.
+
+#lesson 10.3 Convergenza assoluta e criterio di Leibniz
+goal: Trattare le serie a segni alterni distinguendo convergenza assoluta e semplice.
+
+::def Convergenza assoluta
+$\sum a_n$ **converge assolutamente** se converge $\sum|a_n|$.
+
+::thm Assoluta ⇒ semplice
+Se $\sum|a_n|$ converge, allora $\sum a_n$ converge. Il viceversa è falso: $\sum\frac{(-1)^{n+1}}n$ converge (a $\ln2$) ma non assolutamente.
+
+::thm Criterio di Leibniz
+Se $b_n\ge0$ è **decrescente** e $b_n\to0$, allora $\sum(-1)^nb_n$ converge, e l'errore commesso fermandosi a $S_n$ è al più $b_{n+1}$.
+
+::example medio $\sum\frac{(-1)^n}{\sqrt n}$.
++ Assoluta: $\sum\frac1{\sqrt n}$ diverge ($p=\frac12$).
++ Leibniz: $\frac1{\sqrt n}$ è decrescente e tende a 0.
+= Converge **semplicemente**, non assolutamente.
+
+::trap
+- Leibniz richiede la decrescenza: non basta $b_n\to0$.
+- Se $|a_n|\not\to0$ la serie non converge nemmeno semplicemente.
+
+#quiz
+?vf
+Q: Se $\sum a_n$ converge, allora $\sum|a_n|$ converge.
+A: F
+W: $\sum\frac{(-1)^{n+1}}{n}$ converge, $\sum\frac1n$ no.
+
+?vf
+Q: Se $\sum|a_n|$ converge, allora $\sum a_n$ converge.
+A: V
+W: La convergenza assoluta implica quella semplice.
+
+?mc
+Q: La serie $\sum_{n\ge1}\frac{(-1)^n}{\sqrt n}$
+O: converge assolutamente
+O: converge ma non assolutamente
+O: diverge
+O: Nessuna delle precedenti
+A: 2
+W: Leibniz sì, assoluta no ($p=\frac12$).
+
+?mc
+Q: $\displaystyle\sum_{n\ge1}\frac{(-1)^{n+1}}{n}$ vale
+O: 1
+O: $\ln2$
+O: diverge
+O: Nessuna delle precedenti
+A: 2
+W: È lo sviluppo di $\ln(1+x)$ in $x=1$.
+
+#lesson 10.4 Serie di potenze: raggio e insieme di convergenza
+goal: Calcolare il raggio di convergenza e studiare gli estremi per trovare l'insieme di convergenza.
+
+::def Serie di potenze e raggio
+$\sum_{n\ge0}a_n(x-x_0)^n$. Esiste $R\in[0,+\infty]$ (**raggio di convergenza**) tale che la serie converge assolutamente per $|x-x_0|<R$ e non converge per $|x-x_0|>R$. Negli estremi $x_0\pm R$ può succedere di tutto: si studiano a parte.
+
+::thm Calcolo del raggio
+Se $\left|\frac{a_{n+1}}{a_n}\right|\to\ell$ oppure $\sqrt[n]{|a_n|}\to\ell$, allora $R=\frac1\ell$ (con $R=+\infty$ se $\ell=0$, $R=0$ se $\ell=+\infty$).
+
+::method Insieme di convergenza
+1. Calcola $R$ con rapporto o radice sui coefficienti.
+2. Sostituisci $x=x_0+R$ e $x=x_0-R$: ottieni due serie numeriche.
+3. Studiale (armonica generalizzata, Leibniz, condizione necessaria).
+4. Scrivi l'intervallo con le parentesi giuste.
+
+::example medio $\sum_{n\ge1}\frac{x^n}{n}$.
++ Raggio: $\frac{1/(n+1)}{1/n}\to1$: $R=1$.
++ x = 1: $\sum\frac1n$ diverge.
++ x = −1: $\sum\frac{(-1)^n}n$ converge (Leibniz).
+= Insieme di convergenza $[-1,1)$.
+
+::example esame $\sum_{n\ge0}\frac{(x-2)^n}{3^n}$.
++ Raggio: $\sqrt[n]{1/3^n}=\frac13$: $R=3$, centro 2.
++ Estremi: in $x=5$ e $x=-1$ i termini valgono $1$ e $(-1)^n$: non tendono a 0.
+= Insieme $(-1,5)$; è una geometrica di somma $\frac{1}{1-(x-2)/3}=\frac{3}{5-x}$.
+
+::thm Derivazione e integrazione termine a termine
+All'interno dell'intervallo di convergenza la somma è derivabile infinite volte e si può derivare e integrare termine a termine; il raggio non cambia. Esempio: da $\sum x^n=\frac1{1-x}$ segue $\sum nx^{n-1}=\frac1{(1-x)^2}$ per $|x|<1$.
+
+::trap
+- Il raggio non dice nulla sugli estremi: $\sum\frac{x^n}n$ e $\sum\frac{x^n}{n^2}$ hanno entrambe $R=1$ ma insiemi $[-1,1)$ e $[-1,1]$.
+- Con potenze $x^{2n}$ il raggio si calcola sulla variabile $x^2$: $\sum\frac{x^{2n}}{4^n}$ ha $R=2$.
+
+#quiz
+?mc
+Q: L'insieme di convergenza di $\sum_{n\ge1}\frac{x^n}{n}$ è
+O: $(-1,1)$
+O: $[-1,1)$
+O: $[-1,1]$
+O: Nessuna delle precedenti
+A: 2
+W: $R=1$; in $x=1$ armonica, in $x=-1$ Leibniz.
+
+?mc
+Q: Il raggio di convergenza di $\sum_{n\ge0}n!\,x^n$ è
+O: 0
+O: 1
+O: $+\infty$
+O: Nessuna delle precedenti
+A: 1
+W: $\frac{(n+1)!}{n!}=n+1\to\infty$: $R=0$, converge solo in $x=0$.
+
+?mc
+Q: L'insieme di convergenza di $\sum_{n\ge0}\frac{(x-2)^n}{3^n}$ è
+O: $(-1,5)$
+O: $[-1,5]$
+O: $(-3,3)$
+O: Nessuna delle precedenti
+A: 1
+W: $R=3$, centro 2; agli estremi il termine generale non tende a 0.
+
+?mc
+Q: Il raggio di convergenza di $\sum_{n\ge0}\frac{x^{2n}}{4^n}$ è
+O: 4
+O: 2
+O: $\frac14$
+O: Nessuna delle precedenti
+A: 2
+W: È una geometrica di ragione $\frac{x^2}{4}$: converge per $x^2<4$.
+
+?vf
+Q: Le serie $\sum\frac{x^n}{n}$ e $\sum\frac{x^n}{n^2}$ hanno lo stesso insieme di convergenza.
+A: F
+W: Stesso raggio 1, ma la seconda converge anche in $x=1$: $[-1,1)$ contro $[-1,1]$.
+
+?mc
+Q: $\displaystyle\sum_{n\ge1}\frac{n}{2^n}$ vale
+O: 1
+O: 2
+O: 4
+O: Nessuna delle precedenti
+A: 2
+W: $\sum nx^n=\frac{x}{(1-x)^2}$ con $x=\frac12$: $\frac{1/2}{1/4}=2$.
+
+#lesson 10.5 Serie di Taylor e sviluppi notevoli
+goal: Usare gli sviluppi notevoli per scrivere serie di Taylor, leggere coefficienti e sommare serie numeriche.
+
+::def Serie di Taylor
+Se $f$ è $C^\infty$ vicino a $x_0$, la sua serie di Taylor è $\sum_{n\ge0}\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n$. Quando converge a $f$ si dice che $f$ è **sviluppabile** in serie di Taylor. Il coefficiente di $x^n$ (con $x_0=0$) è $\frac{f^{(n)}(0)}{n!}$, quindi $f^{(n)}(0)=n!\cdot a_n$.
+
+::table
+Funzione ¦ Sviluppo in 0 ¦ Converge per
+$e^x$ ¦ $\sum\frac{x^n}{n!}$ ¦ $\mathbb R$
+$\sin x$ ¦ $\sum\frac{(-1)^nx^{2n+1}}{(2n+1)!}$ ¦ $\mathbb R$
+$\cos x$ ¦ $\sum\frac{(-1)^nx^{2n}}{(2n)!}$ ¦ $\mathbb R$
+$\frac1{1-x}$ ¦ $\sum x^n$ ¦ $(-1,1)$
+$\ln(1+x)$ ¦ $\sum_{n\ge1}\frac{(-1)^{n+1}x^n}{n}$ ¦ $(-1,1]$
+$\arctan x$ ¦ $\sum\frac{(-1)^nx^{2n+1}}{2n+1}$ ¦ $[-1,1]$
+
+::lab taylor
+
+::example medio Coefficiente di $x^6$ in $\frac1{1+x^2}$.
++ Sostituzione: $\frac1{1+x^2}=\sum(-x^2)^n=\sum(-1)^nx^{2n}$, per $|x|<1$.
+= Con $2n=6$: coefficiente $(-1)^3=-1$.
+
+::example esame $f^{(10)}(0)$ per $f=x^2e^x$.
++ Sviluppo: $x^2e^x=\sum\frac{x^{n+2}}{n!}$: il coefficiente di $x^{10}$ è $\frac1{8!}$.
++ Formula: $f^{(10)}(0)=10!\cdot\frac{1}{8!}=10\cdot9$.
+= 90, senza derivare dieci volte.
+
+::trap
+- Il coefficiente di $x^n$ è $\frac{f^{(n)}(0)}{n!}$, non $f^{(n)}(0)$.
+- Sostituire $x$ con $-x^2$ o $2x$ cambia anche il raggio: $\frac{1}{1-2x}$ converge per $|x|<\frac12$.
+
+#quiz
+?mc
+Q: Il coefficiente di $x^4$ nello sviluppo di Taylor di $\cos x$ in 0 è
+O: $\frac1{24}$
+O: $-\frac1{24}$
+O: $\frac14$
+O: Nessuna delle precedenti
+A: 1
+W: $\cos x=1-\frac{x^2}2+\frac{x^4}{24}-\dots$
+
+?mc
+Q: Il coefficiente di $x^3$ nello sviluppo di $e^{2x}$ in 0 è
+O: $\frac16$
+O: $\frac43$
+O: $\frac83$
+O: Nessuna delle precedenti
+A: 2
+W: $\frac{(2x)^3}{3!}=\frac{8}{6}x^3$.
+
+?mc
+Q: $\displaystyle\sum_{n\ge0}\frac{(-1)^n}{2n+1}$ vale
+O: $\frac\pi2$
+O: $\frac\pi4$
+O: $\ln2$
+O: Nessuna delle precedenti
+A: 2
+W: È $\arctan1$.
+
+?mc
+Q: Per $f(x)=x^2e^x$, il valore di $f^{(10)}(0)$ è
+O: 1
+O: 90
+O: $10!$
+O: Nessuna delle precedenti
+A: 2
+W: Coefficiente di $x^{10}$: $\frac1{8!}$; $f^{(10)}(0)=\frac{10!}{8!}=90$.
+
+?vf
+Q: La serie di Taylor di $\ln(1+x)$ in 0 converge per ogni $x\in\mathbb R$.
+A: F
+W: Raggio 1: converge solo per $-1<x\le1$.
+
+#bank
+?vf
+Q: Se $\sum a_n$ converge, allora $\lim a_n=0$.
+A: V
+W: Condizione necessaria: $a_n=S_n-S_{n-1}\to S-S=0$.
+
+?vf
+Q: Se $\lim_{n\to\infty}a_n=0$, allora $\sum a_n$ converge.
+A: F
+W: Serie armonica.
+
+?mc
+Q: La serie $\sum_{n\ge1}\frac{(-1)^n}{n}$
+O: converge assolutamente
+O: converge ma non assolutamente
+O: diverge
+O: Nessuna delle precedenti
+A: 2
+W: Leibniz sì; $\sum\frac1n$ diverge.
+
+?mc
+Q: Il raggio di convergenza di $\sum_{n\ge1}\frac{2^n}{n}x^n$ è
+O: 2
+O: $\frac12$
+O: 1
+O: Nessuna delle precedenti
+A: 2
+W: $\sqrt[n]{2^n/n}\to2$: $R=\frac12$.
+
+?mc
+Q: L'insieme di convergenza di $\sum_{n\ge1}\frac{2^n}{n}x^n$ è
+O: $(-\frac12,\frac12)$
+O: $[-\frac12,\frac12)$
+O: $(-\frac12,\frac12]$
+O: Nessuna delle precedenti
+A: 2
+W: In $x=\frac12$: $\sum\frac1n$ diverge; in $x=-\frac12$: $\sum\frac{(-1)^n}{n}$ converge.
+
+?mc
+Q: La serie $\sum_{n\ge1}\frac{n^2+1}{n^4+3}$
+O: converge
+O: diverge
+O: è indeterminata
+O: Nessuna delle precedenti
+A: 1
+W: $\sim\frac1{n^2}$.
+
+?mc
+Q: $\displaystyle\sum_{n=1}^{\infty}\frac{2}{3^n}$ vale
+O: 3
+O: 1
+O: $\frac23$
+O: Nessuna delle precedenti
+A: 2
+W: $2\cdot\frac{1/3}{1-1/3}=1$.
+
+?vf
+Q: Una serie di potenze converge assolutamente in tutti i punti interni all'intervallo di convergenza.
+A: V
+W: Per $|x-x_0|<R$ la convergenza è assoluta.
+
+?mc
+Q: La serie di Taylor in 0 di $\frac{1}{1+x^2}$ è
+O: $\sum_{n\ge0}x^{2n}$
+O: $\sum_{n\ge0}(-1)^nx^{2n}$
+O: $\sum_{n\ge0}(-1)^nx^{n}$
+O: Nessuna delle precedenti
+A: 2
+W: Geometrica di ragione $-x^2$, per $|x|<1$.
+
+?vf
+Q: Il criterio del rapporto con limite uguale a 1 assicura che la serie diverge.
+A: F
+W: Con limite 1 il criterio non decide: $\sum\frac1{n^2}$ converge, $\sum\frac1n$ diverge.
+
+#theory
+?th
+Q: Enuncia il criterio di Leibniz e spiega la differenza tra convergenza semplice e assoluta.
+A: **Leibniz.** Sia $(b_n)$ una successione con $b_n\ge0$, decrescente e infinitesima. Allora la serie $\sum_{n\ge0}(-1)^nb_n$ converge; inoltre, detta $S$ la somma, $|S-S_n|\le b_{n+1}$.
+
+Una serie $\sum a_n$ converge assolutamente se converge $\sum|a_n|$. La convergenza assoluta implica quella semplice, ma non viceversa: $\sum\frac{(-1)^{n+1}}{n}$ converge a $\ln2$ per Leibniz, mentre $\sum\frac1n$ diverge.
+K: Ipotesi: $b_n\ge0$, decrescente, infinitesima
+K: Tesi: convergenza e stima dell'errore $\le b_{n+1}$
+K: Definizione di convergenza assoluta
+K: Assoluta ⇒ semplice, con controesempio al viceversa
+
+?th
+Q: Definisci il raggio di convergenza di una serie di potenze e spiega come si determina l'insieme di convergenza.
+A: Data $\sum a_n(x-x_0)^n$, esiste $R\in[0,+\infty]$ tale che la serie converge assolutamente per $|x-x_0|<R$ e non converge per $|x-x_0|>R$: è il raggio di convergenza. Se $\left|\frac{a_{n+1}}{a_n}\right|\to\ell$ oppure $\sqrt[n]{|a_n|}\to\ell$, allora $R=\frac1\ell$ (convenzioni $\frac10=+\infty$, $\frac1\infty=0$).
+
+Per l'insieme di convergenza si studiano a parte gli estremi $x_0\pm R$, dove si ottengono serie numeriche. Esempio: $\sum\frac{x^n}{n}$ ha $R=1$ e insieme $[-1,1)$. All'interno la somma si può derivare e integrare termine a termine con lo stesso raggio.
+K: Definizione di raggio di convergenza
+K: Calcolo con rapporto o radice
+K: Studio separato degli estremi, con esempio
+K: Derivazione e integrazione termine a termine
+
+?th
+Q: Enuncia la condizione necessaria per la convergenza di una serie e i criteri del confronto e del rapporto.
+A: Se $\sum a_n$ converge allora $a_n\to0$ (non sufficiente: serie armonica). Per serie a termini non negativi: **confronto**: se $0\le a_n\le b_n$ definitivamente e $\sum b_n$ converge, allora converge $\sum a_n$ (e se $\sum a_n$ diverge, diverge $\sum b_n$); **confronto asintotico**: se $\frac{a_n}{b_n}\to\ell\in(0,+\infty)$ le due serie hanno lo stesso carattere; **rapporto**: se $\frac{a_{n+1}}{a_n}\to\ell$, la serie converge per $\ell<1$, diverge per $\ell>1$; per $\ell=1$ il criterio non decide.
+K: Condizione necessaria e controesempio
+K: Confronto (nei due versi)
+K: Confronto asintotico
+K: Rapporto con il caso $\ell=1$
+
+#sheet
+Argomento ¦ Da ricordare
+Condizione necessaria ¦ converge ⇒ $a_n\to0$; non vale il viceversa ($\sum\frac1n$)
+Geometrica ¦ $\sum_{n\ge0}q^n=\frac1{1-q}$ per $\lvert q\rvert<1$
+Armonica generalizzata ¦ $\sum\frac1{n^p}$ converge $\iff p>1$
+Criteri (termini ≥ 0) ¦ confronto, asintotico, rapporto, radice; limite 1: non decide
+Assoluta ¦ $\sum\lvert a_n\rvert$ converge ⇒ $\sum a_n$ converge
+Leibniz ¦ $b_n\ge0$ decrescente, $\to0$ ⇒ $\sum(-1)^nb_n$ converge
+Raggio ¦ $R=1/\ell$ con $\ell=\lim\lvert a_{n+1}/a_n\rvert$ o $\lim\sqrt[n]{\lvert a_n\rvert}$; estremi a parte
+Taylor ¦ $e^x$, $\sin$, $\cos$ su $\mathbb R$; $\frac1{1-x}$ in $(-1,1)$; $\ln(1+x)$ in $(-1,1]$; $\arctan$ in $[-1,1]$
+Somme notevoli ¦ $\sum\frac{(-1)^{n+1}}n=\ln2$; $\sum\frac{(-1)^n}{2n+1}=\frac\pi4$; $\sum\frac1{n!}=e$

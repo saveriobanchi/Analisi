@@ -1,0 +1,544 @@
+#chapter 3
+title: Massimi e minimi
+short: Massimi e minimi
+place: Sella di Fermat
+alt: 1300
+weight: 1.6
+program: Massimi e minimi relativi; condizione necessaria per i punti estremanti (teorema di Fermat); matrice hessiana (in due variabili); condizione sufficiente per i punti estremanti; ricerca di massimi e minimi assoluti in insiemi chiusi e limitati.
+exam: In **tutte le prove** c'è almeno un quesito: trovare i punti critici e stabilirne la natura (il più frequente), una forma quadratica da classificare, oppure un Vero/Falso sulle definizioni. Nelle prove più recenti compaiono funzioni con **valori assoluti** e massimi e minimi su un **triangolo**.
+
+#lesson 3.1 Definizioni, Fermat e punti critici
+goal: Distinguere estremi locali e assoluti e trovare tutti i candidati: punti critici interni, punti non derivabili, frontiera.
+
+::idea
+Un massimo locale è la cima di una collina: basta che vicino non ci sia niente di più alto. Un massimo assoluto è il punto più alto di tutto il dominio. In cima a una collina liscia il piano tangente è orizzontale: in ogni direzione la pendenza è zero.
+
+::def Massimo e minimo locale, assoluto, sella
+$P_0\in A$ è di **massimo locale** per $f$ se esiste $r>0$ con $f(P)\le f(P_0)$ per ogni $P\in B_r(P_0)\cap A$ (minimo con $\ge$; **stretto** se la disuguaglianza è stretta per $P\ne P_0$). È di **massimo assoluto** se $f(P)\le f(P_0)$ per ogni $P\in A$. Un **punto di sella** è un punto critico che non è né di massimo né di minimo: in ogni intorno ci sono valori maggiori e minori.
+
+::thm Teorema di Fermat
+Sia $P_0$ **interno** ad $A$, di massimo o minimo locale per $f$, e sia $f$ **derivabile** in $P_0$. Allora $\nabla f(P_0)=0$.
+Un punto in cui $f$ è derivabile e $\nabla f=0$ si chiama **critico** (o stazionario).
+
+::method I candidati estremi
+1. Punti critici interni: risolvi $f_x=0$, $f_y=0$.
+2. Punti interni in cui $f$ non è derivabile (moduli, radici): Fermat non dice nulla, si studiano a parte.
+3. Punti di frontiera, se il dominio la contiene: lì il gradiente non deve annullarsi.
+Per il sistema: raccogli e usa l'annullamento del prodotto distinguendo i casi; ricava e sostituisci; con esponenziali ricorda $e^{(\dots)}\ne0$; somma o sottrai le equazioni.
+
+::example esame 9 luglio 2025, A n. 8: punti critici di $f=e^{2x-2y}(x^2+y^2-3)$.
++ Derivate: $f_x=e^{2x-2y}\big(2(x^2+y^2-3)+2x\big)$, $f_y=e^{2x-2y}\big(-2(x^2+y^2-3)+2y\big)$.
++ Semplifica: $x^2+y^2-3+x=0$ e $-(x^2+y^2-3)+y=0$. Sommando: $x+y=0$.
++ Sostituisci: $2x^2-3+x=0\Rightarrow x=1$ oppure $x=-\frac32$.
+= $(1,-1)$ e $(-\frac32,\frac32)$.
+
+::exam
+"$P_0$ è di massimo relativo se e solo se esiste $r$ tale che $f(P)>f(P_0)$ per ogni $P\in B_r(P_0)\cap\Omega$" è falso **due volte**: il verso è sbagliato e la disuguaglianza stretta non può valere in $P=P_0$ stesso (11 giugno 2025, entrambe le file).
+
+::trap
+- Fermat vale solo nei punti interni: su un insieme chiuso un estremo sul bordo può avere gradiente non nullo.
+- $\nabla f=0$ non implica estremo: $x^2-y^2$ ha una sella nell'origine.
+- Dividere per una variabile che può essere zero fa perdere soluzioni: raccogli.
+
+#quiz
+?mc
+Q: I punti critici di $f=x^3-3x+y^2$ sono
+O: $(1,0)$ soltanto
+O: $(1,0)$ e $(-1,0)$
+O: $(0,0)$, $(1,0)$, $(-1,0)$
+O: Nessuna delle precedenti
+A: 2
+W: $f_x=3x^2-3=0\Rightarrow x=\pm1$; $f_y=2y=0\Rightarrow y=0$.
+
+?vf
+Q: $(0,0)$ non è né di massimo né di minimo locale per $f(x,y)=\sin(x+y)$.
+A: V
+W: $\nabla f(0,0)=(1,1)\ne0$ e il punto è interno: per Fermat non è un estremo.
+S: 25 giugno 2025, fila A, n. 6
+
+?vf
+Q: Se $f$ è differenziabile e $P_0$ interno è di massimo locale, allora $\nabla f(P_0)=0$.
+A: V
+W: Teorema di Fermat (differenziabile implica derivabile).
+
+?vf
+Q: Se $\nabla f(P_0)=0$, allora $P_0$ è di massimo o di minimo locale.
+A: F
+W: Può essere una sella, come per $x^2-y^2$.
+
+?mc
+Q: I punti critici di $f=e^{2x+2y}(x^2+y^2-1)$ sono
+O: $(-1,-1)$ e $(\frac12,\frac12)$
+O: $(1,1)$ e $(-\frac12,-\frac12)$
+O: $(0,0)$ e $(1,1)$
+O: Nessuna delle precedenti
+A: 1
+W: $x^2+y^2-1+x=0$, $x^2+y^2-1+y=0\Rightarrow x=y$, $2x^2+x-1=0\Rightarrow x=\frac12$ o $x=-1$.
+S: 9 luglio 2025, fila B, n. 11 (distrattori ricostruiti)
+
+#lesson 3.2 Forme quadratiche e matrici 2×2
+goal: Classificare una matrice simmetrica 2×2 con determinante e primo elemento, anche con un parametro.
+
+::idea
+Vicino a un punto critico $f$ si comporta come una funzione di secondo grado, $q(h,k)=ah^2+2bhk+ck^2$. Il grafico è una coppa verso l'alto, una coppa verso il basso, una sella o una grondaia: classificare la forma vuol dire capire quale.
+
+::def Forma quadratica associata a $H=\begin{pmatrix}a&b\\b&c\end{pmatrix}$
+$q(h,k)=ah^2+2bhk+ck^2$. È **definita positiva** se $q>0$ per ogni $(h,k)\ne0$; **definita negativa** se $q<0$; **semidefinita** se $q\ge0$ (o $\le0$) e si annulla fuori dall'origine; **indefinita** se assume entrambi i segni.
+
+::table
+$\det H=ac-b^2$ ¦ $a$ ¦ Classe
+$>0$ ¦ $>0$ ¦ definita positiva
+$>0$ ¦ $<0$ ¦ definita negativa
+$<0$ ¦ qualsiasi ¦ indefinita
+$=0$ ¦ $a+c>0$ / $<0$ ¦ semidefinita positiva / negativa
+
+::lab forme
+
+::example esame 5 febbraio 2025, A n. 2 e B n. 3. (A) $a_{11}=4$, $a_{22}=9$, $\det\ne0$: definita positiva se e solo se $a_{12}<6$? (B) $a_{11}=-25$, $a_{22}=-4$: indefinita solo se $a_{12}>10$?
++ A: definita positiva $\iff 36-a_{12}^2>0\iff|a_{12}|<6$. Con $a_{12}=-7$: $a_{12}<6$ ma $\det=-13<0$. Falso.
++ B: indefinita $\iff100-a_{12}^2<0\iff|a_{12}|>10$. Con $a_{12}=-11$ è indefinita ma $a_{12}>10$ è falso. Falso.
+= Il determinante contiene $a_{12}^2$: le condizioni corrette sono sempre su $|a_{12}|$.
+
+::trap
+- Il segno di $a$ conta solo se $\det>0$. Con $\det<0$ è indefinita qualunque sia $a$.
+
+#quiz
+?vf
+Q: La matrice $\begin{pmatrix}1&-1\\-1&2\end{pmatrix}$ è definita negativa.
+A: F
+W: $\det=2-1=1>0$ e $a=1>0$: definita positiva.
+S: 9 luglio 2025, fila A, n. 3
+
+?vf
+Q: La matrice $\begin{pmatrix}2&3\\3&4\end{pmatrix}$ è definita positiva.
+A: F
+W: $\det=8-9=-1<0$: indefinita.
+
+?vf
+Q: La forma quadratica associata a $\begin{pmatrix}-2&3\\3&-4\end{pmatrix}$ è definita negativa.
+A: F
+W: $\det=8-9=-1<0$: indefinita. Il segno di $a_{11}$ conta solo con $\det>0$.
+
+?mc
+Q: La matrice $\begin{pmatrix}1&2\\2&4\end{pmatrix}$ è
+O: definita positiva
+O: semidefinita positiva
+O: indefinita
+O: Nessuna delle precedenti
+A: 2
+W: $\det=0$, traccia $5>0$: semidefinita positiva ($q=(h+2k)^2$).
+
+?mc
+Q: $(0,0)$ è di massimo locale stretto per $f=-x^2+kxy-4y^2$ se e solo se
+O: $|k|<4$
+O: $|k|\le4$
+O: $k<4$
+O: Nessuna delle precedenti
+A: 1
+W: $H=\begin{pmatrix}-2&k\\k&-8\end{pmatrix}$, $\det=16-k^2>0\iff|k|<4$, $f_{xx}<0$. Con $|k|=4$: $f=-(x\mp2y)^2$, massimo non stretto.
+
+#lesson 3.3 Il test dell'Hessiana
+goal: Stabilire la natura di ogni punto critico calcolando l'Hessiana nel punto.
+
+::thm Condizione sufficiente ($f\in C^2$, $P_0$ interno, $\nabla f(P_0)=0$)
+- $\det H_f(P_0)>0$ e $f_{xx}(P_0)>0$: **minimo** locale stretto.
+- $\det H_f(P_0)>0$ e $f_{xx}(P_0)<0$: **massimo** locale stretto.
+- $\det H_f(P_0)<0$: **sella**.
+- $\det H_f(P_0)=0$: il test **non decide**.
+
+::thm Condizione necessaria del secondo ordine
+Se $P_0$ è di minimo locale (e $f\in C^2$), $H_f(P_0)$ è semidefinita positiva; se è di massimo, semidefinita negativa.
+
+::example esame esempio gennaio 2026, n. 7: $f=y^3+x^2-6xy+3x+6y-10$. Opzioni: max in $(\frac{27}2,5)$, sella in $(\frac32,1)$ · ammette minimo assoluto · min in $(\frac{27}2,5)$, sella in $(\frac32,1)$ · nessuna.
++ Sistema: da $f_x=2x-6y+3=0$: $x=\frac{6y-3}2$. In $f_y=3y^2-6x+6=0$: $3y^2-18y+15=0\Rightarrow y=1,5$.
++ Hessiana: $H=\begin{pmatrix}2&-6\\-6&6y\end{pmatrix}$, $\det=12y-36$. In $y=1$: $-24$, sella. In $y=5$: $24>0$, $f_{xx}=2>0$, minimo.
++ Assoluto?: $f(0,y)=y^3+6y-10\to-\infty$ per $y\to-\infty$: nessun minimo assoluto.
+= Risposta: **min in $(\frac{27}2,5)$, sella in $(\frac32,1)$**.
+
+::note Scorciatoia nell'origine
+Se $(0,0)$ è critico, l'Hessiana si legge dai termini di secondo grado $ax^2+2bxy+cy^2$: $H=\begin{pmatrix}2a&2b\\2b&2c\end{pmatrix}$. Esempio (11 giugno 2025): $x^2+xy+y^2-3x^2y^2$ dà $H=\begin{pmatrix}2&1\\1&2\end{pmatrix}$, minimo.
+
+::trap
+- Un minimo locale non è automaticamente assoluto: controlla il comportamento all'infinito.
+
+#quiz
+?mc
+Q: Per $f=x^3-12x+y^2-2y$:
+O: $(2,1)$ minimo e $(-2,1)$ sella
+O: $(2,1)$ massimo e $(-2,1)$ sella
+O: $(-2,1)$ minimo e $(2,1)$ sella
+O: Nessuna delle precedenti
+A: 1
+W: $x=\pm2$, $y=1$; $H=\begin{pmatrix}6x&0\\0&2\end{pmatrix}$: in $(2,1)$ $\det=24>0$ minimo; in $(-2,1)$ $\det<0$ sella.
+
+?mc
+Q: $(0,0)$ per $f=x^2+4xy+y^2$ è
+O: minimo
+O: massimo
+O: sella
+O: Nessuna delle precedenti
+A: 3
+W: $H=\begin{pmatrix}2&4\\4&2\end{pmatrix}$, $\det=-12<0$.
+
+?mc
+Q: La funzione $f=x^3-6xy+3y^2$
+O: ha un minimo locale in $(0,0)$ e una sella in $(2,2)$
+O: ha una sella in $(0,0)$ e un massimo locale in $(2,2)$
+O: ha una sella in $(0,0)$ e un minimo locale in $(2,2)$
+O: Nessuna delle precedenti
+A: 3
+W: $3x^2-6y=0$, $-6x+6y=0\Rightarrow y=x$, $x^2=2x$. $H=\begin{pmatrix}6x&-6\\-6&6\end{pmatrix}$: $(0,0)$ $\det=-36$; $(2,2)$ $\det=36$, $f_{xx}=12>0$.
+
+?vf
+Q: Se $f\in C^2$, $\nabla f(P_0)=0$ e $\det H_f(P_0)>0$, allora $P_0$ è un estremo locale.
+A: V
+W: Minimo o massimo secondo il segno di $f_{xx}$.
+
+?mc
+Q: Natura di $(0,0)$ per $f=4x^2y^2-xy-x^2-y^2$:
+O: minimo locale
+O: massimo locale
+O: sella
+O: Nessuna delle precedenti
+A: 2
+W: Termini di grado 2: $-x^2-xy-y^2$, $H=\begin{pmatrix}-2&-1\\-1&-2\end{pmatrix}$, $\det=3>0$, $f_{xx}<0$.
+S: 11 giugno 2025, fila B, n. 9 (opzioni ricostruite)
+
+#lesson 3.4 Casi dubbi e valori assoluti
+goal: Stabilire la natura di un punto con determinante Hessiano nullo e trattare funzioni con valori assoluti.
+
+::method Quando il test non decide: studio del segno
+1. Scrivi $\Delta(P)=f(P)-f(P_0)$ e guarda vicino a $P_0$.
+2. Se vedi $\Delta\ge0$ (quadrati, potenze pari, fattorizzazioni): minimo. Se $\Delta\le0$: massimo.
+3. Se trovi due curve per $P_0$ su cui $\Delta$ ha segni opposti: sella. Prova assi, rette, curve dove si annulla un fattore.
+4. Retta di punti critici (fattori come $x^2$): guarda il segno del fattore rimanente.
+
+::example base $(0,0)$ per $f=x^4+y^4$, $g=x^2-y^4$, $h=x^2+y^3$.
++ f: $f\ge0=f(0,0)$: minimo stretto.
++ g: su $y=0$: $x^2>0$; su $x=0$: $-y^4<0$. Sella.
++ h: su $x=0$: $y^3$ cambia segno. Sella.
+= Tutte e tre hanno $\det H(0,0)=0$: il test non poteva decidere.
+
+::method Funzioni con valori assoluti
+1. Nelle regioni in cui gli argomenti dei moduli hanno segno fisso, togli il modulo e cerca i punti critici.
+2. Sulle curve di piega controlla con la definizione dove esistono le parziali: lì possono esserci altri punti critici.
+3. Somme di quadrati come $(|x|-1)^2+\dots$: il minimo vale 0 dove tutti i quadrati si annullano, se un punto così esiste.
+
+::example esame 5 febbraio 2025, A n. 8: quanti punti critici ha $f=|xy|(x+y-2)$?
++ Fuori dagli assi: $f=\pm xy(x+y-2)$: $y(2x+y-2)=0$, $x(x+2y-2)=0$ con $x,y\ne0$: $(\frac23,\frac23)$.
++ Asse x: in $(x_0,0)$ $f_x=0$; $\frac{f(x_0,t)}{t}=\frac{|x_0||t|(x_0+t-2)}{t}$ ha limite solo se $|x_0|(x_0-2)=0$: $x_0=0$ o $2$.
++ Asse y: allo stesso modo $(0,0)$ e $(0,2)$.
+= $(0,0),(2,0),(0,2),(\frac23,\frac23)$: **4 punti critici**.
+
+::trap
+- Fermat non vede i punti non derivabili: $|x|+y^2$ ha minimo assoluto in $(0,0)$, che non è critico.
+- Le rette non bastano: $f=x^2-3xy^2+2y^4=(x-y^2)(x-2y^2)$ ha minimo lungo ogni retta per l'origine ma è una sella (su $x=\frac32y^2$ è negativa).
+
+#quiz
+?vf
+Q: Se in un punto critico $\det H_f=0$, il punto è di sella.
+A: F
+W: Il test non decide: $x^4+y^4$ ha un minimo.
+
+?vf
+Q: $g\in C^2$, $(0,0)$ è critico e in $(0,0)$ valgono $g_{xx}=0$, $g_{xy}=0$, $g_{yy}=3$. Allora $(0,0)$ non è di massimo relativo.
+A: V
+W: Lungo l'asse $y$, $t\mapsto g(0,t)$ ha derivata seconda $3>0$: minimo stretto lì, quindi vicino ci sono valori maggiori. Per un massimo l'Hessiana dovrebbe essere semidefinita negativa.
+S: esempio gennaio 2026, n. 6
+
+?mc
+Q: Natura di $(0,0)$ per $f=x^4+y^2-2x^2y$:
+O: minimo non stretto
+O: minimo stretto
+O: sella
+O: Nessuna delle precedenti
+A: 1
+W: $f=(y-x^2)^2\ge0$, nulla su tutta la parabola $y=x^2$: minimo non stretto.
+
+?mc
+Q: Quanti punti critici ha $f=|xy|(y-2)$?
+O: 1
+O: 2
+O: 3
+O: Nessuna delle precedenti
+A: 2
+W: Fuori dagli assi nessuno. Sull'asse $x$ solo $(0,0)$; sull'asse $y$: $(0,0)$ e $(0,2)$. Totale 2.
+S: 5 febbraio 2025, fila B, n. 11
+
+?vf
+Q: $(1,0)$ è un punto di sella per $f=x^2\big[(x-1)^2-y^2\big]$.
+A: V
+W: Vicino a $(1,0)$, $x^2\approx1$ e $(x-1)^2-y^2$ cambia segno (positivo su $y=0$, negativo su $x=1$).
+S: 15 luglio 2026, n. 6
+
+#lesson 3.5 Massimi e minimi assoluti su un compatto
+goal: Trovare massimo e minimo assoluti di una funzione continua su disco, rettangolo o triangolo.
+
+::idea
+Weierstrass garantisce che esistono. Possono stare dentro, in un punto critico, oppure sul bordo, dove il gradiente non è obbligato ad annullarsi. Si raccolgono tutti i candidati e si confrontano i valori: **non serve l'Hessiana**.
+
+::method
+1. Interno: punti critici dentro l'insieme (scarta quelli fuori), più eventuali punti di non derivabilità.
+2. Frontiera: spezzala in pezzi e parametrizza: segmento $y=0$, $x\in[a,b]$; circonferenza $x=R\cos t$, $y=R\sin t$. Studia funzioni di una variabile su intervalli chiusi.
+3. Includi sempre i vertici.
+4. Confronta i valori: il più grande è il massimo, il più piccolo il minimo.
+
+::example base $f=x^2+y^2-2x$ su $x^2+y^2\le4$.
++ Interno: $\nabla f=(2x-2,2y)=0\Rightarrow(1,0)$, $f=-1$.
++ Frontiera: $x=2\cos t$, $y=2\sin t$: $f=4-4\cos t\in[0,8]$.
+= Minimo $-1$ in $(1,0)$; massimo $8$ in $(-2,0)$.
+
+::example esame 15 luglio 2026, n. 13: $f=x^2-y^2+xy-x$ sul triangolo $x\ge0$, $y\ge0$, $x+y\le2$. Opzioni: non assume massimo sulla frontiera · $\min=-\frac15$, $\max=2$ · $\min=-2$, $\max=4$ · nessuna.
++ Interno: $2x+y-1=0$, $x-2y=0\Rightarrow(\frac25,\frac15)$, $f=-\frac15$.
++ Lato y = 0: $x^2-x$ su $[0,2]$: da $-\frac14$ a 2.
++ Lato x = 0: $-y^2$ su $[0,2]$: da $-4$ a 0.
++ Lato x + y = 2: $-x^2+5x-4$ su $[0,2]$, crescente: da $-4$ a 2.
+= $\min=-4$ in $(0,2)$, $\max=2$ in $(2,0)$: **Nessuna delle precedenti**. La seconda opzione è la trappola di chi si ferma al punto critico interno.
+
+::trap
+- Dimenticare un vertice o un lato.
+- Tenere un punto critico che sta fuori dall'insieme.
+- Pensare che il minimo assoluto debba essere nel punto critico interno.
+
+#quiz
+?mc
+Q: Massimo e minimo di $f=x+y$ su $x^2+y^2\le1$ sono
+O: 2 e $-2$
+O: $\sqrt2$ e $-\sqrt2$
+O: 1 e $-1$
+O: Nessuna delle precedenti
+A: 2
+W: Nessun punto critico; sul bordo $\cos t+\sin t=\sqrt2\sin(t+\frac\pi4)$.
+
+?mc
+Q: Massimo e minimo assoluti di $f=x^2+y^2-4x$ sul disco $x^2+y^2\le9$ sono
+O: max 9, min $-4$
+O: max 21, min $-4$
+O: max 21, min $-3$
+O: Nessuna delle precedenti
+A: 2
+W: Interno: $(2,0)$, $f=-4$. Bordo: $f=9-4x$ con $x\in[-3,3]$: da $-3$ a 21.
+
+?vf
+Q: Il massimo assoluto di una funzione continua su un disco chiuso si trova sempre sulla circonferenza.
+A: F
+W: Può essere interno: $1-x^2-y^2$ ha massimo nel centro.
+
+?mc
+Q: Massimo e minimo di $f=xy$ sul disco $x^2+y^2\le1$:
+O: $\max=1$, $\min=-1$
+O: $\max=\frac12$, $\min=-\frac12$
+O: $\max=\frac12$, $\min=0$
+O: Nessuna delle precedenti
+A: 2
+W: Interno: $(0,0)$, $f=0$. Bordo: $\cos t\sin t=\frac12\sin2t\in[-\frac12,\frac12]$.
+
+?mc
+Q: Massimo e minimo di $f=x^2+y^2-x-y$ sul triangolo di vertici $(0,0),(2,0),(0,2)$:
+O: $\max=2$, $\min=-\frac12$
+O: $\max=4$, $\min=-\frac12$
+O: $\max=2$, $\min=-\frac14$
+O: Nessuna delle precedenti
+A: 1
+W: Interno $(\frac12,\frac12)$, $f=-\frac12$. Lati: $x^2-x\in[-\frac14,2]$; su $y=2-x$: $2(x-1)^2\in[0,2]$.
+
+#bank
+?vf
+Q: Sia $f\in C^1(\mathbb R^2)$ e $D$ il quadrato chiuso $[-1,1]\times[-1,1]$. Se $(0,0)$ è un punto critico di $f|_D$, allora $(0,0)$ è di massimo o di minimo assoluto per $f|_D$.
+A: F
+W: Può essere una sella o un estremo solo locale: $f=x^2-y^2$.
+S: 22 gennaio 2025, fila A, n. 1
+
+?vf
+Q: Sia $f\in C^1(\mathbb R^2)$ e $D$ il disco chiuso di centro $(0,0)$ e raggio 1. Se $(0,0)$ è un punto critico di $f|_D$, allora $(0,0)$ è di massimo o di minimo assoluto per $f|_D$.
+A: F
+W: Stesso controesempio: $x^2-y^2$ ha una sella nell'origine.
+S: 22 gennaio 2025, fila B, n. 4
+
+?vf
+Q: $P_0=(x_0,y_0)$ è di massimo relativo per $f$ se e solo se esiste $r>0$ tale che $f(x,y)>f(x_0,y_0)$ per ogni $(x,y)\in B_r(P_0)\cap\Omega$.
+A: F
+W: Il verso è sbagliato e la disuguaglianza stretta non può valere in $P_0$ stesso.
+S: 11 giugno 2025, fila A, n. 5
+
+?vf
+Q: $P_0=(x_0,y_0)$ è di minimo relativo per $f$ se e solo se esiste $r>0$ tale che $f(x,y)<f(x_0,y_0)$ per ogni $(x,y)\in B_r(P_0)\cap\Omega$.
+A: F
+W: Verso sbagliato e disuguaglianza stretta impossibile in $P_0$.
+S: 11 giugno 2025, fila B, n. 5
+
+?vf
+Q: $(0,0)$ non è né di massimo né di minimo per $f(x,y)=\sin(x+y)$.
+A: V
+W: $\nabla f(0,0)=(1,1)\ne0$ in un punto interno.
+S: 25 giugno 2025, fila A, n. 6
+
+?vf
+Q: $(0,0)$ non è né di massimo né di minimo per $f(x,y)=\cos(x+y+\frac\pi2)$.
+A: V
+W: $\nabla f(0,0)=(-1,-1)\ne0$.
+S: 25 giugno 2025, fila B, n. 1
+
+?vf
+Q: Sia $g\in C^2$ con $(0,0)$ punto critico e $g_{xx}(0,0)=0$, $g_{xy}(0,0)=0$, $g_{yy}(0,0)=3$. Allora $(0,0)$ non è di massimo relativo.
+A: V
+W: Lungo l'asse $y$ c'è un minimo stretto: condizione necessaria del secondo ordine.
+S: esempio gennaio 2026, n. 6
+
+?vf
+Q: $(1,0)$ è un punto di sella per $f(x,y)=x^2\big[(x-1)^2-y^2\big]$.
+A: V
+W: Il fattore $(x-1)^2-y^2$ cambia segno vicino a $(1,0)$, mentre $x^2\approx1$.
+S: 15 luglio 2026, n. 6
+
+?vf
+Q: Sia $A$ simmetrica $2\times2$ con $a_{11}=4$, $a_{22}=9$ e $\det A\ne0$. $A$ è definita positiva se e solo se $a_{12}<6$.
+A: F
+W: La condizione giusta è $|a_{12}|<6$: con $a_{12}=-7$ il determinante è negativo.
+S: 5 febbraio 2025, fila A, n. 2
+
+?vf
+Q: Sia $A$ simmetrica $2\times2$ con $a_{11}=-25$, $a_{22}=-4$. $A$ è indefinita solo se $a_{12}>10$.
+A: F
+W: Indefinita $\iff|a_{12}|>10$: con $a_{12}=-11$ è indefinita ma $a_{12}>10$ è falso.
+S: 5 febbraio 2025, fila B, n. 3
+
+?vf
+Q: La matrice $\begin{pmatrix}1&-1\\-1&2\end{pmatrix}$ è definita negativa.
+A: F
+W: $\det=1$, $a_{11}>0$: definita positiva.
+S: 9 luglio 2025, fila A, n. 3
+
+?vf
+Q: La matrice $\begin{pmatrix}2&-1\\-1&1\end{pmatrix}$ è definita negativa.
+A: F
+W: $\det=1$, $a_{11}>0$: definita positiva.
+S: 9 luglio 2025, fila B, n. 1
+
+?mc
+Q: Per $f(x,y)=x^2+xy+y^2-3x^2y^2$ il punto $(0,0)$ è
+O: di minimo locale
+O: di massimo locale
+O: di sella
+O: Nessuna delle precedenti
+A: 1
+W: $H(0,0)=\begin{pmatrix}2&1\\1&2\end{pmatrix}$, $\det=3>0$, $f_{xx}>0$.
+S: 11 giugno 2025, fila A, n. 8 (opzioni ricostruite)
+
+?mc
+Q: Per $f(x,y)=4x^2y^2-xy-x^2-y^2$ il punto $(0,0)$ è
+O: di minimo locale
+O: di massimo locale
+O: di sella
+O: Nessuna delle precedenti
+A: 2
+W: $H(0,0)=\begin{pmatrix}-2&-1\\-1&-2\end{pmatrix}$, $\det=3>0$, $f_{xx}<0$.
+S: 11 giugno 2025, fila B, n. 9 (opzioni ricostruite)
+
+?mc
+Q: I punti stazionari di $f(x,y)=e^{2x-2y}(x^2+y^2-3)$ sono
+O: $(-1,1)$ e $(\frac32,-\frac32)$
+O: $(1,1)$ e $(-\frac32,-\frac32)$
+O: $(1,-1)$ e $(-\frac32,\frac32)$
+O: Nessuna delle precedenti
+A: 3
+W: Sommando le equazioni semplificate: $x+y=0$; poi $2x^2+x-3=0$.
+S: 9 luglio 2025, fila A, n. 8 (distrattori ricostruiti)
+
+?mc
+Q: Sia $f(x,y)=y^3+x^2-6xy+3x+6y-10$. Allora
+O: $f$ ha un massimo in $(\frac{27}{2},5)$ e una sella in $(\frac32,1)$
+O: $f$ ammette minimo assoluto
+O: $f$ ha un minimo in $(\frac{27}{2},5)$ e una sella in $(\frac32,1)$
+O: Nessuna delle precedenti
+A: 3
+W: $\det H=12y-36$: sella in $y=1$, minimo in $y=5$. Nessun minimo assoluto: $f(0,y)\to-\infty$.
+S: esempio gennaio 2026, n. 7
+
+?mc
+Q: La funzione $f(x,y)=x^2+2y^2-xy^2$
+O: ha un massimo e due selle
+O: è illimitata superiormente
+O: è limitata inferiormente
+O: Nessuna delle precedenti
+A: 2
+W: Critici: $(0,0)$ minimo, $(2,\pm2)$ selle. $f(x,0)=x^2\to+\infty$ e $f(3,y)=9-y^2\to-\infty$.
+S: 1 luglio 2026, n. 12
+
+?mc
+Q: Sia $f(x,y)=x^2y(x+y+2)$. Allora
+O: $(-2,0)$ è di minimo relativo
+O: sulla retta $x=0$ non ci sono punti di sella
+O: esiste $y_0$ tale che $\det H_f(0,y_0)\ne0$
+O: Nessuna delle precedenti
+A: 4
+W: In $(-2,0)$ $\det H=-16$: sella. Sulla retta $x=0$ il determinante è sempre 0 e in $(0,0)$, $(0,-2)$ ci sono selle.
+S: 22 gennaio 2025, fila A, n. 10
+
+?mc
+Q: La funzione $f(x,y)=|xy|(x+y-2)$ ha
+O: esattamente 2 punti critici
+O: esattamente 3 punti critici
+O: esattamente 4 punti critici
+O: Nessuna delle precedenti
+A: 3
+W: $(0,0)$, $(2,0)$, $(0,2)$ sugli assi e $(\frac23,\frac23)$ fuori.
+S: 5 febbraio 2025, fila A, n. 8 (opzioni ricostruite)
+
+?mc
+Q: Sia $f(x,y)=(|x|-1)^2+(|y|-1)^2+(|x-y|-2)^2$. Allora
+O: $f$ ha un minimo assoluto in $(-1,1)$ e un minimo locale in $(-\frac53,-\frac13)$
+O: $f$ ha un minimo assoluto in $(1,-1)$ e un massimo locale in $(-\frac53,-\frac13)$
+O: $(-\frac53,-\frac13)$ non è un punto critico di $f$
+O: Nessuna delle precedenti
+A: 1
+W: $f\ge0$ e $f=0$ in $(\pm1,\mp1)$. In $(-\frac53,-\frac13)$: $f=(x+1)^2+(y+1)^2+(y-x-2)^2$, gradiente nullo, $H=\begin{pmatrix}4&-2\\-2&4\end{pmatrix}$: minimo locale.
+S: 25 giugno 2025, fila A, n. 13
+
+?mc
+Q: Sia $f(x,y)=x^2-y^2+xy-x$ sul triangolo $T=\{x\ge0,\ y\ge0,\ x+y\le2\}$. Allora
+O: $f$ non assume massimo sulla frontiera di $T$
+O: $\min_T f=-\frac15$ e $\max_T f=2$
+O: $\min_T f=-2$ e $\max_T f=4$
+O: Nessuna delle precedenti
+A: 4
+W: $\min=-4$ in $(0,2)$, $\max=2$ in $(2,0)$.
+S: 15 luglio 2026, n. 13
+
+#theory
+?th
+Q: Enuncia il teorema di Fermat in più variabili e spiega perché non dà una condizione sufficiente.
+A: Sia $f:A\subseteq\mathbb R^n\to\mathbb R$ e $P_0$ un punto **interno** ad $A$ di massimo o di minimo locale per $f$. Se $f$ è **derivabile** in $P_0$, allora $\nabla f(P_0)=0$.
+
+La condizione è solo necessaria: $f=xy$ (o $x^2-y^2$) ha $\nabla f(0,0)=0$, ma $(0,0)$ è una sella ($xy>0$ nel primo quadrante, $<0$ nel secondo). Per classificare un punto critico serve la condizione del secondo ordine; se $\det H=0$ si studia il segno di $f-f(P_0)$.
+
+Le ipotesi contano: in un punto di frontiera ($f=x$ su $[0,1]^2$ ha minimo in $(0,0)$ con gradiente $(1,0)$) o in un punto non derivabile ($\sqrt{x^2+y^2}$ ha minimo in $(0,0)$) il gradiente può non essere nullo o non esistere.
+K: Ipotesi: punto interno, estremo locale, $f$ derivabile
+K: Tesi: $\nabla f(P_0)=0$
+K: Controesempio al viceversa: una sella con gradiente nullo
+K: Esempi che mostrano perché servono "interno" e "derivabile"
+
+?th
+Q: Enuncia la condizione sufficiente per gli estremi con la matrice Hessiana.
+A: Sia $f\in C^2(A)$, $A$ aperto, $P_0\in A$ con $\nabla f(P_0)=0$. Se $H_f(P_0)$ è definita positiva ($\det>0$, $f_{xx}>0$), $P_0$ è di minimo locale stretto; se è definita negativa ($\det>0$, $f_{xx}<0$), di massimo locale stretto; se è indefinita ($\det<0$), è un punto di sella. Se $\det H_f(P_0)=0$ il test non permette di concludere: ad esempio $x^4+y^4$ (minimo) e $x^2-y^4$ (sella) hanno entrambe Hessiana con determinante nullo nell'origine.
+K: Ipotesi: $f\in C^2$, punto critico interno
+K: I tre casi con determinante e $f_{xx}$
+K: Il caso $\det=0$: il test non decide, con esempi
+
+?th
+Q: Come si trovano massimo e minimo assoluti di una funzione su un insieme chiuso e limitato?
+A: Se $f$ è continua e $K$ è compatto, massimo e minimo esistono per il teorema di Weierstrass. Si cercano i candidati: punti critici interni, punti interni di non derivabilità, punti della frontiera (estremi delle restrizioni di $f$ ai pezzi della frontiera, parametrizzati, vertici inclusi). Il massimo e il minimo assoluti sono il più grande e il più piccolo dei valori di $f$ nei candidati; non serve l'Hessiana.
+K: Esistenza garantita da Weierstrass (continua su compatto)
+K: Candidati: critici interni, non derivabili, frontiera con vertici
+K: Confronto dei valori, senza Hessiana
+
+#sheet
+Argomento ¦ Da ricordare
+Fermat ¦ estremo interno + derivabile ⇒ $\nabla f=0$; non vale il viceversa
+Candidati ¦ critici interni, punti di non derivabilità, frontiera
+Forme 2×2 ¦ $\det>0$: definita (segno di $a$); $\det<0$: indefinita; $\det=0$: semidefinita
+Test Hessiana ¦ $\det>0,f_{xx}>0$ min; $\det>0,f_{xx}<0$ max; $\det<0$ sella; $\det=0$ studia il segno
+Hessiana in (0,0) ¦ dai termini di grado 2: $ax^2+2bxy+cy^2\Rightarrow H=\begin{pmatrix}2a&2b\\2b&2c\end{pmatrix}$
+Casi dubbi ¦ segno di $f-f(P_0)$: quadrati, fattori, due curve con segni opposti
+Valori assoluti ¦ regioni a segno fisso + parziali con la definizione sulle pieghe
+Compatti ¦ interno + lati parametrizzati + vertici, poi confronto

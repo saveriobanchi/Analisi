@@ -1,0 +1,499 @@
+#chapter 5
+title: Integrali doppi e tripli
+short: Integrali multipli
+place: Rifugio Fubini
+alt: 1750
+weight: 1.6
+program: Integrale doppio su rettangoli e su domini normali; formule di riduzione (teorema di Fubini); cambiamento di variabili negli integrali doppi, coordinate polari; integrali tripli per fili e per strati; coordinate cilindriche e sferiche; aree, volumi, masse e baricentri; uso delle simmetrie.
+exam: Nelle prove compare come multipla con il calcolo di un integrale, quasi sempre in **coordinate polari** su corone o settori (22 gennaio 2025, entrambe le file), e come Vero/Falso sul fattore dello Jacobiano (capitolo 4). Le opzioni sbagliate sono costruite sugli errori tipici: fattore $\rho$ dimenticato, angoli sbagliati, simmetria non vista.
+
+#lesson 5.1 Integrale doppio e teorema di Fubini
+goal: Calcolare un integrale doppio su un rettangolo come due integrali in una variabile, uno dentro l'altro.
+
+::idea
+$\iint_D f\,dx\,dy$ è il **volume con segno** sotto il grafico di $f$ sopra $D$ (con $f=1$ è l'area di $D$). Si calcola a fette: fissi $x$, integri in $y$ la fetta, poi sommi le fette in $x$. Fubini dice che l'ordine non conta.
+
+::thm Teorema di Fubini su un rettangolo
+Se $f$ è continua su $R=[a,b]\times[c,d]$, allora
+$$\iint_R f\,dx\,dy=\int_a^b\!\left(\int_c^d f(x,y)\,dy\right)dx=\int_c^d\!\left(\int_a^b f(x,y)\,dx\right)dy .$$
+Se $f(x,y)=g(x)h(y)$, l'integrale è il prodotto $\int_a^b g\cdot\int_c^d h$.
+
+::example base $\iint_{[0,1]\times[0,2]}(x+y)\,dx\,dy$.
++ Interno: $\int_0^2(x+y)\,dy=2x+2$.
++ Esterno: $\int_0^1(2x+2)\,dx=1+2$.
+= Risultato: 3.
+
+::example medio $\iint_{[0,1]^2}xe^{xy}\,dx\,dy$: quale ordine?
++ Scelta: integrando prima in $y$ la primitiva è immediata: $\int_0^1xe^{xy}\,dy=\big[e^{xy}\big]_0^1=e^x-1$.
++ Esterno: $\int_0^1(e^x-1)\,dx=e-2$.
+= $e-2$. Con l'altro ordine servirebbe un'integrazione per parti: scegli l'ordine che rende facile l'integrale interno.
+
+::trap
+- Gli estremi dell'integrale interno possono dipendere dalla variabile esterna, mai il contrario.
+- Il prodotto di integrali vale solo se l'integranda si separa **e** il dominio è un rettangolo.
+
+#quiz
+?mc
+Q: $\displaystyle\iint_{[0,\pi/2]\times[0,1]}y\cos x\,dx\,dy$ vale
+O: 1
+O: $\frac12$
+O: $\frac\pi4$
+O: Nessuna delle precedenti
+A: 2
+W: Si separa: $\int_0^{\pi/2}\cos x\,dx\cdot\int_0^1y\,dy=1\cdot\frac12$.
+
+?mc
+Q: $\displaystyle\iint_{[0,1]^2}xe^{xy}\,dx\,dy$ vale
+O: $e-1$
+O: $e-2$
+O: $e$
+O: Nessuna delle precedenti
+A: 2
+W: Prima in $y$: $e^x-1$; poi $\int_0^1(e^x-1)dx=e-2$.
+
+?vf
+Q: Se $f$ è continua su un rettangolo $R$, $\iint_Rf$ si può calcolare integrando prima in $x$ o prima in $y$, con lo stesso risultato.
+A: V
+W: È il teorema di Fubini.
+
+?vf
+Q: $\displaystyle\iint_{[0,1]\times[0,2]}(x+y)\,dx\,dy=2$.
+A: F
+W: Vale 3: $\int_0^1(2x+2)\,dx=3$.
+
+#lesson 5.2 Domini normali e scambio dell'ordine
+goal: Descrivere un dominio come normale rispetto a $x$ o a $y$, scrivere la formula di riduzione e saper scambiare l'ordine.
+
+::def Dominio normale
+$D$ è **normale rispetto all'asse $x$** (o $y$-semplice) se $D=\{a\le x\le b,\ g_1(x)\le y\le g_2(x)\}$ con $g_1\le g_2$ continue; **normale rispetto all'asse $y$** se $D=\{c\le y\le d,\ h_1(y)\le x\le h_2(y)\}$.
+
+::thm Formula di riduzione
+Se $f$ è continua su $D=\{a\le x\le b,\ g_1(x)\le y\le g_2(x)\}$:
+$$\iint_D f\,dx\,dy=\int_a^b\left(\int_{g_1(x)}^{g_2(x)}f(x,y)\,dy\right)dx .$$
+Con $f=1$: $\text{area}(D)=\int_a^b\big(g_2(x)-g_1(x)\big)\,dx$.
+
+::lab fubini
+
+::method Scambiare l'ordine di integrazione
+1. Leggi il dominio dagli estremi e **disegnalo**.
+2. Trova gli estremi in $y$ (minimo e massimo su tutto $D$).
+3. Per $y$ fissato, leggi sul disegno da dove a dove va $x$: $h_1(y)\le x\le h_2(y)$.
+4. Riscrivi l'integrale. Serve quando la primitiva nell'ordine dato non è elementare, come $e^{y^2}$.
+
+::example esame $\displaystyle\int_0^1\!\int_x^1e^{y^2}\,dy\,dx$.
++ Problema: $e^{y^2}$ non ha primitiva elementare in $y$.
++ Dominio: $0\le x\le1$, $x\le y\le1$: il triangolo sopra la bisettrice. Per $y\in[0,1]$ fissato: $0\le x\le y$.
++ Scambio: $\int_0^1\!\int_0^ye^{y^2}\,dx\,dy=\int_0^1ye^{y^2}\,dy=\Big[\frac{e^{y^2}}2\Big]_0^1$.
+= $\frac{e-1}{2}$.
+
+::trap
+- Nello scambio gli estremi cambiano: non basta invertire $dx\,dy$.
+- In un dominio normale rispetto a $x$, $g_1$ è il bordo **inferiore** e $g_2$ quello superiore: disegna per non scambiarli.
+
+#quiz
+?mc
+Q: L'area della regione compresa tra $y=x^2$ e $y=x$ è
+O: $\frac12$
+O: $\frac13$
+O: $\frac16$
+O: Nessuna delle precedenti
+A: 3
+W: $\int_0^1(x-x^2)\,dx=\frac12-\frac13=\frac16$.
+
+?mc
+Q: $\displaystyle\iint_Dx\,dx\,dy$ con $D=\{0\le x\le1,\ x^2\le y\le x\}$ vale
+O: $\frac1{12}$
+O: $\frac16$
+O: $\frac14$
+O: Nessuna delle precedenti
+A: 1
+W: $\int_0^1x(x-x^2)\,dx=\frac13-\frac14$.
+
+?vf
+Q: $\displaystyle\int_0^1\!\int_{\sqrt x}^1f(x,y)\,dy\,dx=\int_0^1\!\int_0^{y^2}f(x,y)\,dx\,dy$.
+A: V
+W: Il dominio è $\{0\le x\le1,\ \sqrt x\le y\le1\}=\{0\le y\le1,\ 0\le x\le y^2\}$.
+
+?mc
+Q: $\displaystyle\iint_Txy\,dx\,dy$ sul triangolo $T=\{x\ge0,\ y\ge0,\ x+y\le1\}$ vale
+O: $\frac1{24}$
+O: $\frac1{12}$
+O: $\frac18$
+O: Nessuna delle precedenti
+A: 1
+W: $\int_0^1x\frac{(1-x)^2}{2}dx=\frac12\left(\frac12-\frac23+\frac14\right)=\frac1{24}$.
+
+?mc
+Q: $\displaystyle\int_0^1\!\int_x^1e^{y^2}\,dy\,dx$ vale
+O: $e-1$
+O: $\frac{e-1}2$
+O: $\frac e2$
+O: Nessuna delle precedenti
+A: 2
+W: Scambiando: $\int_0^1ye^{y^2}dy=\frac{e-1}2$.
+
+#lesson 5.3 Cambio di variabili e coordinate polari
+goal: Usare il cambio di variabili, soprattutto le polari, senza perdere lo Jacobiano e con gli angoli giusti.
+
+::thm Formula del cambiamento di variabili
+Sia $\Phi:D'\to D$ biiettiva, $C^1$, con $\det J_\Phi\ne0$ (salvo insiemi di area nulla). Allora
+$$\iint_D f(x,y)\,dx\,dy=\iint_{D'}f\big(\Phi(u,v)\big)\,\big|\det J_\Phi(u,v)\big|\,du\,dv .$$
+In polari $dx\,dy=\rho\,d\rho\,d\theta$; in ellittiche $dx\,dy=ab\rho\,d\rho\,d\theta$.
+
+::method Integrale in polari
+1. Disegna il dominio e traduci ogni condizione in condizioni su $\rho$ e $\theta$.
+2. Sostituisci $x=\rho\cos\theta$, $y=\rho\sin\theta$: spesso $x^2+y^2$ diventa $\rho^2$.
+3. Moltiplica per $\rho$.
+4. Se gli estremi sono costanti e la funzione si separa, è un prodotto di due integrali.
+
+::example esame 22 gennaio 2025, n. 9: $I=\iint_D\ln\big((x^2+y^2)^2\big)\,dx\,dy$, $D=\{1\le x^2+y^2\le4,\ |y|<|x|\}$.
++ Integranda: $\ln(\rho^4)=4\ln\rho$.
++ Angoli: $|y|<|x|$ sono due settori di ampiezza $\frac\pi2$ ciascuno: misura totale $\pi$.
++ Calcolo: $I=\pi\int_1^24\rho\ln\rho\,d\rho=4\pi\Big[\frac{\rho^2}2\ln\rho-\frac{\rho^2}4\Big]_1^2=4\pi\big(2\ln2-\frac34\big)$.
+= $I=\pi(8\ln2-3)$.
+
+::example medio $\iint_D x\,dx\,dy$ con $D=\{1\le x^2+y^2\le4,\ x\ge0\}$.
++ Polari: $\theta\in[-\frac\pi2,\frac\pi2]$, $\rho\in[1,2]$, $x\,dx\,dy=\rho\cos\theta\cdot\rho\,d\rho\,d\theta$.
++ Calcolo: $\int_{-\pi/2}^{\pi/2}\cos\theta\,d\theta\cdot\int_1^2\rho^2\,d\rho=2\cdot\frac73$.
+= $\frac{14}3$. Le opzioni trappola: $\frac73$ (dimentica che $\int\cos\theta=2$) e 0 (usa $\theta\in[0,2\pi]$).
+
+::lab polari
+
+::trap
+- Il fattore $\rho$ è l'errore più costoso: area del disco di raggio 3 è $9\pi$; senza $\rho$ viene $6\pi$, ed è proprio un'opzione tipica.
+- Nel cambio generale si usa il **valore assoluto** dello Jacobiano.
+
+#quiz
+?mc
+Q: $\displaystyle\iint_{x^2+y^2\le1}(x^2+y^2)\,dx\,dy$ vale
+O: $\pi$
+O: $\frac\pi2$
+O: $\frac\pi4$
+O: Nessuna delle precedenti
+A: 2
+W: $\int_0^{2\pi}\!\int_0^1\rho^2\cdot\rho\,d\rho\,d\theta=2\pi\cdot\frac14$.
+
+?mc
+Q: $\displaystyle\iint_{x^2+y^2\le4}e^{-(x^2+y^2)}\,dx\,dy$ vale
+O: $\pi(1-e^{-4})$
+O: $2\pi(1-e^{-4})$
+O: $\pi(1-e^{-2})$
+O: Nessuna delle precedenti
+A: 1
+W: $2\pi\int_0^2e^{-\rho^2}\rho\,d\rho=2\pi\cdot\frac{1-e^{-4}}2$.
+
+?mc
+Q: L'area dell'ellisse $\frac{x^2}{a^2}+\frac{y^2}{b^2}\le1$ è
+O: $\pi a^2b^2$
+O: $\pi ab$
+O: $2\pi ab$
+O: Nessuna delle precedenti
+A: 2
+W: Ellittiche: $\int_0^{2\pi}\!\int_0^1ab\rho\,d\rho\,d\theta=\pi ab$.
+
+?vf
+Q: Con il cambio $u=x+y$, $v=x-y$ si ha $dx\,dy=2\,du\,dv$.
+A: F
+W: $\det\frac{\partial(u,v)}{\partial(x,y)}=\det\begin{pmatrix}1&1\\1&-1\end{pmatrix}=-2$, quindi $du\,dv=2\,dx\,dy$ e $dx\,dy=\frac12du\,dv$.
+
+?mc
+Q: L'area racchiusa dalla cardioide $\rho=1+\cos\theta$ è
+O: $\pi$
+O: $\frac{3\pi}2$
+O: $2\pi$
+O: Nessuna delle precedenti
+A: 2
+W: $\int_0^{2\pi}\!\int_0^{1+\cos\theta}\rho\,d\rho\,d\theta=\frac12\int_0^{2\pi}(1+\cos\theta)^2d\theta=\frac12(2\pi+\pi)$.
+
+#lesson 5.4 Integrali tripli: per fili e per strati
+goal: Ridurre un integrale triplo integrando prima lungo una retta (fili) o prima su una sezione piana (strati).
+
+::idea
+Stessa idea dei doppi, con una dimensione in più. **Per fili**: per ogni $(x,y)$ dell'ombra $D$ sul piano integri in $z$ da $z_1(x,y)$ a $z_2(x,y)$. **Per strati**: per ogni quota $z$ integri sulla sezione $E_z$, poi sommi in $z$.
+
+::thm Formule di riduzione
+Per fili: $E=\{(x,y)\in D,\ z_1(x,y)\le z\le z_2(x,y)\}$:
+$$\iiint_E f=\iint_D\left(\int_{z_1(x,y)}^{z_2(x,y)}f\,dz\right)dx\,dy .$$
+Per strati: $E=\{z\in[c,d],\ (x,y)\in E_z\}$: $\iiint_E f=\int_c^d\left(\iint_{E_z}f\,dx\,dy\right)dz$. Con $f$ dipendente solo da $z$: $\int_c^d f(z)\,\text{area}(E_z)\,dz$.
+
+::example base Volume del tetraedro $T=\{x,y,z\ge0,\ x+y+z\le1\}$.
++ Fili: per $(x,y)$ nel triangolo $x+y\le1$, $z$ va da 0 a $1-x-y$.
++ Calcolo: $\int_0^1\!\int_0^{1-x}(1-x-y)\,dy\,dx=\int_0^1\frac{(1-x)^2}2dx$.
+= $\frac16$.
+
+::example medio Volume di $E=\{x^2+y^2\le z\le1\}$ per strati.
++ Sezione: a quota $z\in[0,1]$, $E_z$ è il disco $x^2+y^2\le z$, di area $\pi z$.
++ Calcolo: $\int_0^1\pi z\,dz$.
+= $\frac\pi2$. Per strati è immediato perché l'area della sezione è nota.
+
+::trap
+- Per fili, l'ombra $D$ è la proiezione di $E$ sul piano $xy$: trovala intersecando le superfici di bordo.
+- Per strati conviene quando l'integranda dipende solo da $z$ e le sezioni sono figure note.
+
+#quiz
+?mc
+Q: $\displaystyle\iiint_{[0,1]^3}xyz\,dx\,dy\,dz$ vale
+O: $\frac18$
+O: $\frac16$
+O: $\frac12$
+O: Nessuna delle precedenti
+A: 1
+W: Si separa: $(\frac12)^3$.
+
+?mc
+Q: $\displaystyle\iiint_Tz\,dx\,dy\,dz$ sul tetraedro $T=\{x,y,z\ge0,\ x+y+z\le1\}$ vale
+O: $\frac16$
+O: $\frac1{12}$
+O: $\frac1{24}$
+O: Nessuna delle precedenti
+A: 3
+W: Per strati: la sezione a quota $z$ è un triangolo di area $\frac{(1-z)^2}2$: $\int_0^1z\frac{(1-z)^2}2dz=\frac1{24}$.
+
+?mc
+Q: Il volume di $\{x^2+y^2\le z\le1\}$ è
+O: $\pi$
+O: $\frac\pi2$
+O: $\frac\pi3$
+O: Nessuna delle precedenti
+A: 2
+W: Per strati: $\int_0^1\pi z\,dz=\frac\pi2$.
+
+?vf
+Q: Integrando per strati, $\iiint_E g(z)\,dx\,dy\,dz=\int_c^d g(z)\,\text{area}(E_z)\,dz$.
+A: V
+W: L'integrale doppio di una funzione che non dipende da $x,y$ è il valore per l'area della sezione.
+
+#lesson 5.5 Cilindriche e sferiche negli integrali tripli
+goal: Scegliere le coordinate giuste per cilindri, coni e sfere e integrare con lo Jacobiano corretto.
+
+::method Quale sistema scegliere
+1. Simmetria attorno all'asse $z$, sezioni circolari, paraboloidi, cilindri: **cilindriche**, $dx\,dy\,dz=\rho\,d\rho\,d\theta\,dz$.
+2. Sfere, palle, coni con vertice nell'origine: **sferiche**, $dx\,dy\,dz=r^2\sin\varphi\,dr\,d\varphi\,d\theta$.
+3. Traduci ogni condizione del dominio nelle nuove variabili, poi moltiplica per lo Jacobiano.
+
+::example medio Volume del cono gelato $\{z\ge\sqrt{x^2+y^2},\ x^2+y^2+z^2\le4\}$.
++ Dominio: $r\in[0,2]$, $\varphi\in[0,\frac\pi4]$, $\theta\in[0,2\pi]$ (capitolo 4).
++ Calcolo: $\int_0^{2\pi}d\theta\int_0^{\pi/4}\sin\varphi\,d\varphi\int_0^2r^2dr=2\pi\left(1-\frac{\sqrt2}2\right)\frac83$.
+= $\frac{8\pi}3(2-\sqrt2)$.
+
+::example base $\iiint_{x^2+y^2+z^2\le1}(x^2+y^2+z^2)$.
++ Sferiche: $r^2\cdot r^2\sin\varphi$.
++ Calcolo: $2\pi\cdot2\cdot\int_0^1r^4dr=\frac{4\pi}5$.
+= $\frac{4\pi}5$.
+
+::trap
+- In sferiche $\int_0^\pi\sin\varphi\,d\varphi=2$, non 0: l'angolo $\varphi$ va solo fino a $\pi$.
+- Lo Jacobiano delle sferiche è $r^2\sin\varphi$: con $r\sin\varphi$ il volume della palla viene sbagliato.
+
+#quiz
+?mc
+Q: Il volume della palla di raggio $R$, calcolato in sferiche, è
+O: $\frac43\pi R^3$
+O: $4\pi R^2$
+O: $2\pi R^3$
+O: Nessuna delle precedenti
+A: 1
+W: $2\pi\cdot2\cdot\frac{R^3}3$.
+
+?mc
+Q: $\displaystyle\iiint_Ez\,dx\,dy\,dz$ con $E=\{x^2+y^2\le1,\ 0\le z\le2\}$ vale
+O: $\pi$
+O: $2\pi$
+O: $4\pi$
+O: Nessuna delle precedenti
+A: 2
+W: Area della base $\pi$ per $\int_0^2z\,dz=2$.
+
+?mc
+Q: $\displaystyle\iiint_Ez$ con $E=\{x^2+y^2\le z\le1\}$ vale
+O: $\frac\pi2$
+O: $\frac\pi3$
+O: $\frac\pi6$
+O: Nessuna delle precedenti
+A: 2
+W: Per strati: $\int_0^1z\cdot\pi z\,dz=\frac\pi3$.
+
+?mc
+Q: Il volume del cono gelato $\{z\ge\sqrt{x^2+y^2},\ x^2+y^2+z^2\le4\}$ è
+O: $\frac{8\pi}{3}(2-\sqrt2)$
+O: $\frac{16\pi}{3}$
+O: $\frac{8\pi}{3}\sqrt2$
+O: Nessuna delle precedenti
+A: 1
+W: $2\pi\left(1-\frac{\sqrt2}{2}\right)\frac83=\frac{8\pi}3(2-\sqrt2)$.
+
+#lesson 5.6 Simmetrie, masse e baricentri
+goal: Riconoscere a colpo d'occhio un integrale nullo per simmetria e calcolare massa e baricentro di una lamina o di un solido.
+
+::thm Simmetrie
+Se $D$ è simmetrico rispetto all'asse $y$ (cioè $(x,y)\in D\Rightarrow(-x,y)\in D$) e $f$ è **dispari in $x$** ($f(-x,y)=-f(x,y)$), allora $\iint_Df=0$. Se $f$ è pari in $x$, l'integrale è il doppio di quello sulla metà $x\ge0$. Analogo per $y$ e, nei tripli, per $z$.
+
+::def Massa e baricentro
+Lamina $D$ di densità $\mu(x,y)$: massa $m=\iint_D\mu$; baricentro
+$$\bar x=\frac1m\iint_D x\,\mu,\qquad \bar y=\frac1m\iint_D y\,\mu .$$
+Con densità costante il baricentro dipende solo dalla forma e sta su ogni asse di simmetria.
+
+::example medio Baricentro del semidisco $\{x^2+y^2\le R^2,\ y\ge0\}$ omogeneo.
++ Simmetria: $\bar x=0$.
++ Calcolo: $\iint y=\int_0^\pi\!\int_0^R\rho\sin\theta\cdot\rho\,d\rho\,d\theta=\frac{2R^3}3$; area $\frac{\pi R^2}2$.
+= $\bar y=\frac{4R}{3\pi}$.
+
+::trap
+- La simmetria va verificata **sia** sul dominio **sia** sulla funzione.
+- Il baricentro di un semidisco non è a metà altezza: $\frac{4R}{3\pi}\approx0{,}42R$.
+
+#quiz
+?vf
+Q: $\displaystyle\iint_{x^2+y^2\le1}x^3y^2\,dx\,dy=0$.
+A: V
+W: Disco simmetrico rispetto all'asse $y$ e integranda dispari in $x$.
+
+?mc
+Q: La massa del disco unitario con densità $\mu=x^2+y^2$ è
+O: $\pi$
+O: $\frac\pi2$
+O: $\frac\pi4$
+O: Nessuna delle precedenti
+A: 2
+W: $\int_0^{2\pi}\!\int_0^1\rho^3d\rho\,d\theta=\frac\pi2$.
+
+?mc
+Q: Il baricentro del triangolo omogeneo di vertici $(0,0)$, $(1,0)$, $(0,1)$ è
+O: $(\frac12,\frac12)$
+O: $(\frac13,\frac13)$
+O: $(\frac14,\frac14)$
+O: Nessuna delle precedenti
+A: 2
+W: Media dei vertici: $\bar x=\frac{\iint x}{1/2}=\frac{1/6}{1/2}=\frac13$.
+
+?mc
+Q: $\displaystyle\iint_{x^2+y^2\le1}x^2\,dx\,dy$ vale
+O: $\frac\pi2$
+O: $\frac\pi4$
+O: $\pi$
+O: Nessuna delle precedenti
+A: 2
+W: Per simmetria $\iint x^2=\iint y^2=\frac12\iint(x^2+y^2)=\frac12\cdot\frac\pi2$.
+
+#bank
+?mc
+Q: L'integrale $I=\displaystyle\iint_D\ln\big((x^2+y^2)^2\big)\,dx\,dy$, con $D=\{1\le x^2+y^2\le4,\ |y|<|x|\}$, vale
+O: $I=2\pi(3\ln2+2)$
+O: $I=\pi(8\ln2-3)$
+O: $I=\pi(4\ln3-2)$
+O: Nessuna delle precedenti
+A: 2
+W: $4\ln\rho$, angoli di misura totale $\pi$: $\pi\int_1^24\rho\ln\rho\,d\rho=\pi(8\ln2-3)$.
+S: 22 gennaio 2025, fila A, n. 9
+
+?mc
+Q: L'integrale $I=\displaystyle\iint_D\ln\big((x^2+y^2)^2\big)\,dx\,dy$, con $D=\{1\le x^2+y^2\le9,\ |y|>|x|\}$, vale
+O: $I=2\pi(9\ln3-4)$
+O: $I=\pi(8\ln3-2)$
+O: $I=\pi(4\ln2-3)$
+O: Nessuna delle precedenti
+A: 1
+W: Angoli di misura totale $\pi$: $\pi\int_1^34\rho\ln\rho\,d\rho=4\pi\big(\frac92\ln3-2\big)=2\pi(9\ln3-4)$.
+S: 22 gennaio 2025, fila B, n. 9
+
+?mc
+Q: L'integrale $\displaystyle\iint_Dx\,dx\,dy$, con $D=\{1\le x^2+y^2\le4,\ x\ge0\}$, vale
+O: $\frac73$
+O: $\frac{7\pi}3$
+O: 0
+O: Nessuna delle precedenti
+A: 4
+W: $\int_{-\pi/2}^{\pi/2}\cos\theta\,d\theta\int_1^2\rho^2d\rho=\frac{14}3$.
+
+?vf
+Q: $\displaystyle\int_0^2\!\int_0^{x}f(x,y)\,dy\,dx=\int_0^2\!\int_y^{2}f(x,y)\,dx\,dy$.
+A: V
+W: Il triangolo $\{0\le y\le x\le2\}$ letto nell'altro ordine: $y\in[0,2]$, $x\in[y,2]$.
+
+?vf
+Q: Il volume della palla di raggio $R$ si ottiene come $\displaystyle\int_0^{2\pi}\!\int_0^{\pi}\!\int_0^R r\sin\varphi\,dr\,d\varphi\,d\theta$.
+A: F
+W: Lo Jacobiano è $r^2\sin\varphi$.
+
+?mc
+Q: Il volume del tetraedro $\{x,y,z\ge0,\ x+y+z\le1\}$ è
+O: $\frac12$
+O: $\frac13$
+O: $\frac16$
+O: Nessuna delle precedenti
+A: 3
+W: $\int_0^1\frac{(1-x)^2}2dx=\frac16$.
+
+?mc
+Q: $\displaystyle\iiint_{x^2+y^2+z^2\le1}(x^2+y^2+z^2)\,dx\,dy\,dz$ vale
+O: $\frac{4\pi}{3}$
+O: $\frac{4\pi}{5}$
+O: $\frac{2\pi}{5}$
+O: Nessuna delle precedenti
+A: 2
+W: $\int r^4\sin\varphi=2\pi\cdot2\cdot\frac15$.
+
+?vf
+Q: $\displaystyle\iint_{|x|+|y|\le1}x\,e^{y^2}\,dx\,dy=0$.
+A: V
+W: Il quadrato $|x|+|y|\le1$ è simmetrico rispetto all'asse $y$ e l'integranda è dispari in $x$.
+
+?mc
+Q: L'ordinata del baricentro del semidisco omogeneo $\{x^2+y^2\le R^2,\ y\ge0\}$ è
+O: $\frac R2$
+O: $\frac{4R}{3\pi}$
+O: $\frac{2R}{\pi}$
+O: Nessuna delle precedenti
+A: 2
+W: $\frac{2R^3/3}{\pi R^2/2}$. Il valore $\frac{2R}{\pi}$ è quello della semicirconferenza (filo), capitolo 6.
+
+?mc
+Q: $\displaystyle\iint_{x^2+y^2\le4}e^{-(x^2+y^2)}\,dx\,dy$ vale
+O: $\pi(1-e^{-4})$
+O: $\pi(1-e^{-2})$
+O: $2\pi(1-e^{-4})$
+O: Nessuna delle precedenti
+A: 1
+W: $2\pi\cdot\frac12(1-e^{-4})$.
+
+#theory
+?th
+Q: Enuncia il teorema di riduzione (Fubini) per gli integrali doppi su un dominio normale.
+A: Sia $D=\{(x,y):a\le x\le b,\ g_1(x)\le y\le g_2(x)\}$ con $g_1\le g_2$ continue su $[a,b]$ (dominio normale rispetto all'asse $x$) e sia $f$ continua su $D$. Allora $f$ è integrabile su $D$ e
+$$\iint_Df(x,y)\,dx\,dy=\int_a^b\left(\int_{g_1(x)}^{g_2(x)}f(x,y)\,dy\right)dx .$$
+Analogamente per un dominio normale rispetto all'asse $y$. Su un rettangolo l'ordine di integrazione si può scambiare. Con $f=1$ si ottiene l'area di $D$.
+K: Definizione di dominio normale con $g_1\le g_2$ continue
+K: Ipotesi: $f$ continua su $D$
+K: Formula con l'integrale interno dagli estremi variabili
+K: Caso del rettangolo e scambio dell'ordine
+
+?th
+Q: Enuncia la formula del cambiamento di variabili negli integrali doppi e scrivila in coordinate polari.
+A: Sia $\Phi:D'\to D$ una trasformazione biiettiva di classe $C^1$ con $\det J_\Phi\ne0$ in $D'$ (salvo insiemi di area nulla), e sia $f$ continua su $D$. Allora
+$$\iint_Df(x,y)\,dx\,dy=\iint_{D'}f(\Phi(u,v))\,|\det J_\Phi(u,v)|\,du\,dv .$$
+In polari $\Phi(\rho,\theta)=(\rho\cos\theta,\rho\sin\theta)$, $|\det J_\Phi|=\rho$: $\iint_Df=\iint_{D'}f(\rho\cos\theta,\rho\sin\theta)\,\rho\,d\rho\,d\theta$. Esempio: $\iint_{x^2+y^2\le1}(x^2+y^2)=\int_0^{2\pi}\!\int_0^1\rho^3\,d\rho\,d\theta=\frac\pi2$.
+K: Ipotesi: $\Phi$ biiettiva, $C^1$, Jacobiano non nullo
+K: Formula con il valore assoluto del determinante
+K: Caso polari con il fattore $\rho$
+K: Un esempio calcolato
+
+?th
+Q: Come si calcolano massa e baricentro di una lamina piana? Come si usano le simmetrie?
+A: Una lamina che occupa $D$ con densità superficiale $\mu(x,y)\ge0$ ha massa $m=\iint_D\mu\,dx\,dy$ e baricentro $\bar x=\frac1m\iint_Dx\mu$, $\bar y=\frac1m\iint_Dy\mu$. Se $D$ è simmetrico rispetto all'asse $y$ e la funzione integranda è dispari in $x$, l'integrale è nullo; in particolare, con densità simmetrica, il baricentro sta sull'asse di simmetria. Esempio: semidisco omogeneo di raggio $R$, $\bar x=0$ e $\bar y=\frac{4R}{3\pi}$.
+K: Formula della massa
+K: Formule del baricentro
+K: Enunciato preciso della simmetria (dominio e funzione)
+K: Esempio
+
+#sheet
+Argomento ¦ Da ricordare
+Fubini (rettangolo) ¦ $\iint_R f=\int_a^b\int_c^d f\,dy\,dx$; se $f=g(x)h(y)$, prodotto
+Dominio normale ¦ $\{a\le x\le b,\ g_1(x)\le y\le g_2(x)\}$; area $\int_a^b(g_2-g_1)$
+Scambio dell'ordine ¦ disegna il dominio, rileggi gli estremi
+Cambio di variabili ¦ $\iint_Df=\iint_{D'}f(\Phi)\,\lvert\det J_\Phi\rvert$
+Polari ¦ $dx\,dy=\rho\,d\rho\,d\theta$; ellittiche $ab\rho$
+Tripli ¦ per fili $\iint_D\int_{z_1}^{z_2}$; per strati $\int_c^d\iint_{E_z}$
+Cilindriche / sferiche ¦ $\rho\,d\rho\,d\theta\,dz$ / $r^2\sin\varphi\,dr\,d\varphi\,d\theta$
+Simmetria ¦ dominio simmetrico + integranda dispari ⇒ 0
+Baricentro ¦ $\bar x=\frac1m\iint x\mu$; semidisco $\bar y=\frac{4R}{3\pi}$
+Volumi noti ¦ palla $\frac43\pi R^3$; tetraedro unitario $\frac16$; $\{x^2+y^2\le z\le1\}$: $\frac\pi2$

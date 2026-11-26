@@ -1,0 +1,401 @@
+#chapter 4
+title: Funzioni vettoriali e cambi di coordinate
+short: Coordinate e operatori
+place: Bivacco Jacobi
+alt: 1500
+weight: 0.6
+program: Funzioni vettoriali di più variabili; limiti e continuità; matrice jacobiana; coordinate polari, sferiche, cilindriche e loro jacobiani; gradiente, divergenza, rotore.
+exam: Raramente un quesito tutto suo, ma questi strumenti servono **ovunque dopo**: lo Jacobiano di un cambio di coordinate (con le ellissi) e il "tipo" di un'espressione con gradiente e divergenza sono usciti come Vero/Falso (22 gennaio 2025); il rotore serve per i campi irrotazionali (9 luglio 2025), le polari e le sferiche per gli integrali.
+
+#lesson 4.1 Funzioni vettoriali e matrice jacobiana
+goal: Riconoscere dominio e codominio di $F:\mathbb R^n\to\mathbb R^m$ e scrivere la Jacobiana senza confondere righe e colonne.
+
+::idea
+Una funzione vettoriale restituisce più numeri insieme: la velocità del vento in ogni punto, o le coordinate cartesiane date quelle polari. Limiti e continuità si studiano **componente per componente**. Mettendo un gradiente sotto l'altro si ottiene la Jacobiana, che fa il lavoro della derivata.
+
+::def Funzione vettoriale, campo scalare, campo vettoriale
+$F:A\subseteq\mathbb R^n\to\mathbb R^m$, $F=(F_1,\dots,F_m)$. Il dominio è l'intersezione dei domini delle componenti. Con $m=1$: **campo scalare**; con $m=n$: **campo vettoriale**; con $n=1$: **curva**. $F$ è continua se e solo se lo sono tutte le componenti.
+
+::def Matrice jacobiana
+$J_F(x_0)$ è la matrice $m\times n$ con $\frac{\partial F_i}{\partial x_j}(x_0)$ in riga $i$, colonna $j$: **righe = componenti, colonne = variabili**. La riga $i$ è $\nabla F_i$. Per $m=1$ è il gradiente; per $m=n$ è quadrata e il suo determinante si chiama **Jacobiano**. Se $F$ è differenziabile:
+$$F(x_0+h)=F(x_0)+J_F(x_0)\,h+o(\|h\|).$$
+
+::example base Jacobiana di $F(x,y)=(x^2y,\ e^{x+y},\ \sin(xy))$.
++ Formato: 3 componenti, 2 variabili: $3\times2$.
+= $J_F=\begin{pmatrix}2xy&x^2\\e^{x+y}&e^{x+y}\\y\cos(xy)&x\cos(xy)\end{pmatrix}$.
+
+::example medio $F(x,y)=(x^2-y^2,\ 2xy)$: Jacobiana e Jacobiano in $(1,1)$.
++ Jacobiana: $J=\begin{pmatrix}2x&-2y\\2y&2x\end{pmatrix}$, $\det J=4x^2+4y^2$.
+= In $(1,1)$: $\det J=8$: vicino a $(1,1)$ le aree vengono moltiplicate circa per 8.
+
+::trap
+- Una funzione $\mathbb R^2\to\mathbb R^3$ ha Jacobiana $3\times2$, non $2\times3$.
+- Il determinante esiste solo per Jacobiane quadrate.
+
+#quiz
+?vf
+Q: La Jacobiana di $F:\mathbb R^2\to\mathbb R^3$ è una matrice $2\times3$.
+A: F
+W: È $3\times2$: una riga per componente.
+
+?vf
+Q: $F:\mathbb R^n\to\mathbb R^m$ è continua in $x_0$ se e solo se tutte le sue componenti lo sono.
+A: V
+W: Limiti e continuità si studiano componente per componente.
+
+?mc
+Q: La Jacobiana di $F(x,y,z)=(xyz,\ x+z^2)$ è
+O: $\begin{pmatrix}yz&1\\xz&0\\xy&2z\end{pmatrix}$
+O: $\begin{pmatrix}yz&xz&xy\\1&0&2z\end{pmatrix}$
+O: $\begin{pmatrix}yz&xz&xy\\1&2z&0\end{pmatrix}$
+O: Nessuna delle precedenti
+A: 2
+W: Due componenti (righe), tre variabili (colonne).
+
+?vf
+Q: Se $F:\mathbb R^2\to\mathbb R^3$ è differenziabile, $\det J_F$ misura come cambiano le aree.
+A: F
+W: $J_F$ è $3\times2$, non quadrata: il determinante non esiste.
+
+#lesson 4.2 Regola della catena con le matrici
+goal: Derivare una composizione con il prodotto delle Jacobiane e riconoscere i due casi più frequenti.
+
+::thm Regola della catena
+Se $f:\mathbb R^n\to\mathbb R^m$ è differenziabile in $x_0$ e $g:\mathbb R^m\to\mathbb R^p$ è differenziabile in $f(x_0)$, allora $g\circ f$ è differenziabile in $x_0$ e
+$$J_{g\circ f}(x_0)=J_g\big(f(x_0)\big)\cdot J_f(x_0).$$
+Formati: $(p\times n)=(p\times m)\cdot(m\times n)$. $J_g$ va calcolata nel **punto immagine** $f(x_0)$.
+
+::method I due casi più frequenti
+1. Campo scalare lungo una curva: $\frac{d}{dt}f(\gamma(t))=\nabla f(\gamma(t))\cdot\gamma'(t)$.
+2. Cambio di variabili $F(u,v)=f(x(u,v),y(u,v))$: $F_u=f_x\,x_u+f_y\,y_u$, $\ F_v=f_x\,x_v+f_y\,y_v$.
+
+::example medio $f(x,y)=(x+y,\ xy)$, $g(u,v)=u^2+v$: $\nabla(g\circ f)(1,2)$.
++ Punto immagine: $f(1,2)=(3,2)$.
++ Jacobiane: $J_g=(2u,\ 1)$ in $(3,2)$: $(6,1)$. $J_f=\begin{pmatrix}1&1\\y&x\end{pmatrix}$ in $(1,2)$: $\begin{pmatrix}1&1\\2&1\end{pmatrix}$.
++ Prodotto: $(6,1)\begin{pmatrix}1&1\\2&1\end{pmatrix}=(8,7)$.
+= Controllo: $h=(x+y)^2+xy$, $h_x=2(x+y)+y=8$, $h_y=2(x+y)+x=7$.
+
+::example esame In polari: $F(\rho,\theta)=f(\rho\cos\theta,\rho\sin\theta)$.
++ Catena: $x_\rho=\cos\theta$, $y_\rho=\sin\theta$, $x_\theta=-\rho\sin\theta$, $y_\theta=\rho\cos\theta$.
+= $F_\rho=f_x\cos\theta+f_y\sin\theta$, $\ F_\theta=-f_x\rho\sin\theta+f_y\rho\cos\theta$.
+
+::trap
+- Calcolare $J_g$ nel punto di partenza invece che in $f(x_0)$.
+- Moltiplicare nell'ordine sbagliato: prima la funzione esterna, poi l'interna.
+
+#quiz
+?mc
+Q: Siano $F:\mathbb R^2\to\mathbb R^3$ e $G:\mathbb R^3\to\mathbb R^2$ differenziabili. La matrice $J_{G\circ F}(P)$
+O: è $3\times3$ e vale $J_F(P)\,J_G(F(P))$
+O: è $2\times2$ e vale $J_G(F(P))\,J_F(P)$
+O: è $2\times2$ e vale $J_G(P)\,J_F(P)$
+O: Nessuna delle precedenti
+A: 2
+W: $G\circ F:\mathbb R^2\to\mathbb R^2$; $J_G$ è $2\times3$ calcolata in $F(P)$, $J_F$ è $3\times2$.
+
+?mc
+Q: $f=xy$, $\gamma(t)=(e^t,t^2)$. Quanto vale $\frac{d}{dt}f(\gamma(t))$ in $t=1$?
+O: $e$
+O: $2e$
+O: $3e$
+O: Nessuna delle precedenti
+A: 3
+W: $\nabla f(\gamma(1))=(1,e)$, $\gamma'(1)=(e,2)$: $e+2e=3e$. Controllo: $f=t^2e^t$, derivata $(2t+t^2)e^t$.
+
+?mc
+Q: $f(x,y)=(x^2,\ x+y)$, $g(u,v)=(uv,\ u-v)$. Allora $J_{g\circ f}(1,1)$ è
+O: $\begin{pmatrix}5&1\\1&-1\end{pmatrix}$
+O: $\begin{pmatrix}4&1\\1&-1\end{pmatrix}$
+O: $\begin{pmatrix}5&1\\2&-1\end{pmatrix}$
+O: Nessuna delle precedenti
+A: 1
+W: $f(1,1)=(1,2)$; $J_g(1,2)=\begin{pmatrix}2&1\\1&-1\end{pmatrix}$, $J_f(1,1)=\begin{pmatrix}2&0\\1&1\end{pmatrix}$; prodotto $\begin{pmatrix}5&1\\1&-1\end{pmatrix}$.
+
+?vf
+Q: $f=x^2+y^2$, $\gamma(t)=(\cos t,2\sin t)$: $\frac{d}{dt}f(\gamma(t))=6\sin t\cos t$.
+A: V
+W: $\nabla f=(2\cos t,4\sin t)$, $\gamma'=(-\sin t,2\cos t)$: $-2\sin t\cos t+8\sin t\cos t$.
+
+#lesson 4.3 Coordinate polari ed ellittiche
+goal: Descrivere dischi, corone e settori in polari, ricordare lo Jacobiano $\rho$ e adattarlo alle ellissi.
+
+::idea
+Un punto si individua con la distanza $\rho$ dall'origine e l'angolo $\theta$. I cerchi centrati nell'origine diventano $\rho=$ costante: un disco o una corona diventa un **rettangolo**. Ma le celle lontane dall'origine sono più grandi: per questo compare il fattore $\rho$.
+
+::def Coordinate polari ed ellittiche
+$$\Phi(\rho,\theta)=(\rho\cos\theta,\ \rho\sin\theta),\quad \rho\ge0,\ \theta\in[0,2\pi),\qquad \det J_\Phi=\rho .$$
+Ellittiche: $\Phi(\rho,\theta)=(a\rho\cos\theta,\ b\rho\sin\theta)$, $\det J_\Phi=ab\rho$: trasformano $\frac{x^2}{a^2}+\frac{y^2}{b^2}\le r^2$ in $\rho\le r$.
+
+::lab polari
+
+::table
+Insieme ¦ In polari
+$x^2+y^2\le R^2$ ¦ $0\le\rho\le R$, $\theta\in[0,2\pi]$
+$y\ge0$ ¦ $\theta\in[0,\pi]$
+$x\ge0,\ y\ge x$ ¦ $\theta\in[\frac\pi4,\frac\pi2]$
+$\lvert y\rvert<\lvert x\rvert$ ¦ $\theta\in(-\frac\pi4,\frac\pi4)\cup(\frac{3\pi}4,\frac{5\pi}4)$
+$x^2+y^2\le2x$ ¦ $0\le\rho\le2\cos\theta$, $\theta\in[-\frac\pi2,\frac\pi2]$
+
+::example esame 22 gennaio 2025, A n. 4 e B n. 2: $E_r=\{\frac{x^2}{9}+\frac{y^2}{4}\le r^2\}$, $B_r$ disco di raggio $r$. È corretta per $\lambda=6$ la formula $\iint_{E_2\setminus E_1}e^{\frac{x^2}9+\frac{y^2}4}=\lambda\iint_{B_2\setminus B_1}e^{x^2+y^2}$? (Fila B: $\frac{x^2}9+y^2$ e $\lambda=9$.)
++ Cambio: $x=3u$, $y=2v$: $\frac{x^2}9+\frac{y^2}4=u^2+v^2$, e $E_2\setminus E_1$ diventa $B_2\setminus B_1$.
++ Jacobiano: $\det\begin{pmatrix}3&0\\0&2\end{pmatrix}=6$: $dx\,dy=6\,du\,dv$.
+= Fila A: Vero. Fila B: $x=3u$, $y=v$, Jacobiano 3: $\lambda=9$ è Falso.
+
+::trap
+- Dimenticare il fattore $\rho$ (o $ab\rho$): è l'errore più costoso negli integrali.
+- Con $\frac{x^2}{9}$ il semiasse è 3, non 9: lo Jacobiano è $ab$, non $a^2b^2$.
+
+#quiz
+?mc
+Q: In polari, $\{x^2+y^2\le9,\ x\ge0,\ y\ge x\}$ è
+O: $\rho\in[0,3]$, $\theta\in[0,\frac\pi4]$
+O: $\rho\in[0,3]$, $\theta\in[\frac\pi4,\frac\pi2]$
+O: $\rho\in[0,9]$, $\theta\in[\frac\pi4,\frac\pi2]$
+O: Nessuna delle precedenti
+A: 2
+W: $x\ge0$ e $y\ge x$: angoli tra la bisettrice e l'asse $y$.
+
+?mc
+Q: Il valore di $\lambda$ per cui, per ogni $g$ continua, $\displaystyle\iint_{\frac{x^2}4+\frac{y^2}9\le1}g\!\left(\tfrac{x^2}4+\tfrac{y^2}9\right)dx\,dy=\lambda\iint_{x^2+y^2\le1}g(x^2+y^2)\,dx\,dy$ è
+O: 36
+O: 6
+O: 13
+O: Nessuna delle precedenti
+A: 2
+W: $x=2u$, $y=3v$: Jacobiano 6.
+
+?vf
+Q: Con $E_1=\{\frac{x^2}{4}+\frac{y^2}{25}\le1\}$ e $B_1$ disco unitario, per ogni $g$ continua $\iint_{E_1}g(\frac{x^2}4+\frac{y^2}{25})=10\iint_{B_1}g(x^2+y^2)$.
+A: V
+W: $x=2u$, $y=5v$: Jacobiano 10.
+
+?mc
+Q: In polari, il disco $x^2+y^2\le2y$ è
+O: $0\le\rho\le2\sin\theta$, $\theta\in[0,\pi]$
+O: $0\le\rho\le2\cos\theta$, $\theta\in[-\frac\pi2,\frac\pi2]$
+O: $0\le\rho\le2$, $\theta\in[0,\pi]$
+O: Nessuna delle precedenti
+A: 1
+W: $\rho^2\le2\rho\sin\theta\iff\rho\le2\sin\theta$, che richiede $\sin\theta\ge0$.
+
+#lesson 4.4 Coordinate cilindriche e sferiche
+goal: Passare in cilindriche e sferiche, ricordare i due Jacobiani e descrivere cilindri, sfere e coni.
+
+::def Cilindriche
+$$(x,y,z)=(\rho\cos\theta,\ \rho\sin\theta,\ z),\qquad \det J=\rho .$$
+Sono le polari nel piano $xy$, con $z$ invariata: adatte a cilindri e solidi di rotazione attorno all'asse $z$.
+
+::def Sferiche
+$$(x,y,z)=(r\sin\varphi\cos\theta,\ r\sin\varphi\sin\theta,\ r\cos\varphi),\qquad \det J=r^2\sin\varphi ,$$
+con $r\ge0$, $\varphi\in[0,\pi]$ (angolo **dall'asse $z$** positivo), $\theta\in[0,2\pi)$. Adatte a sfere e coni con vertice nell'origine.
+
+::example medio Il "cono gelato" $C=\{z\ge\sqrt{x^2+y^2},\ x^2+y^2+z^2\le4\}$.
++ Cono: in sferiche $\sqrt{x^2+y^2}=r\sin\varphi$, $z=r\cos\varphi$: $\cos\varphi\ge\sin\varphi\iff\varphi\le\frac\pi4$.
+= $r\in[0,2]$, $\varphi\in[0,\frac\pi4]$, $\theta\in[0,2\pi)$.
+
+::example base Cilindro e semisfera.
++ Cilindro: $\{x^2+y^2\le4,\ 0\le z\le3\}$: $\rho\in[0,2]$, $\theta\in[0,2\pi)$, $z\in[0,3]$.
++ Semisfera: $\{x^2+y^2+z^2\le1,\ z\ge0\}$: $r\in[0,1]$, $\varphi\in[0,\frac\pi2]$, $\theta\in[0,2\pi)$.
+= In entrambi i casi gli estremi sono costanti: l'integrale si spezza in un prodotto.
+
+::trap
+- $\varphi$ va da 0 a $\pi$, non fino a $2\pi$: la metà inferiore è $\varphi\in[\frac\pi2,\pi]$.
+- Alcuni testi scambiano i nomi $\varphi$ e $\theta$: guarda quale angolo parte dall'asse $z$.
+
+#quiz
+?vf
+Q: Lo Jacobiano delle coordinate sferiche è $r\sin\varphi$.
+A: F
+W: È $r^2\sin\varphi$.
+
+?mc
+Q: In coordinate adatte, $\{x^2+y^2\le z\le4\}$ è
+O: $\rho\in[0,2]$, $\theta\in[0,2\pi)$, $z\in[\rho^2,4]$
+O: $\rho\in[0,4]$, $\theta\in[0,2\pi)$, $z\in[\rho^2,4]$
+O: $\rho\in[0,2]$, $\theta\in[0,2\pi)$, $z\in[\rho,4]$
+O: Nessuna delle precedenti
+A: 1
+W: Cilindriche: $\rho^2\le z\le4$ richiede $\rho\le2$.
+
+?mc
+Q: In sferiche, la parte della palla unitaria nel primo ottante è
+O: $r\in[0,1]$, $\varphi\in[0,\pi]$, $\theta\in[0,\frac\pi2]$
+O: $r\in[0,1]$, $\varphi\in[0,\frac\pi2]$, $\theta\in[0,\frac\pi2]$
+O: $r\in[0,1]$, $\varphi\in[0,\frac\pi2]$, $\theta\in[0,\pi]$
+O: Nessuna delle precedenti
+A: 2
+W: $z\ge0$: $\varphi\le\frac\pi2$; $x,y\ge0$: $\theta\in[0,\frac\pi2]$.
+
+?vf
+Q: Lo Jacobiano delle coordinate cilindriche è $\rho$, come quello delle polari.
+A: V
+W: La $z$ non cambia e non aggiunge fattori.
+
+#lesson 4.5 Gradiente, divergenza, rotore
+goal: Calcolare i tre operatori e sapere sempre se il risultato è uno scalare o un vettore.
+
+::idea
+$\nabla=(\partial_x,\partial_y,\partial_z)$ si usa come un vettore "che deriva". Applicato a uno scalare dà il gradiente; prodotto scalare con un campo dà la **divergenza** (quanto il campo esce da un punto); prodotto vettoriale dà il **rotore** (quanto il campo fa girare).
+
+::def I tre operatori
+Gradiente (S → V): $\nabla f=(f_x,f_y,f_z)$. Divergenza (V → S): $\operatorname{div}F=P_x+Q_y+R_z$ per $F=(P,Q,R)$.
+Rotore (V → V):
+$$\operatorname{rot}F=\nabla\times F=(R_y-Q_z,\ P_z-R_x,\ Q_x-P_y).$$
+Nel piano, con $F=(P,Q)$, il rotore è lo scalare $Q_x-P_y$. Laplaciano: $\Delta f=\operatorname{div}\nabla f=f_{xx}+f_{yy}+f_{zz}$. Per $f,F\in C^2$: $\operatorname{rot}(\nabla f)=0$, $\operatorname{div}(\operatorname{rot}F)=0$. Rotore nullo: **irrotazionale**.
+
+::method Il "tipo" di un'espressione
+1. Scrivi sotto ogni pezzo S (scalare) o V (vettore).
+2. Regole: $\nabla(S)=V$, $\operatorname{div}(V)=S$, $\operatorname{rot}(V)=V$, $V\cdot V=S$, $S\,V=V$, $S\pm S=S$, $V\pm V=V$.
+3. Operazioni illegali (div di uno scalare, $S+V$) rendono l'espressione priva di senso. Il vettore posizione $x=(x,y,z)$ è V con $\operatorname{div}x=3$.
+
+::example esame 22 gennaio 2025, A n. 5 e B n. 1. (A) $\Phi=\operatorname{div}(\nabla f)-x\cdot\nabla f$: vale $\Phi:\mathbb R^3\to\mathbb R^3$? (B) $\Phi=x\cdot\nabla f+\operatorname{div}(x-\nabla f)$: vale $\Phi:\mathbb R^3\to\mathbb R$?
++ A: $\operatorname{div}\nabla f$ è S; $x\cdot\nabla f$ è V·V = S. S − S = S: scalare. Falso.
++ B: $x\cdot\nabla f$ è S; $x-\nabla f$ è V e la sua divergenza è S ($=3-\Delta f$). S + S = S. Vero.
+= A falso, B vero.
+
+::example esame 9 luglio 2025, A n. 9: $F=\Big(\frac{Ax-By}{x^2+y^2},\frac{Cx+Dy}{x^2+y^2}\Big)$ è irrotazionale quando?
++ Q_x: $\frac{C(y^2-x^2)-2Dxy}{(x^2+y^2)^2}$.
++ P_y: $\frac{B(y^2-x^2)-2Axy}{(x^2+y^2)^2}$.
++ Rotore: $Q_x-P_y=\frac{(C-B)(y^2-x^2)+2(A-D)xy}{(x^2+y^2)^2}$.
+= Nullo ovunque se e solo se $A=D$ e $B=C$. Irrotazionale non vuol dire conservativo: capitolo 7.
+
+::trap
+- La divergenza è un numero: $\operatorname{div}(x,y,z)=3$, non $(1,1,1)$.
+- Nel rotore la terza componente è $Q_x-P_y$, non $P_y-Q_x$.
+
+#quiz
+?vf
+Q: La divergenza di un campo vettoriale di $\mathbb R^3$ è un campo vettoriale.
+A: F
+W: È uno scalare.
+
+?vf
+Q: Se $f\in C^2(\mathbb R^3)$, allora $\operatorname{rot}(\nabla f)=0$.
+A: V
+W: Conseguenza di Schwarz.
+
+?mc
+Q: Il rotore di $F=(y,-x,z)$ è
+O: $(0,0,2)$
+O: $(0,0,-2)$
+O: $(0,0,0)$
+O: Nessuna delle precedenti
+A: 2
+W: $R_y-Q_z=0$, $P_z-R_x=0$, $Q_x-P_y=-1-1=-2$.
+
+?vf
+Q: Sia $F:\mathbb R^3\to\mathbb R^3$ di classe $C^2$. Allora $\nabla(\operatorname{div}F)-\operatorname{rot}(\operatorname{rot}F)$ è un campo vettoriale.
+A: V
+W: $\operatorname{div}F$ è S, il suo gradiente V; $\operatorname{rot}\operatorname{rot}F$ è V. V − V = V.
+
+?mc
+Q: Per quali $a$ il campo piano $F=(ay,\ x)$ è irrotazionale?
+O: per ogni $a$
+O: $a=1$
+O: $a=-1$
+O: Nessuna delle precedenti
+A: 2
+W: $Q_x-P_y=1-a=0$.
+
+#bank
+?vf
+Q: Siano $E_r=\{(x,y):\frac{x^2}{9}+\frac{y^2}{4}\le r^2\}$ e $B_r=\{x^2+y^2\le r^2\}$. La formula $\displaystyle\iint_{E_2\setminus E_1}e^{\frac{x^2}{9}+\frac{y^2}{4}}dx\,dy=\lambda\iint_{B_2\setminus B_1}e^{x^2+y^2}dx\,dy$ è corretta se $\lambda=6$.
+A: V
+W: Coordinate ellittiche con $a=3$, $b=2$: fattore $6\rho$ contro $\rho$.
+S: 22 gennaio 2025, fila A, n. 4
+
+?vf
+Q: Siano $E_r=\{(x,y):\frac{x^2}{9}+y^2\le r^2\}$ e $B_r=\{x^2+y^2\le r^2\}$. La formula $\displaystyle\iint_{E_2\setminus E_1}e^{\frac{x^2}{9}+y^2}dx\,dy=\lambda\iint_{B_2\setminus B_1}e^{x^2+y^2}dx\,dy$ è corretta se $\lambda=9$.
+A: F
+W: $a=3$, $b=1$: $\lambda=3$.
+S: 22 gennaio 2025, fila B, n. 2
+
+?vf
+Q: Sia $f:\mathbb R^3\to\mathbb R$ di classe $C^2$ e $\Phi(x)=\operatorname{div}(\nabla f(x))-x\cdot\nabla f(x)$. Allora $\Phi:\mathbb R^3\to\mathbb R^3$.
+A: F
+W: Scalare meno scalare: $\Phi$ è a valori reali.
+S: 22 gennaio 2025, fila A, n. 5
+
+?vf
+Q: Sia $f:\mathbb R^3\to\mathbb R$ di classe $C^2$ e $\Phi(x)=x\cdot\nabla f(x)+\operatorname{div}(x-\nabla f(x))$. Allora $\Phi:\mathbb R^3\to\mathbb R$.
+A: V
+W: $x\cdot\nabla f$ è S; $\operatorname{div}(x-\nabla f)=3-\Delta f$ è S.
+S: 22 gennaio 2025, fila B, n. 1
+
+?mc
+Q: Il campo $F(x,y)=\left(\dfrac{Ax-By}{x^2+y^2},\ \dfrac{Cx+Dy}{x^2+y^2}\right)$ su $\mathbb R^2\setminus\{(0,0)\}$ è irrotazionale quando
+O: $A=D$ e $B=-C$
+O: $A=D$ e $B=C$
+O: $A=C$ e $B=-D$
+O: Nessuna delle precedenti
+A: 2
+W: $Q_x-P_y=\frac{(C-B)(y^2-x^2)+2(A-D)xy}{(x^2+y^2)^2}$: nullo se e solo se $C=B$ e $A=D$ (risposta ricavata dal calcolo).
+S: 9 luglio 2025, fila A, n. 9
+
+?vf
+Q: Se $f:\mathbb R^3\to\mathbb R$ è $C^2$, allora $\Phi(x)=\Delta f(x)+\|x\|^2$ va da $\mathbb R^3$ a $\mathbb R$.
+A: V
+W: S + S = S.
+
+?vf
+Q: Sia $F:\mathbb R^3\to\mathbb R^3$ di classe $C^2$. Allora $\operatorname{rot}\big(\nabla(x\cdot F(x))\big)$ è il vettore nullo per ogni $x$.
+A: V
+W: $x\cdot F(x)$ è un campo scalare $C^2$: il rotore di un gradiente è nullo.
+
+?mc
+Q: Il volume della palla di raggio $R$ in sferiche si scrive
+O: $\int_0^{2\pi}\!\int_0^{\pi}\!\int_0^R r\sin\varphi\,dr\,d\varphi\,d\theta$
+O: $\int_0^{2\pi}\!\int_0^{2\pi}\!\int_0^R r^2\sin\varphi\,dr\,d\varphi\,d\theta$
+O: $\int_0^{2\pi}\!\int_0^{\pi}\!\int_0^R r^2\sin\varphi\,dr\,d\varphi\,d\theta$
+O: Nessuna delle precedenti
+A: 3
+W: Jacobiano $r^2\sin\varphi$ e $\varphi\in[0,\pi]$; il valore è $\frac43\pi R^3$.
+
+?mc
+Q: Sia $F(x,y,z)=(x^2y,\ yz,\ xz^2)$. Allora $\operatorname{div}F$ e $\operatorname{rot}F$ valgono
+O: $2xy+z+2xz$ e $(-y,-z^2,-x^2)$
+O: $2xy+z+2xz$ e $(y,z^2,x^2)$
+O: $(2xy,z,2xz)$ e $(-y,-z^2,-x^2)$
+O: Nessuna delle precedenti
+A: 1
+W: $\operatorname{rot}F=(R_y-Q_z,P_z-R_x,Q_x-P_y)=(0-y,\ 0-z^2,\ 0-x^2)$.
+
+#theory
+?th
+Q: Definisci la matrice jacobiana di una funzione vettoriale ed enuncia la regola della catena.
+A: Sia $F:A\subseteq\mathbb R^n\to\mathbb R^m$, $F=(F_1,\dots,F_m)$, con componenti derivabili in $x_0$. La matrice jacobiana $J_F(x_0)$ è la matrice $m\times n$ il cui elemento $(i,j)$ è $\frac{\partial F_i}{\partial x_j}(x_0)$: la riga $i$ è il gradiente di $F_i$. Se $F$ è differenziabile, $F(x_0+h)=F(x_0)+J_F(x_0)h+o(\|h\|)$.
+
+Regola della catena: se $f:\mathbb R^n\to\mathbb R^m$ è differenziabile in $x_0$ e $g:\mathbb R^m\to\mathbb R^p$ è differenziabile in $f(x_0)$, allora $g\circ f$ è differenziabile in $x_0$ e $J_{g\circ f}(x_0)=J_g(f(x_0))\,J_f(x_0)$. Caso particolare: $\frac{d}{dt}f(\gamma(t))=\nabla f(\gamma(t))\cdot\gamma'(t)$.
+K: Jacobiana $m\times n$: righe = componenti, colonne = variabili
+K: Approssimazione lineare con $o(\|h\|)$
+K: Catena: prodotto $J_g(f(x_0))J_f(x_0)$ nell'ordine giusto, $J_g$ nel punto immagine
+K: Caso particolare lungo una curva
+
+?th
+Q: Scrivi le coordinate polari, cilindriche e sferiche con i loro Jacobiani.
+A: Polari: $(\rho\cos\theta,\rho\sin\theta)$, $\rho\ge0$, $\theta\in[0,2\pi)$, Jacobiano $\rho$. Cilindriche: $(\rho\cos\theta,\rho\sin\theta,z)$, Jacobiano $\rho$. Sferiche: $(r\sin\varphi\cos\theta,\ r\sin\varphi\sin\theta,\ r\cos\varphi)$ con $r\ge0$, $\varphi\in[0,\pi]$ angolo dall'asse $z$, $\theta\in[0,2\pi)$, Jacobiano $r^2\sin\varphi$. Ellittiche: $(a\rho\cos\theta,b\rho\sin\theta)$, Jacobiano $ab\rho$.
+K: Polari con Jacobiano $\rho$
+K: Cilindriche con Jacobiano $\rho$
+K: Sferiche con Jacobiano $r^2\sin\varphi$ e $\varphi\in[0,\pi]$
+
+?th
+Q: Definisci gradiente, divergenza e rotore, indicando dominio e codominio.
+A: Sia $f:\mathbb R^3\to\mathbb R$ derivabile e $F=(P,Q,R):\mathbb R^3\to\mathbb R^3$ derivabile.
+$$\nabla f=(f_x,f_y,f_z):\mathbb R^3\to\mathbb R^3,\qquad \operatorname{div}F=P_x+Q_y+R_z:\mathbb R^3\to\mathbb R,$$
+$$\operatorname{rot}F=(R_y-Q_z,\ P_z-R_x,\ Q_x-P_y):\mathbb R^3\to\mathbb R^3.$$
+Se $f$ e $F$ sono $C^2$: $\operatorname{rot}\nabla f=0$ e $\operatorname{div}\operatorname{rot}F=0$.
+K: Gradiente: scalare → vettore
+K: Divergenza: vettore → scalare
+K: Rotore con le tre componenti corrette
+K: Le identità $\operatorname{rot}\nabla f=0$, $\operatorname{div}\operatorname{rot}F=0$
+
+#sheet
+Argomento ¦ Da ricordare
+Funzioni vettoriali ¦ limiti e continuità componente per componente
+Jacobiana ¦ $m\times n$: righe = componenti, colonne = variabili
+Catena ¦ $J_{g\circ f}=J_g(f(x_0))\,J_f(x_0)$
+Polari / cilindriche ¦ Jacobiano $\rho$
+Ellittiche ¦ $(a\rho\cos\theta,b\rho\sin\theta)$, Jacobiano $ab\rho$
+Sferiche ¦ $\varphi\in[0,\pi]$ dall'asse $z$, Jacobiano $r^2\sin\varphi$
+Operatori ¦ $\nabla$: S→V; div: V→S; rot: V→V; $\Delta=\operatorname{div}\nabla$: S→S
+Rotore piano ¦ $Q_x-P_y$; irrotazionale se nullo

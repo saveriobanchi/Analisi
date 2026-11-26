@@ -1,0 +1,57 @@
+<title>Monte Analisi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Gioco di preparazione all'esame scritto di Analisi Matematica 2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500..800;1,6..96,500..800&family=Barlow+Condensed:wght@500;600;700&family=Schibsted+Grotesk:ital,wght@0,400..700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<!--
+  DIRECTION CARD — Monte Analisi
+  Concept: l'esame è una montagna; la mappa è una carta topografica notturna generata da una vera f(x,y),
+           e il sentiero CAI bianco-rosso sale per 10 rifugi (i capitoli) fino a Cima Esame, 3300 m = 33/33.
+  Borrowed from: night canvas + uppercase condensed signage (SpaceX language); tactile bevelled chrome and
+           amber forward cues (Nintendo 2001 language); visible grid and hard borders (brutalism, ui-ux-pro-max).
+  Palette: night #0B151C, paper #ECEFE8, ink #13202A, segnavia red #D7261E, signal amber #F2A516, lake blue #1F6FB2.
+  Type: Bodoni Moda (display, italic numerals) / Schibsted Grotesk (text) / Barlow Condensed (signage) / JetBrains Mono (data).
+  Signature move: mappa viva con lettura GPS x, y, z = f(x,y) e freccia del gradiente sotto il dito.
+  Richness: cartiglio, scala, rosa dei venti a ∇, curva 1600 m = soglia 16/33, timbri dei rifugi nel libretto.
+  Motion: Jakub primary (polish 200-400ms), Jhey secondary (timbro che cade al completamento).
+-->
+<style>
+/*@CSS@*/
+</style>
+<!--@ICONS@-->
+<div id="app" class="app">
+  <aside class="rail" aria-label="Navigazione principale">
+    <a class="brand" href="#mappa" aria-label="Monte Analisi, torna alla mappa">
+      <span class="segnavia" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-t"><b>Monte</b> <em>Analisi</em></span>
+    </a>
+    <nav class="rail-nav" id="railNav"></nav>
+    <div class="rail-foot" id="railFoot"></div>
+  </aside>
+  <header class="topbar" id="topbar">
+    <a class="brand" href="#mappa" aria-label="Monte Analisi, torna alla mappa">
+      <span class="segnavia" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-t"><b>Monte</b> <em>Analisi</em></span>
+    </a>
+    <div class="top-stats" id="topStats"></div>
+  </header>
+  <main id="view" class="view" tabindex="-1"></main>
+  <nav class="tabbar" id="tabbar" aria-label="Navigazione"></nav>
+</div>
+<div id="sheet" class="sheet" hidden></div>
+<div id="toasts" class="toasts" aria-live="polite"></div>
+<div id="stampFx" class="stamp-fx" hidden></div>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']], processEscapes: true },
+  svg: { fontCache: 'global' },
+  options: { enableMenu: false },
+  startup: { typeset: false, ready: function () { MathJax.startup.defaultReady(); window.__mjReady && window.__mjReady(); } }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js" async></script>
+<!--@CONTENT@-->
+<script>
+/*@JS@*/
+</script>

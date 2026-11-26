@@ -1,0 +1,420 @@
+#chapter 9
+title: Equazioni differenziali
+short: Equazioni differenziali
+place: Rifugio Cauchy
+alt: 2700
+weight: 1.4
+program: Equazioni differenziali ordinarie; problema di Cauchy; teorema di esistenza e unicità locale e globale; equazioni a variabili separabili; equazioni lineari del primo ordine; equazioni lineari del secondo ordine a coefficienti costanti, omogenee e non omogenee (metodo di somiglianza); struttura dell'insieme delle soluzioni.
+exam: Multiple in cui si risolve un problema di Cauchy (separabili, lineari del primo ordine) o si sceglie l'integrale generale di una lineare del secondo ordine; Vero/Falso su esistenza e unicità (ipotesi di Lipschitz, soluzioni che esplodono, non unicità di $y'=\sqrt{|y|}$) e sulla struttura delle soluzioni delle lineari.
+
+#lesson 9.1 Problema di Cauchy, esistenza e unicità
+goal: Sapere quando un problema di Cauchy ha una e una sola soluzione e riconoscere i controesempi classici.
+
+::idea
+Un'equazione differenziale lega una funzione incognita alle sue derivate. Il **problema di Cauchy** aggiunge il dato iniziale $y(t_0)=y_0$: è come dire dove parte il punto. Il campo di direzioni mostra la pendenza $f(t,y)$ in ogni punto; una soluzione è una curva sempre tangente ai trattini.
+
+::def Problema di Cauchy (primo ordine, forma normale)
+$$\begin{cases}y'=f(t,y)\\ y(t_0)=y_0\end{cases}$$
+Una soluzione è una funzione $y$ derivabile su un intervallo $I\ni t_0$ con $y'(t)=f(t,y(t))$ in $I$ e $y(t_0)=y_0$.
+
+::thm Esistenza e unicità locale
+Se $f$ è continua in un intorno di $(t_0,y_0)$ e **localmente lipschitziana in $y$** (basta $\partial_yf$ continua), allora esiste un intervallo attorno a $t_0$ su cui il problema ha una e una sola soluzione.
+
+::thm Esistenza globale
+Se $f$ è continua su $[a,b]\times\mathbb R$ e lipschitziana in $y$ uniformemente in $t$ (in particolare per le **lineari** $y'=a(t)y+b(t)$ con $a,b$ continue), la soluzione esiste ed è unica su tutto $[a,b]$.
+
+::lab direzioni e=nonu
+
+::example esame Due controesempi da sapere.
++ Non unicità: $y'=\sqrt{|y|}$, $y(0)=0$: $f$ è continua ma non lipschitziana in $y=0$. Sono soluzioni $y\equiv0$ e $y=\frac{t^2}4$ per $t\ge0$ (0 per $t<0$).
++ Esplosione: $y'=y^2$, $y(0)=1$: $f$ è $C^1$, la soluzione $y=\frac1{1-t}$ esiste solo su $(-\infty,1)$.
+= Il teorema locale non garantisce soluzioni su tutto $\mathbb R$; senza Lipschitz può mancare l'unicità.
+
+::trap
+- Continuità di $f$ dà l'esistenza (Peano), non l'unicità.
+- Grafici di soluzioni distinte di un problema con unicità non si incrociano mai.
+
+#quiz
+?vf
+Q: Il problema $y'=\sqrt{|y|}$, $y(0)=0$ ha un'unica soluzione.
+A: F
+W: $y\equiv0$ e $y=\frac{t^2}{4}$ per $t\ge0$ (0 per $t<0$) sono due soluzioni: manca la lipschitzianità in $y=0$.
+
+?mc
+Q: La soluzione di $y'=y^2$, $y(0)=1$ è definita su
+O: $\mathbb R$
+O: $(-\infty,1)$
+O: $(-1,1)$
+O: Nessuna delle precedenti
+A: 2
+W: $y=\frac1{1-t}$ esplode in $t=1$; l'intervallo massimale contenente 0 è $(-\infty,1)$.
+
+?vf
+Q: Se $f(t,y)$ e $\partial_yf(t,y)$ sono continue in un intorno di $(t_0,y_0)$, il problema di Cauchy $y'=f(t,y)$, $y(t_0)=y_0$ ha una e una sola soluzione in un intorno di $t_0$.
+A: V
+W: $\partial_yf$ continua implica lipschitzianità locale: teorema di esistenza e unicità locale.
+
+?vf
+Q: Un problema di Cauchy per un'equazione lineare $y'=a(t)y+b(t)$ con $a,b$ continue su $\mathbb R$ ha soluzione definita su tutto $\mathbb R$.
+A: V
+W: Esistenza globale per le lineari.
+
+#lesson 9.2 Equazioni a variabili separabili
+goal: Risolvere $y'=g(t)h(y)$ separando le variabili, senza perdere le soluzioni costanti.
+
+::method Variabili separabili: $y'=g(t)\,h(y)$
+1. Soluzioni costanti: ogni $\bar y$ con $h(\bar y)=0$ dà la soluzione $y\equiv\bar y$.
+2. Dove $h(y)\ne0$: $\displaystyle\int\frac{dy}{h(y)}=\int g(t)\,dt+c$.
+3. Ricava $y$ (se possibile) e imponi il dato iniziale.
+4. Indica l'intervallo massimale: il più grande intervallo contenente $t_0$ su cui la formula ha senso.
+
+::example base $y'=2ty$, $y(0)=1$.
++ Costante: $y\equiv0$, che però non rispetta il dato.
++ Separa: $\int\frac{dy}y=\int2t\,dt\Rightarrow\ln|y|=t^2+c$.
++ Dato: $y=Ce^{t^2}$, $y(0)=1\Rightarrow C=1$.
+= $y=e^{t^2}$, definita su $\mathbb R$.
+
+::example medio $y'=1+y^2$, $y(0)=0$.
++ Separa: $\int\frac{dy}{1+y^2}=\int dt\Rightarrow\arctan y=t+c$, $c=0$.
+= $y=\tan t$ su $(-\frac\pi2,\frac\pi2)$: anche qui la soluzione esplode in tempo finito.
+
+::trap
+- Dividere per $h(y)$ senza prima mettere da parte le soluzioni costanti.
+- Dimenticare il valore assoluto in $\int\frac{dy}{y}=\ln|y|$.
+
+#quiz
+?mc
+Q: La soluzione di $y'=2ty$, $y(0)=1$ è
+O: $e^{t^2}$
+O: $e^{2t}$
+O: $1+t^2$
+O: Nessuna delle precedenti
+A: 1
+W: $\ln|y|=t^2+c$ e $y(0)=1$.
+
+?mc
+Q: La soluzione di $y'=1+y^2$, $y(0)=0$ è
+O: $\tan t$ su $\mathbb R$
+O: $\tan t$ su $(-\frac\pi2,\frac\pi2)$
+O: $\arctan t$ su $\mathbb R$
+O: Nessuna delle precedenti
+A: 2
+W: $\arctan y=t$; $\tan t$ esplode in $\pm\frac\pi2$.
+
+?mc
+Q: La soluzione di $y'=e^{-y}$, $y(0)=0$ è
+O: $\ln(1+t)$ per $t>-1$
+O: $e^{t}-1$
+O: $-\ln(1-t)$ per $t<1$
+O: Nessuna delle precedenti
+A: 1
+W: $e^y\,dy=dt\Rightarrow e^y=t+1$.
+
+?vf
+Q: Le soluzioni costanti di $y'=y(1-y)$ sono $y\equiv0$ e $y\equiv1$.
+A: V
+W: Sono gli zeri di $h(y)=y(1-y)$.
+
+?mc
+Q: La soluzione di $y'=-\frac{y}{t}$, $y(1)=2$, per $t>0$ è
+O: $2t$
+O: $\frac2t$
+O: $2e^{-t}$
+O: Nessuna delle precedenti
+A: 2
+W: $\ln|y|=-\ln t+c$: $y=\frac Ct$, $C=2$.
+
+#lesson 9.3 Lineari del primo ordine
+goal: Risolvere $y'+a(t)y=b(t)$ con il fattore integrante.
+
+::thm Formula risolutiva
+Per $y'+a(t)\,y=b(t)$ con $a,b$ continue su $I$, posto $A(t)$ una primitiva di $a$:
+$$y(t)=e^{-A(t)}\left(\int b(t)\,e^{A(t)}\,dt+C\right).$$
+Equivalente: moltiplica per $e^{A(t)}$ e riconosci $\big(y\,e^{A}\big)'=b\,e^{A}$.
+
+::example base $y'+2y=4$, $y(0)=0$.
++ Fattore: $e^{2t}$: $(ye^{2t})'=4e^{2t}\Rightarrow ye^{2t}=2e^{2t}+C$.
++ Dato: $y=2+Ce^{-2t}$, $y(0)=0\Rightarrow C=-2$.
+= $y=2(1-e^{-2t})$: tende all'equilibrio $y=2$.
+
+::example medio $y'+\frac yt=1$, $y(1)=1$, per $t>0$.
++ Fattore: $A=\ln t$, $e^A=t$: $(ty)'=t\Rightarrow ty=\frac{t^2}2+C$.
++ Dato: $1=\frac12+C\Rightarrow C=\frac12$.
+= $y=\frac t2+\frac1{2t}$.
+
+::note Equazione di Bernoulli
+$y'+a(t)y=b(t)y^\alpha$ ($\alpha\ne0,1$) diventa lineare con $z=y^{1-\alpha}$.
+
+::trap
+- Il segno: con $y'=a(t)y+b(t)$ (forma "a destra") il fattore è $e^{-A}$; porta sempre l'equazione nella forma $y'+a\,y=b$.
+- La costante va messa **prima** di moltiplicare per $e^{-A}$.
+
+#quiz
+?mc
+Q: La soluzione di $y'+2y=4$, $y(0)=0$ è
+O: $2(1-e^{-2t})$
+O: $2(1+e^{-2t})$
+O: $4(1-e^{-2t})$
+O: Nessuna delle precedenti
+A: 1
+W: $y=2+Ce^{-2t}$, $C=-2$.
+
+?mc
+Q: La soluzione di $y'+\frac yt=1$, $y(1)=1$ ($t>0$) è
+O: $\frac t2+\frac1{2t}$
+O: $t$
+O: $\frac{t}{2}$
+O: Nessuna delle precedenti
+A: 1
+W: $(ty)'=t$, $ty=\frac{t^2}{2}+\frac12$.
+
+?vf
+Q: Tutte le soluzioni di $y'+2y=4$ tendono a 2 per $t\to+\infty$.
+A: V
+W: $y=2+Ce^{-2t}$.
+
+?mc
+Q: L'integrale generale di $y'=y+t$ è
+O: $Ce^t-t-1$
+O: $Ce^t+t+1$
+O: $Ce^{-t}+t-1$
+O: Nessuna delle precedenti
+A: 1
+W: $y'-y=t$: $(ye^{-t})'=te^{-t}$, $ye^{-t}=-(t+1)e^{-t}+C$.
+
+#lesson 9.4 Lineari del secondo ordine omogenee
+goal: Scrivere l'integrale generale di $ay''+by'+cy=0$ dalle radici dell'equazione caratteristica.
+
+::thm Struttura delle soluzioni
+Le soluzioni di $y''+a_1y'+a_0y=0$ formano uno **spazio vettoriale di dimensione 2**: integrale generale $c_1y_1+c_2y_2$ con $y_1,y_2$ linearmente indipendenti. Il problema di Cauchy con $y(t_0)$ e $y'(t_0)$ assegnati ha una e una sola soluzione su $\mathbb R$.
+
+::table
+Equazione caratteristica $a\lambda^2+b\lambda+c=0$ ¦ Integrale generale
+due radici reali $\lambda_1\ne\lambda_2$ ¦ $c_1e^{\lambda_1t}+c_2e^{\lambda_2t}$
+radice reale doppia $\lambda$ ¦ $(c_1+c_2t)\,e^{\lambda t}$
+complesse $\alpha\pm i\beta$ ¦ $e^{\alpha t}\big(c_1\cos\beta t+c_2\sin\beta t\big)$
+
+::example base $y''-3y'+2y=0$, $y(0)=0$, $y'(0)=1$.
++ Caratteristica: $\lambda^2-3\lambda+2=0\Rightarrow\lambda=1,2$.
++ Generale: $y=c_1e^t+c_2e^{2t}$; $c_1+c_2=0$, $c_1+2c_2=1$.
+= $y=e^{2t}-e^t$.
+
+::example medio $y''+2y'+5y=0$.
++ Caratteristica: $\lambda^2+2\lambda+5=0\Rightarrow\lambda=-1\pm2i$.
+= $y=e^{-t}(c_1\cos2t+c_2\sin2t)$: oscillazioni smorzate.
+
+::trap
+- Radice doppia: serve il fattore $t$ nel secondo termine, altrimenti hai una sola soluzione indipendente.
+- Complesse: la parte reale va nell'esponenziale, la parte immaginaria nella frequenza.
+
+#quiz
+?mc
+Q: L'integrale generale di $y''+4y=0$ è
+O: $c_1e^{2t}+c_2e^{-2t}$
+O: $c_1\cos2t+c_2\sin2t$
+O: $c_1\cos4t+c_2\sin4t$
+O: Nessuna delle precedenti
+A: 2
+W: $\lambda^2+4=0\Rightarrow\lambda=\pm2i$.
+
+?mc
+Q: L'integrale generale di $y''+2y'+y=0$ è
+O: $c_1e^{-t}+c_2e^{t}$
+O: $(c_1+c_2t)e^{-t}$
+O: $c_1e^{-t}$
+O: Nessuna delle precedenti
+A: 2
+W: $(\lambda+1)^2=0$: radice doppia $-1$.
+
+?mc
+Q: La soluzione di $y''+y=0$, $y(0)=1$, $y'(0)=0$ è
+O: $\sin t$
+O: $\cos t$
+O: $e^{-t}$
+O: Nessuna delle precedenti
+A: 2
+W: $y=c_1\cos t+c_2\sin t$, $c_1=1$, $c_2=0$.
+
+?vf
+Q: L'insieme delle soluzioni di un'equazione lineare omogenea del secondo ordine è uno spazio vettoriale di dimensione 2.
+A: V
+W: Integrale generale $c_1y_1+c_2y_2$ con $y_1,y_2$ indipendenti.
+
+?mc
+Q: L'integrale generale di $y''+2y'+5y=0$ è
+O: $e^{-t}(c_1\cos2t+c_2\sin2t)$
+O: $e^{-2t}(c_1\cos t+c_2\sin t)$
+O: $c_1e^{-t}+c_2e^{-5t}$
+O: Nessuna delle precedenti
+A: 1
+W: $\lambda=-1\pm2i$.
+
+#lesson 9.5 Non omogenee: metodo di somiglianza
+goal: Trovare una soluzione particolare quando il termine noto è polinomio, esponenziale, seno o coseno, anche in risonanza.
+
+::thm Struttura
+Integrale generale della non omogenea = integrale generale dell'**omogenea associata** + **una** soluzione particolare.
+
+::method Metodo di somiglianza per $ay''+by'+cy=g(t)$
+1. Risolvi l'omogenea (lezione 9.4).
+2. Se $g=P_n(t)e^{\mu t}$, cerca $y_p=t^m\,Q_n(t)\,e^{\mu t}$ con $Q_n$ polinomio dello stesso grado, dove $m$ è la molteplicità di $\mu$ come radice caratteristica (0 se non è radice).
+3. Se $g=e^{\alpha t}(A\cos\beta t+B\sin\beta t)$, cerca $y_p=t^m e^{\alpha t}(C\cos\beta t+D\sin\beta t)$, con $m$ molteplicità di $\alpha+i\beta$.
+4. Sostituisci, uguaglia i coefficienti, poi imponi i dati iniziali **sull'integrale generale completo**.
+
+::example medio $y''-y=e^t$.
++ Omogenea: $\lambda=\pm1$: $c_1e^t+c_2e^{-t}$.
++ Risonanza: $\mu=1$ è radice semplice: $y_p=Ate^t$.
++ Coefficienti: $y_p''-y_p=2Ae^t=e^t\Rightarrow A=\frac12$.
+= $y=c_1e^t+c_2e^{-t}+\frac t2e^t$.
+
+::example esame $y''+4y=\sin2t$.
++ Risonanza: $2i$ è radice: $y_p=t(C\cos2t+D\sin2t)$.
++ Calcolo: sostituendo si ottiene $C=-\frac14$, $D=0$.
+= $y_p=-\frac t4\cos2t$: in risonanza l'ampiezza cresce linearmente.
+
+::trap
+- Imporre i dati iniziali sulla sola omogenea: sbagliato, vanno imposti su omogenea + particolare.
+- In risonanza la prova "senza $t$" dà un'identità impossibile: è il segnale per moltiplicare per $t$.
+
+#quiz
+?mc
+Q: Una soluzione particolare di $y''+y=t$ è
+O: $t$
+O: $t^2$
+O: $\sin t$
+O: Nessuna delle precedenti
+A: 1
+W: $y_p=t$: $y_p''+y_p=0+t$.
+
+?mc
+Q: Una soluzione particolare di $y''-y=e^t$ è
+O: $\frac12e^t$
+O: $\frac t2e^t$
+O: $te^t$
+O: Nessuna delle precedenti
+A: 2
+W: $1$ è radice semplice: $y_p=Ate^t$, $2A=1$.
+
+?mc
+Q: Per $y''-2y'+y=e^t$ la soluzione particolare va cercata nella forma
+O: $Ae^t$
+O: $Ate^t$
+O: $At^2e^t$
+O: Nessuna delle precedenti
+A: 3
+W: $1$ è radice doppia ($m=2$); si trova $y_p=\frac{t^2}{2}e^t$.
+
+?mc
+Q: Una soluzione particolare di $y''+2y'+y=\sin t$ è
+O: $-\frac12\cos t$
+O: $\frac12\sin t$
+O: $-\frac12\sin t$
+O: Nessuna delle precedenti
+A: 1
+W: Con $y_p=A\cos t+B\sin t$: $2B\cos t-2A\sin t=\sin t$, quindi $B=0$, $A=-\frac12$.
+
+?vf
+Q: L'integrale generale di $y''-y=e^{2t}$ è $c_1e^t+c_2e^{-t}+\frac13e^{2t}$.
+A: V
+W: $2$ non è radice: $y_p=Ae^{2t}$, $4A-A=1$.
+
+#bank
+?vf
+Q: Se $f$ è continua, il problema di Cauchy $y'=f(t,y)$, $y(t_0)=y_0$ ha sempre un'unica soluzione locale.
+A: F
+W: La continuità dà l'esistenza, non l'unicità: $y'=\sqrt{|y|}$, $y(0)=0$.
+
+?mc
+Q: La soluzione del problema $y'=y^2$, $y(0)=1$ è
+O: $y=\frac{1}{1-t}$ per $t<1$
+O: $y=e^{t}$ per $t\in\mathbb R$
+O: $y=\frac{1}{1+t}$ per $t>-1$
+O: Nessuna delle precedenti
+A: 1
+W: $-\frac1y=t+c$, $c=-1$.
+
+?mc
+Q: La soluzione di $y'+2y=4$, $y(0)=0$ è
+O: $2-2e^{-2t}$
+O: $2+2e^{-2t}$
+O: $4-4e^{-2t}$
+O: Nessuna delle precedenti
+A: 1
+W: $y=2+Ce^{-2t}$, $C=-2$.
+
+?mc
+Q: L'integrale generale di $y''-3y'+2y=0$ è
+O: $c_1e^{-t}+c_2e^{-2t}$
+O: $c_1e^{t}+c_2e^{2t}$
+O: $(c_1+c_2t)e^{t}$
+O: Nessuna delle precedenti
+A: 2
+W: $\lambda^2-3\lambda+2=0$: $\lambda=1,2$.
+
+?mc
+Q: Una soluzione particolare di $y''+4y=\sin2t$ è
+O: $-\frac{t}{4}\cos2t$
+O: $\frac14\sin2t$
+O: $-\frac14\cos2t$
+O: Nessuna delle precedenti
+A: 1
+W: Risonanza: $y_p=t(C\cos2t+D\sin2t)$ con $C=-\frac14$, $D=0$.
+
+?vf
+Q: Ogni soluzione di $y''+y'+y=0$ tende a 0 per $t\to+\infty$.
+A: V
+W: $\lambda=-\frac12\pm i\frac{\sqrt3}2$: $e^{-t/2}$ smorza le oscillazioni.
+
+?mc
+Q: La soluzione di $y''+y=0$, $y(0)=0$, $y'(0)=2$ è
+O: $2\cos t$
+O: $2\sin t$
+O: $\sin2t$
+O: Nessuna delle precedenti
+A: 2
+W: $c_1=0$, $c_2=2$.
+
+?vf
+Q: La differenza di due soluzioni di $y''+a_1y'+a_0y=g(t)$ è soluzione dell'equazione omogenea associata.
+A: V
+W: Per linearità il termine $g$ si cancella.
+
+?mc
+Q: La soluzione di $y'=\frac{y}{t}$, $y(1)=3$, per $t>0$ è
+O: $3t$
+O: $\frac3t$
+O: $3e^{t-1}$
+O: Nessuna delle precedenti
+A: 1
+W: $\ln|y|=\ln t+c$: $y=Ct$, $C=3$.
+
+#theory
+?th
+Q: Enuncia il teorema di esistenza e unicità locale per il problema di Cauchy del primo ordine. Mostra con esempi che le ipotesi sono importanti.
+A: Sia $f:A\to\mathbb R$, $A\subseteq\mathbb R^2$ aperto, continua e localmente lipschitziana in $y$ uniformemente rispetto a $t$ (ad esempio con $\partial_yf$ continua), e sia $(t_0,y_0)\in A$. Allora esiste $\delta>0$ tale che il problema $y'=f(t,y)$, $y(t_0)=y_0$ ammette una e una sola soluzione definita in $[t_0-\delta,t_0+\delta]$.
+
+Senza Lipschitz può mancare l'unicità: $y'=\sqrt{|y|}$, $y(0)=0$ ha le soluzioni $y\equiv0$ e $y=\frac{t^2}4$ per $t\ge0$ (0 per $t<0$). Il risultato è locale: $y'=y^2$, $y(0)=1$ ha soluzione $\frac1{1-t}$, che esiste solo per $t<1$.
+K: Ipotesi: $f$ continua e localmente lipschitziana in $y$
+K: Tesi: esiste un intervallo con una e una sola soluzione
+K: Controesempio alla unicità ($\sqrt{|y|}$)
+K: Esempio di soluzione che esplode (carattere locale)
+
+?th
+Q: Descrivi la struttura delle soluzioni di un'equazione lineare del secondo ordine a coefficienti costanti e come si trova l'integrale generale.
+A: Per l'equazione omogenea $y''+a_1y'+a_0y=0$ le soluzioni formano uno spazio vettoriale di dimensione 2; con le radici $\lambda_1,\lambda_2$ di $\lambda^2+a_1\lambda+a_0=0$: se reali distinte $c_1e^{\lambda_1t}+c_2e^{\lambda_2t}$; se reale doppia $(c_1+c_2t)e^{\lambda t}$; se complesse $\alpha\pm i\beta$, $e^{\alpha t}(c_1\cos\beta t+c_2\sin\beta t)$.
+
+Per la non omogenea $y''+a_1y'+a_0y=g(t)$ l'integrale generale è la somma dell'integrale generale dell'omogenea e di una soluzione particolare, che per termini noti di tipo polinomio·esponenziale o seno/coseno si cerca con il metodo di somiglianza (moltiplicando per $t^m$ in caso di risonanza). Il problema di Cauchy con $y(t_0)$, $y'(t_0)$ assegnati ha una e una sola soluzione su $\mathbb R$.
+K: Spazio delle soluzioni dell'omogenea di dimensione 2
+K: I tre casi dell'equazione caratteristica
+K: Non omogenea = omogenea + particolare
+K: Metodo di somiglianza con la risonanza
+
+#sheet
+Argomento ¦ Da ricordare
+Esistenza e unicità ¦ $f$ continua + lipschitziana in $y$ ⇒ soluzione locale unica
+Controesempi ¦ $y'=\sqrt{\lvert y\rvert}$, $y(0)=0$: non unica; $y'=y^2$: esplode
+Separabili ¦ prima le costanti ($h(\bar y)=0$), poi $\int\frac{dy}{h(y)}=\int g\,dt$
+Lineari 1° ordine ¦ $y=e^{-A}\left(\int be^{A}+C\right)$, $A'=a$
+Caratteristica ¦ reali $e^{\lambda_1t},e^{\lambda_2t}$; doppia $(c_1+c_2t)e^{\lambda t}$; $\alpha\pm i\beta$: $e^{\alpha t}(\cos\beta t,\sin\beta t)$
+Non omogenee ¦ omogenea + particolare; somiglianza con $t^m$ in risonanza
+Dati iniziali ¦ si impongono sull'integrale generale completo

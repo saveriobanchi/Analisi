@@ -1,0 +1,371 @@
+#chapter 8
+title: Superfici, flusso, teoremi di Gauss e Stokes
+short: Superfici
+place: Ghiacciaio Stokes
+alt: 2450
+weight: 1.0
+program: Superfici parametriche regolari; piano tangente e versore normale; superfici cartesiane; area di una superficie; integrali di superficie; orientazione e flusso di un campo vettoriale; teorema della divergenza (Gauss); teorema di Stokes (del rotore).
+exam: Tipicamente una multipla di calcolo (area di una superficie, integrale di superficie su sfera o grafico, **flusso** attraverso una superficie chiusa, quasi sempre più rapido con la divergenza) e Vero/Falso sugli enunciati di Gauss e Stokes e sulle identità $\operatorname{div}\operatorname{rot}=0$.
+
+#lesson 8.1 Superfici parametriche e versore normale
+goal: Parametrizzare sfera, cilindro, cono e grafici e calcolare il vettore normale $r_u\times r_v$.
+
+::idea
+Una superficie è descritta da **due** parametri, come una mappa: $r(u,v)$ dice dove sta il punto. Le derivate $r_u$ e $r_v$ sono due vettori tangenti; il loro prodotto vettoriale è **normale** alla superficie e la sua lunghezza misura quanto si dilata l'area.
+
+::def Superficie regolare
+$r:K\subset\mathbb R^2\to\mathbb R^3$ di classe $C^1$, iniettiva all'interno di $K$, con $r_u\times r_v\ne0$ (salvo il bordo). Il versore normale è $n=\frac{r_u\times r_v}{|r_u\times r_v|}$.
+
+::table
+Superficie ¦ Parametrizzazione ¦ $r_u\times r_v$ (o il suo modulo)
+Grafico $z=g(x,y)$ ¦ $(x,y,g(x,y))$ ¦ $(-g_x,-g_y,1)$, modulo $\sqrt{1+g_x^2+g_y^2}$
+Sfera di raggio $R$ ¦ $(R\sin\varphi\cos\theta,R\sin\varphi\sin\theta,R\cos\varphi)$ ¦ modulo $R^2\sin\varphi$, normale uscente
+Cilindro $x^2+y^2=R^2$ ¦ $(R\cos\theta,R\sin\theta,z)$ ¦ modulo $R$
+Cono $z=\sqrt{x^2+y^2}$ ¦ $(\rho\cos\theta,\rho\sin\theta,\rho)$ ¦ modulo $\sqrt2\,\rho$
+
+::example base Normale al grafico $z=x^2+y^2$ in $(1,1,2)$.
++ Formula: $(-g_x,-g_y,1)=(-2x,-2y,1)$.
+= In $(1,1)$: $(-2,-2,1)$, rivolto verso l'alto (terza componente positiva). Il piano tangente è $z=2+2(x-1)+2(y-1)$.
+
+::trap
+- L'ordine conta: $r_v\times r_u=-r_u\times r_v$ inverte l'orientazione.
+- Per la sfera in sferiche, $r_\varphi\times r_\theta$ punta verso l'esterno; $r_\theta\times r_\varphi$ verso l'interno.
+
+#quiz
+?mc
+Q: Un vettore normale al grafico di $z=g(x,y)$ è
+O: $(g_x,g_y,1)$
+O: $(-g_x,-g_y,1)$
+O: $(g_x,g_y,0)$
+O: Nessuna delle precedenti
+A: 2
+W: Con $r=(x,y,g)$: $r_x\times r_y=(1,0,g_x)\times(0,1,g_y)=(-g_x,-g_y,1)$. Anche $(g_x,g_y,-1)$ va bene: è l'opposto.
+
+?vf
+Q: Per la sfera parametrizzata in coordinate sferiche, $|r_\varphi\times r_\theta|=R^2\sin\varphi$.
+A: V
+W: È lo stesso fattore dello Jacobiano delle sferiche, con $r=R$ fissato.
+
+?mc
+Q: Il modulo di $r_\theta\times r_z$ per il cilindro $(R\cos\theta,R\sin\theta,z)$ è
+O: 1
+O: $R$
+O: $R^2$
+O: Nessuna delle precedenti
+A: 2
+W: $r_\theta=(-R\sin\theta,R\cos\theta,0)$, $r_z=(0,0,1)$: prodotto $(R\cos\theta,R\sin\theta,0)$.
+
+?vf
+Q: Scambiando l'ordine dei parametri, il versore normale cambia verso.
+A: V
+W: $r_v\times r_u=-(r_u\times r_v)$.
+
+#lesson 8.2 Area di una superficie e integrali di superficie
+goal: Calcolare l'area di una superficie e $\iint_S f\,dS$ su sfere, coni e grafici.
+
+::def Area e integrale di superficie
+$$\text{Area}(S)=\iint_K|r_u\times r_v|\,du\,dv,\qquad \iint_S f\,dS=\iint_K f\big(r(u,v)\big)\,|r_u\times r_v|\,du\,dv .$$
+Per un grafico $z=g(x,y)$ su $D$: $dS=\sqrt{1+g_x^2+g_y^2}\,dx\,dy$. Come la prima specie, non dipende dall'orientazione.
+
+::example medio Area del paraboloide $z=x^2+y^2$ sopra il disco $x^2+y^2\le1$.
++ Elemento: $\sqrt{1+4x^2+4y^2}=\sqrt{1+4\rho^2}$.
++ Polari: $\int_0^{2\pi}\!\int_0^1\sqrt{1+4\rho^2}\,\rho\,d\rho\,d\theta=2\pi\cdot\frac1{12}\big[(1+4\rho^2)^{3/2}\big]_0^1$.
+= $\frac\pi6\big(5\sqrt5-1\big)$.
+
+::example base $\iint_S z\,dS$, $S$ semisfera superiore di raggio 1.
++ Sferiche: $z=\cos\varphi$, $dS=\sin\varphi\,d\varphi\,d\theta$, $\varphi\in[0,\frac\pi2]$.
+= $2\pi\int_0^{\pi/2}\cos\varphi\sin\varphi\,d\varphi=\pi$.
+
+::trap
+- Dimenticare il fattore $|r_u\times r_v|$ (l'analogo del $\rho$ delle polari).
+- Area della sfera $4\pi R^2$, non $\frac43\pi R^3$ (quello è il volume).
+
+#quiz
+?mc
+Q: L'area della superficie laterale del cono $z=\sqrt{x^2+y^2}$, $0\le z\le1$, è
+O: $\pi$
+O: $\sqrt2\,\pi$
+O: $2\pi$
+O: Nessuna delle precedenti
+A: 2
+W: $dS=\sqrt{1+1}\,dx\,dy$ sul disco di raggio 1.
+
+?mc
+Q: L'area del pezzo di piano $z=x+y$ che sta sopra il disco $x^2+y^2\le1$ è
+O: $\pi$
+O: $\sqrt2\,\pi$
+O: $\sqrt3\,\pi$
+O: Nessuna delle precedenti
+A: 3
+W: $\sqrt{1+1+1}\cdot\pi$.
+
+?mc
+Q: $\iint_S z\,dS$ sulla semisfera superiore di raggio 1 vale
+O: $\pi$
+O: $2\pi$
+O: $\frac{2\pi}{3}$
+O: Nessuna delle precedenti
+A: 1
+W: $2\pi\int_0^{\pi/2}\cos\varphi\sin\varphi\,d\varphi=\pi$. (Il valore $\frac{2\pi}3$ è il volume della semisfera.)
+
+?mc
+Q: L'area della sfera di raggio $R$ è
+O: $\frac43\pi R^3$
+O: $4\pi R^2$
+O: $2\pi R^2$
+O: Nessuna delle precedenti
+A: 2
+W: $\int_0^{2\pi}\!\int_0^\pi R^2\sin\varphi\,d\varphi\,d\theta$.
+
+#lesson 8.3 Flusso di un campo attraverso una superficie
+goal: Calcolare il flusso $\iint_S F\cdot n\,dS$ scegliendo l'orientazione richiesta.
+
+::idea
+Il flusso misura **quanto campo attraversa** la superficie: se $F$ è la velocità di un fluido, è il volume che passa per unità di tempo. Conta solo la componente normale $F\cdot n$, e il segno dipende dal verso scelto per $n$.
+
+::def Flusso
+Per $S$ orientata dal versore $n$:
+$$\Phi_S(F)=\iint_S F\cdot n\,dS=\iint_K F\big(r(u,v)\big)\cdot\big(r_u\times r_v\big)\,du\,dv$$
+(se $r_u\times r_v$ ha il verso di $n$; altrimenti cambia segno). Per una superficie chiusa si usa di solito la normale **uscente**.
+
+::example base Flusso di $F=(x,y,z)$ uscente dalla sfera di raggio $R$.
++ Normale: $n=\frac{(x,y,z)}{R}$, quindi $F\cdot n=\frac{x^2+y^2+z^2}{R}=R$.
+= $\Phi=R\cdot4\pi R^2=4\pi R^3$.
+
+::example medio Flusso di $F=(0,0,1)$ attraverso il disco $z=0$, $x^2+y^2\le1$, normale verso l'alto.
++ Normale: $n=(0,0,1)$, $F\cdot n=1$.
+= $\Phi=\text{area}=\pi$. Con la normale verso il basso: $-\pi$.
+
+::trap
+- Il flusso dipende dall'orientazione; l'area e $\iint f\,dS$ no.
+- Su una superficie chiusa, prima di parametrizzare pezzo per pezzo chiediti se Gauss fa prima.
+
+#quiz
+?mc
+Q: Il flusso di $F=(x,y,z)$ uscente dalla sfera di raggio $R$ è
+O: $4\pi R^2$
+O: $4\pi R^3$
+O: $\frac43\pi R^3$
+O: Nessuna delle precedenti
+A: 2
+W: $F\cdot n=R$ su tutta la sfera: $R\cdot4\pi R^2$.
+
+?mc
+Q: Il flusso di $F=(x,y,z)$ attraverso la semisfera superiore unitaria, normale verso l'esterno, è
+O: $\pi$
+O: $2\pi$
+O: $\frac{2\pi}{3}$
+O: Nessuna delle precedenti
+A: 2
+W: $F\cdot n=1$: flusso uguale all'area $2\pi$.
+
+?vf
+Q: Il flusso di un campo attraverso una superficie non dipende dall'orientazione scelta.
+A: F
+W: Cambiando il verso di $n$ il flusso cambia segno.
+
+?mc
+Q: Il flusso di $F=(0,0,1)$ attraverso il disco $z=0$, $x^2+y^2\le1$, orientato con normale verso il basso è
+O: $\pi$
+O: $-\pi$
+O: 0
+O: Nessuna delle precedenti
+A: 2
+W: $F\cdot n=-1$ su tutto il disco.
+
+#lesson 8.4 Teorema della divergenza (Gauss)
+goal: Calcolare il flusso uscente da una superficie chiusa con un integrale triplo della divergenza.
+
+::thm Teorema della divergenza
+Sia $E\subset\mathbb R^3$ un dominio regolare con bordo $\partial E$ orientato con la normale **uscente** e $F$ di classe $C^1$ su un aperto che contiene $E$. Allora
+$$\iint_{\partial E}F\cdot n\,dS=\iiint_E\operatorname{div}F\,dx\,dy\,dz .$$
+Conseguenze: un campo a divergenza nulla ha flusso uscente nullo da ogni superficie chiusa (che racchiude solo punti del dominio); il flusso di un rotore attraverso una superficie chiusa è nullo ($\operatorname{div}\operatorname{rot}=0$).
+
+::example base Flusso di $F=(x,y,z)$ uscente dalla sfera di raggio $R$, con Gauss.
++ Divergenza: $\operatorname{div}F=3$.
+= $\Phi=3\cdot\frac43\pi R^3=4\pi R^3$, come il calcolo diretto.
+
+::example medio Flusso di $F=(x,y,0)$ uscente dal cilindro chiuso $x^2+y^2\le1$, $0\le z\le2$.
++ Divergenza: $\operatorname{div}F=2$.
++ Volume: $\pi\cdot1^2\cdot2=2\pi$.
+= $\Phi=4\pi$. Diretto servirebbero tre pezzi (laterale, base, coperchio).
+
+::trap
+- Serve la normale uscente e $F\in C^1$ su tutto $E$: per $F=\frac{x}{|x|^3}$ e una sfera centrata nell'origine il teorema non si applica.
+- Se la superficie non è chiusa, chiudila con un pezzo semplice e sottrai quel flusso.
+
+#quiz
+?mc
+Q: Il flusso di $F=(0,0,z)$ uscente dalla sfera unitaria è
+O: $\frac{4\pi}{3}$
+O: $4\pi$
+O: 0
+O: Nessuna delle precedenti
+A: 1
+W: $\operatorname{div}F=1$: flusso uguale al volume della palla.
+
+?mc
+Q: Il flusso di $F=(x,y,0)$ uscente dal cilindro chiuso $x^2+y^2\le1$, $0\le z\le2$, è
+O: $2\pi$
+O: $4\pi$
+O: $6\pi$
+O: Nessuna delle precedenti
+A: 2
+W: $\operatorname{div}F=2$ per il volume $2\pi$.
+
+?vf
+Q: Il flusso uscente di un campo $C^1$ a divergenza nulla attraverso il bordo di un dominio regolare è nullo.
+A: V
+W: Teorema della divergenza con $\operatorname{div}F=0$.
+
+?mc
+Q: Il flusso di $F=(0,0,z^2)$ uscente dal cubo $[0,1]^3$ è
+O: 0
+O: 1
+O: 2
+O: Nessuna delle precedenti
+A: 2
+W: $\operatorname{div}F=2z$; $\iiint2z=1$.
+
+?vf
+Q: Se $G\in C^2(\mathbb R^3)$, il flusso di $\operatorname{rot}G$ uscente da ogni sfera è nullo.
+A: V
+W: $\operatorname{div}\operatorname{rot}G=0$ e teorema della divergenza.
+
+#lesson 8.5 Teorema di Stokes
+goal: Trasformare una circuitazione lungo una curva nel flusso del rotore attraverso una superficie che la ha come bordo.
+
+::thm Teorema di Stokes (del rotore)
+Sia $S$ una superficie regolare orientata con bordo $\partial S$ orientato **coerentemente** (regola della mano destra: camminando sul bordo con la testa verso $n$, la superficie resta a sinistra) e $F$ di classe $C^1$ su un aperto che contiene $S$. Allora
+$$\oint_{\partial S}F\cdot dr=\iint_S\operatorname{rot}F\cdot n\,dS .$$
+Nel piano ($S=D$, $n=(0,0,1)$) ritrovi la formula di Green.
+
+::example medio $F=(-y,x,0)$, $S$ semisfera superiore unitaria con normale uscente.
++ Bordo: la circonferenza unitaria nel piano $z=0$, antioraria vista dall'alto: circuitazione $2\pi$ (capitolo 7).
++ Rotore: $\operatorname{rot}F=(0,0,2)$. Conviene sostituire la semisfera con il disco, che ha lo stesso bordo: $\iint_D2\,dS=2\pi$.
+= Entrambe le strade danno $2\pi$: per Stokes il flusso del rotore dipende solo dal bordo.
+
+::trap
+- Orientazione incoerente tra bordo e normale cambia il segno.
+- Stokes vale per qualunque superficie con quel bordo: scegli la più semplice (spesso un disco piano).
+
+#quiz
+?mc
+Q: Con $F=(-y,x,0)$, il flusso di $\operatorname{rot}F$ attraverso la semisfera superiore unitaria (normale uscente) è
+O: $\pi$
+O: $2\pi$
+O: $4\pi$
+O: Nessuna delle precedenti
+A: 2
+W: Per Stokes è la circuitazione sul bordo, $2\pi$.
+
+?vf
+Q: Due superfici con lo stesso bordo, orientate coerentemente, hanno lo stesso flusso del rotore di un campo $C^1$.
+A: V
+W: Per Stokes entrambi i flussi sono uguali alla circuitazione sul bordo comune.
+
+?vf
+Q: La formula di Green è il caso piano del teorema di Stokes.
+A: V
+W: Con $S$ nel piano $z=0$ e $n=(0,0,1)$: $\operatorname{rot}F\cdot n=Q_x-P_y$.
+
+?mc
+Q: Il rotore di $F=(-y,x,0)$ è
+O: $(0,0,1)$
+O: $(0,0,2)$
+O: $(0,0,-2)$
+O: Nessuna delle precedenti
+A: 2
+W: $Q_x-P_y=1-(-1)=2$.
+
+#bank
+?mc
+Q: L'area del paraboloide $z=x^2+y^2$ sopra il disco $x^2+y^2\le1$ è
+O: $\frac{\pi}{6}(5\sqrt5-1)$
+O: $\frac{\pi}{6}5\sqrt5$
+O: $\frac{\pi}{3}(5\sqrt5-1)$
+O: Nessuna delle precedenti
+A: 1
+W: $2\pi\int_0^1\sqrt{1+4\rho^2}\,\rho\,d\rho=\frac\pi6(5\sqrt5-1)$.
+
+?mc
+Q: Il flusso del campo $F=(x,y,z)$ uscente dalla sfera $x^2+y^2+z^2=4$ è
+O: $16\pi$
+O: $32\pi$
+O: $8\pi$
+O: Nessuna delle precedenti
+A: 2
+W: $\operatorname{div}F=3$, volume $\frac43\pi\cdot8$: $3\cdot\frac{32\pi}{3}=32\pi$.
+
+?vf
+Q: Sia $F\in C^1(\mathbb R^3)$ con $\operatorname{div}F=0$. Allora il flusso di $F$ uscente da ogni sfera è nullo.
+A: V
+W: Teorema della divergenza.
+
+?vf
+Q: L'integrale di superficie $\iint_S f\,dS$ cambia segno se si inverte l'orientazione di $S$.
+A: F
+W: Non dipende dall'orientazione: è il flusso di un campo che cambia segno.
+
+?mc
+Q: $\iint_S z\,dS$ sulla semisfera superiore di raggio 1 vale
+O: $\pi$
+O: $2\pi$
+O: $\frac{\pi}{2}$
+O: Nessuna delle precedenti
+A: 1
+W: $2\pi\int_0^{\pi/2}\cos\varphi\sin\varphi\,d\varphi$.
+
+?mc
+Q: Il flusso di $F=(x,y,0)$ uscente dal cilindro chiuso $x^2+y^2\le1$, $0\le z\le2$, è
+O: $2\pi$
+O: $4\pi$
+O: $8\pi$
+O: Nessuna delle precedenti
+A: 2
+W: $\operatorname{div}F=2$, volume $2\pi$.
+
+?vf
+Q: Il teorema di Stokes afferma che $\oint_{\partial S}F\cdot dr=\iint_S\operatorname{div}F\,dS$.
+A: F
+W: A destra c'è il flusso del **rotore**: $\iint_S\operatorname{rot}F\cdot n\,dS$.
+
+?mc
+Q: L'area della superficie laterale del cono $z=\sqrt{x^2+y^2}$, $0\le z\le1$, è
+O: $\sqrt2\,\pi$
+O: $\pi$
+O: $2\sqrt2\,\pi$
+O: Nessuna delle precedenti
+A: 1
+W: $\sqrt2\cdot\text{area del disco unitario}$.
+
+#theory
+?th
+Q: Enuncia il teorema della divergenza (di Gauss).
+A: Sia $E\subset\mathbb R^3$ un dominio regolare (limitato, con frontiera $\partial E$ superficie regolare a pezzi), con $\partial E$ orientata dalla normale uscente $n$, e sia $F$ un campo vettoriale di classe $C^1$ in un aperto contenente $E$. Allora
+$$\iint_{\partial E}F\cdot n\,dS=\iiint_E\operatorname{div}F\,dx\,dy\,dz .$$
+Esempio: per $F=(x,y,z)$ e la sfera di raggio $R$, $\operatorname{div}F=3$ e il flusso uscente è $4\pi R^3$. Conseguenza: un campo a divergenza nulla ha flusso nullo attraverso ogni superficie chiusa che racchiude un dominio in cui è $C^1$.
+K: Ipotesi: dominio regolare, normale uscente, $F\in C^1$
+K: Formula flusso = integrale triplo della divergenza
+K: Esempio o conseguenza
+
+?th
+Q: Enuncia il teorema di Stokes e spiega il legame con la formula di Green.
+A: Sia $S$ una superficie regolare orientata dal versore normale $n$, con bordo $\partial S$ curva regolare a tratti orientata coerentemente con $n$ (regola della mano destra), e sia $F$ di classe $C^1$ in un aperto contenente $S$. Allora
+$$\oint_{\partial S}F\cdot dr=\iint_S\operatorname{rot}F\cdot n\,dS .$$
+Se $S$ è un dominio $D$ del piano $z=0$ con $n=(0,0,1)$ e $F=(P,Q,0)$, si ha $\operatorname{rot}F\cdot n=Q_x-P_y$ e si ottiene la formula di Green. Conseguenza: il flusso del rotore dipende solo dal bordo della superficie.
+K: Ipotesi con orientazione coerente bordo/normale
+K: Formula circuitazione = flusso del rotore
+K: Caso piano = Green
+K: Conseguenza o esempio
+
+#sheet
+Argomento ¦ Da ricordare
+Normale ¦ $r_u\times r_v$; grafico: $(-g_x,-g_y,1)$
+Elemento d'area ¦ grafico $\sqrt{1+g_x^2+g_y^2}$; sfera $R^2\sin\varphi$; cilindro $R$; cono $\sqrt2\rho$
+Area / integrale ¦ $\iint_K\lvert r_u\times r_v\rvert$; $\iint_Sf\,dS$ non dipende dall'orientazione
+Flusso ¦ $\iint_SF\cdot n\,dS$; cambia segno con $n$
+Gauss ¦ $\iint_{\partial E}F\cdot n=\iiint_E\operatorname{div}F$, normale uscente
+Stokes ¦ $\oint_{\partial S}F\cdot dr=\iint_S\operatorname{rot}F\cdot n$, orientazione coerente
+Identità ¦ $\operatorname{div}\operatorname{rot}=0$: flusso di un rotore su superficie chiusa nullo
+Valori noti ¦ sfera: area $4\pi R^2$; $F=(x,y,z)$: flusso $4\pi R^3$

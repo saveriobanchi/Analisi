@@ -1,0 +1,637 @@
+#chapter 1
+title: Lo spazio ℝⁿ, limiti e continuità
+short: Limiti e continuità
+place: Rifugio Weierstrass
+alt: 700
+weight: 1.5
+program: Lo spazio $\mathbb R^k$; norma, distanza e prodotto scalare; disuguaglianza di Schwarz; topologia di $\mathbb R^k$; insiemi limitati; successioni in $\mathbb R^k$; funzioni reali di più variabili; insiemi di livello; limiti finiti e infiniti; limiti direzionali; continuità; teorema delle funzioni combinate; teorema di Weierstrass.
+exam: In **tutte le otto prove** c'è almeno un quesito su limiti o continuità: un limite da calcolare (multipla), un Vero/Falso su un limite o sulla teoria dei limiti e, soprattutto, il primo passo della **funzione definita a tratti**, che è in ogni prova. È una parte stabile del punteggio: impararla bene paga sempre.
+
+#lesson 1.1 Norma, distanza e stime fondamentali
+goal: Usare senza esitare $|x|\le r$ e $|xy|\le r^2/2$: sono gli attrezzi di quasi tutti i limiti.
+
+::idea
+In Analisi 2 un punto ha più coordinate: $(x,y)\in\mathbb R^2$, $(x,y,z)\in\mathbb R^3$. Tutto quello che diremo su limiti e continuità si basa su un'unica idea: **misurare quanto due punti sono vicini**. Lo strumento è la norma.
+
+::def Norma, distanza, prodotto scalare
+$$\|x\|=\sqrt{x_1^2+\dots+x_n^2},\qquad d(x,y)=\|x-y\|,\qquad x\cdot y=x_1y_1+\dots+x_ny_n .$$
+Nel piano useremo sempre $r=\sqrt{x^2+y^2}$, la distanza dall'origine. Un **versore** è un vettore di norma 1: $v/\|v\|$.
+
+::thm Disuguaglianza di Cauchy-Schwarz e proprietà della norma
+$$|x\cdot y|\le \|x\|\,\|y\| ,$$
+con uguaglianza solo per vettori paralleli. Inoltre $\|x\|\ge 0$ (e $=0$ solo per $x=0$), $\|\lambda x\|=|\lambda|\,\|x\|$, $\|x+y\|\le\|x\|+\|y\|$ (triangolare).
+
+::table
+Stima ¦ Perché vale ¦ A cosa serve
+$|x|\le r,\ |y|\le r$ ¦ $x^2\le x^2+y^2$ ¦ $|x|^a|y|^b\le r^{a+b}$
+$|xy|\le r^2/2$ ¦ $(|x|-|y|)^2\ge 0$ ¦ termini misti $xy$, $x^2y^2$
+$\dfrac{x^2}{x^2+y^2}\le 1$ ¦ il numeratore è un pezzo del denominatore ¦ far sparire una frazione limitata
+$r\le |x|+|y|\le\sqrt2\,r$ ¦ si eleva al quadrato ¦ denominatori con valori assoluti
+
+::example base Maggiora $|x^2y|$ e $|x^3y^2|$ con una potenza di $r$.
++ Idea: ogni fattore $|x|$ o $|y|$ vale al massimo $r$: si contano i fattori.
++ Calcolo: $|x^2y|\le r^2\cdot r=r^3$, $\ |x^3y^2|\le r^5$.
+= Regola: un monomio di grado $k$ è maggiorato da $r^k$.
+
+::example medio Mostra che $\dfrac{|xy|}{\sqrt{x^2+y^2}}\le \dfrac r2$.
++ Calcolo: $\dfrac{|xy|}{r}\le\dfrac{r^2/2}{r}=\dfrac r2$.
+= Quando $r\to0$ anche $r/2\to0$: hai appena dimostrato che $xy/\sqrt{x^2+y^2}\to0$ nell'origine. È così che si dimostra un limite.
+
+::trap
+- $\sqrt{x^2+y^2}$ non è $|x|+|y|$ né $x+y$. Vale solo la catena $r\le|x|+|y|\le\sqrt2\,r$.
+- Le stime si fanno sui valori assoluti: per un limite serve $|xy|\le r^2/2$, non $xy\le r^2/2$.
+
+#quiz
+?mc
+Q: Quanto vale $\|(1,-2,2)\|$?
+O: $1$
+O: $5$
+O: $3$
+O: Nessuna delle precedenti
+A: 3
+W: $\sqrt{1+4+4}=\sqrt9=3$.
+
+?vf
+Q: Per ogni $(x,y)$ vale $|x|\,y^2\le r^3$, con $r=\sqrt{x^2+y^2}$.
+A: V
+W: Tre fattori, ognuno al massimo $r$: $|x|\,|y|\,|y|\le r^3$.
+
+?mc
+Q: Il versore di $v=(3,4)$ è
+O: $(3,4)$
+O: $(1/3,\,1/4)$
+O: $(3/5,\,4/5)$
+O: Nessuna delle precedenti
+A: 3
+W: $\|v\|=5$, quindi $v/\|v\|=(3/5,4/5)$.
+
+?vf
+Q: Per ogni $x,y\in\mathbb R^n$ vale $|x\cdot y|\le\|x\|\,\|y\|$, con uguaglianza se e solo se $x\cdot y=0$.
+A: F
+W: La disuguaglianza è Cauchy-Schwarz, ma l'uguaglianza vale per vettori **paralleli**, non ortogonali. Con $x\cdot y=0$ il primo membro è 0 e l'uguaglianza vale solo se uno dei due è nullo.
+
+?vf
+Q: $\sqrt{x^2+y^2}\le |x|+|y|$ per ogni $(x,y)\in\mathbb R^2$.
+A: V
+W: Elevando al quadrato: $x^2+y^2\le x^2+2|xy|+y^2$.
+
+#lesson 1.2 Insiemi aperti, chiusi, limitati, compatti
+goal: Dato un insieme descritto da disuguaglianze, dire subito se è aperto, chiuso, limitato, compatto, e qual è la frontiera.
+
+::idea
+Per parlare di "vicino" serve la **palla** $B_r(P)=\{Q:\|Q-P\|<r\}$, un disco senza bordo. Guardando cosa contiene ogni piccola palla attorno a un punto, lo classifichi rispetto a un insieme $A$: dentro, fuori, sul bordo.
+
+::def Punti interni, esterni, di frontiera, di accumulazione
+$P$ è **interno** ad $A$ se una palla $B_r(P)$ sta tutta in $A$; **esterno** se una palla non tocca $A$; **di frontiera** se ogni palla contiene punti di $A$ e punti fuori da $A$ (insieme $\partial A$).
+$P$ è **di accumulazione** per $A$ se ogni palla attorno a $P$ contiene punti di $A$ diversi da $P$. Un punto di $A$ non di accumulazione è **isolato**. I limiti si calcolano solo nei punti di accumulazione del dominio.
+
+::def Aperto, chiuso, limitato, compatto
+**Aperto**: ogni punto è interno. **Chiuso**: contiene tutta la frontiera (equivalente: il complementare è aperto; equivalente: contiene i limiti delle sue successioni convergenti). **Limitato**: sta in una palla $B_R(0)$. **Compatto**: chiuso e limitato.
+
+::method Riconoscere la natura di un insieme
+1. Disegna i bordi: sostituisci ogni disuguaglianza con un'uguaglianza.
+2. Con funzioni continue: solo disuguaglianze strette ($<,>,\ne$) danno un aperto; solo larghe ($\le,\ge,=$) danno un chiuso; miste, di solito né l'uno né l'altro.
+3. Limitato: cerca un cerchio che lo contenga. Rette o parabole senza restrizioni lo rendono illimitato.
+4. Compatto = chiuso e limitato: è l'ipotesi di Weierstrass.
+
+::example base $A=\{1\le x^2+y^2<4\}$.
++ Bordo: $x^2+y^2=1$ (inclusa) e $x^2+y^2=4$ (esclusa).
++ Natura: contiene una parte di frontiera e non l'altra: né aperto né chiuso. Limitato (raggio 2), quindi non compatto solo perché non chiuso.
+= Né aperto né chiuso, limitato, non compatto.
+
+::example esame $E=\{0<x^2+y^2\le 1\}$.
++ Frontiera: la circonferenza unitaria **e l'origine**: ogni palla attorno a $(0,0)$ contiene punti di $E$ e il punto $(0,0)\notin E$.
++ Natura: non chiuso (manca l'origine), non aperto (contiene la circonferenza).
+= $(0,0)$ non sta in $E$ ma è di accumulazione: è la situazione tipica dei limiti in $(0,0)$ di funzioni non definite nell'origine.
+
+::trap
+- "Non aperto" non vuol dire "chiuso": un insieme può non essere né l'uno né l'altro; $\mathbb R^2$ e $\emptyset$ sono entrambe le cose.
+- Un punto isolato sta nella frontiera: $\{(0,0)\}$ è chiuso e la sua frontiera è il punto stesso.
+
+#quiz
+?vf
+Q: L'insieme $\{(x,y):x+y>1\}$ è aperto e limitato.
+A: F
+W: Aperto sì (disuguaglianza stretta con funzione continua), ma è un semipiano: illimitato.
+
+?vf
+Q: L'insieme $\{(x,y):x^2+y^2\le 9,\ y\ge0\}$ è compatto.
+A: V
+W: Solo $\le,\ge$: chiuso. Sta nel disco di raggio 3: limitato. Chiuso e limitato = compatto.
+
+?vf
+Q: L'insieme $\{(x,y):0<x^2+y^2\le1\}$ è chiuso.
+A: F
+W: L'origine è un punto di frontiera e non appartiene all'insieme.
+
+?mc
+Q: L'insieme $\{(x,y):x^2\le y<1\}$ è
+O: aperto
+O: compatto
+O: limitato, né aperto né chiuso
+O: Nessuna delle precedenti
+A: 3
+W: Disuguaglianze miste: né aperto né chiuso. Da $x^2\le y<1$ segue $|x|<1$, $0\le y<1$: limitato.
+
+?vf
+Q: Se $P$ è un punto di frontiera di $A$, allora $P\in A$.
+A: F
+W: La frontiera può stare fuori: per il disco aperto $x^2+y^2<1$ la circonferenza è frontiera e non appartiene all'insieme.
+
+#lesson 1.3 Dominio e curve di livello
+goal: Disegnare il dominio di una funzione di due variabili e capire la forma del grafico dalle curve di livello.
+
+::idea
+Il grafico di $f(x,y)$ è una superficie $z=f(x,y)$. Siccome disegnare superfici è difficile, si usano due strumenti piani, come in una carta topografica: il **dominio** e le **curve di livello**. La mappa di questa app è proprio questo: una vera $f(x,y)$ disegnata con le sue curve di livello.
+
+::def Dominio e insieme di livello
+Il dominio naturale è l'insieme dei punti in cui l'espressione ha senso. L'insieme di livello $c$ è
+$$L_c=\{(x,y)\in A:\ f(x,y)=c\},$$
+la "curva ad altezza $c$" proiettata sul piano.
+
+::method Trovare e disegnare il dominio
+1. Una condizione per pezzo: denominatore $\ne0$; radice di indice pari: argomento $\ge0$; logaritmo: argomento $>0$; $\arcsin,\arccos$: argomento in $[-1,1]$.
+2. Per ogni condizione disegna la curva di bordo e scegli il lato provando un punto comodo, come l'origine.
+3. Interseca le regioni. Bordo continuo se incluso, tratteggiato se escluso.
+4. Concludi con la natura: aperto, chiuso, limitato, compatto.
+
+::example medio $f(x,y)=\sqrt{4-x^2-y^2}+\ln(y-x^2)$.
++ Radice: $x^2+y^2\le4$: disco chiuso di raggio 2.
++ Logaritmo: $y>x^2$: sopra la parabola, parabola esclusa.
++ Intersezione: dentro il disco e sopra la parabola. Le curve si incontrano dove $y+y^2=4$, cioè $y=\frac{-1+\sqrt{17}}2$.
+= Limitato; né aperto né chiuso (contiene l'arco di circonferenza ma non quello di parabola).
+
+::example esame $f(x,y)=\arcsin(x^2+y^2-2)$: dominio e valori estremi.
++ Condizione: $-1\le x^2+y^2-2\le1 \iff 1\le x^2+y^2\le3$: corona circolare chiusa.
++ Natura: chiusa e limitata, quindi compatta; $f$ è continua.
+= Weierstrass garantisce max e min: $\max f=\pi/2$ sulla circonferenza esterna, $\min f=-\pi/2$ su quella interna.
+
+::note Cosa raccontano le curve di livello
+Circonferenze concentriche: simmetria di rotazione. Curve che si addensano: superficie ripida. **Rette per l'origine** (come per $xy/(x^2+y^2)$, che vale $m/(1+m^2)$ su $y=mx$): la funzione dipende solo dalla direzione, segnale che il limite nell'origine non esiste.
+
+::lab superfici f=xy path=line
+
+#quiz
+?mc
+Q: Il dominio di $f(x,y)=\dfrac{\ln(9-x^2-y^2)}{\sqrt{x-y}}$ è
+O: il disco chiuso di raggio 3
+O: il mezzo disco aperto di raggio 3 sotto la retta $y=x$
+O: il mezzo disco chiuso sotto la retta $y=x$
+O: Nessuna delle precedenti
+A: 2
+W: $9-x^2-y^2>0$ (disco aperto) e $x-y>0$ (radice al denominatore: stretta). Aperto e limitato.
+
+?vf
+Q: Le curve di livello di $f(x,y)=x-y^2$ sono parabole con asse orizzontale, tutte uguali e traslate.
+A: V
+W: $x-y^2=c\iff x=y^2+c$.
+
+?vf
+Q: Il dominio di $f(x,y)=\sqrt{x^2+y^2-1}$ è compatto.
+A: F
+W: È l'esterno del disco unitario, circonferenza inclusa: chiuso ma illimitato.
+
+?mc
+Q: Per $f(x,y)=x^2+4y^2$ la curva di livello $c=4$ è
+O: la circonferenza di raggio 2
+O: l'ellisse di semiassi 2 (lungo $x$) e 1 (lungo $y$)
+O: l'ellisse di semiassi 1 (lungo $x$) e 2 (lungo $y$)
+O: Nessuna delle precedenti
+A: 2
+W: $x^2+4y^2=4\iff \frac{x^2}{4}+y^2=1$: semiassi 2 e 1.
+
+#lesson 1.4 Il limite: definizione, restrizione, direzionali
+goal: Capire cosa chiede la definizione di limite in più variabili e usare il teorema di restrizione.
+
+::idea
+In una variabile ci si avvicina a $x_0$ solo da destra o da sinistra. Nel piano ci si avvicina da **infinite direzioni e lungo infinite curve**. Il limite esiste quando la funzione si avvicina allo stesso valore comunque ci si avvicini: basta un percorso "ribelle" e il limite non esiste.
+
+::def Limite finito
+Sia $P_0$ di accumulazione per il dominio $A$ di $f$. $\lim_{P\to P_0}f(P)=l$ se
+$$\forall\varepsilon>0\ \exists\delta>0:\ P\in A,\ 0<\|P-P_0\|<\delta\ \Rightarrow\ |f(P)-l|<\varepsilon .$$
+La condizione riguarda **tutto il disco** attorno a $P_0$, non una retta. Il valore in $P_0$ non conta ($0<\|P-P_0\|$).
+
+::thm Teorema di restrizione
+Se $\lim_{P\to P_0}f(P)=l$ e $C$ è un sottoinsieme del dominio **di cui $P_0$ è punto di accumulazione**, allora anche $\lim_{P\to P_0,\,P\in C}f(P)=l$.
+Conseguenza: se su due sottoinsiemi (due rette, una retta e una parabola) i limiti sono diversi, o su uno non esiste, il limite di $f$ non esiste.
+
+::thm Confronto (carabinieri)
+Se $|f(P)-l|\le g(P)$ vicino a $P_0$ e $g(P)\to0$, allora $f(P)\to l$. Caso molto usato: **limitata per infinitesima tende a 0**.
+
+::def Limite direzionale
+Per un versore $v$: $\lim_{t\to0}f(P_0+tv)$. È un limite in una variabile. Nell'origine si usano $v=(\cos\theta,\sin\theta)$ o le rette $y=mx$ e $x=0$.
+
+::exam
+L'errore più frequente del capitolo: "lungo tutte le rette il limite è $l$, quindi il limite è $l$". È **falso**: $\frac{x^2y}{x^4+y^2}$ tende a 0 lungo ogni retta ma vale $\frac12$ sulla parabola $y=x^2$. Uscito come Vero/Falso il 15 luglio 2026 (risposta: Falso). Altro classico (9 luglio 2025): il teorema di restrizione **senza** l'ipotesi "di accumulazione per $C$" è falso.
+
+::lab superfici f=parab path=parab
+
+#quiz
+?vf
+Q: Se lungo l'asse $x$ e lungo l'asse $y$ il limite in $(0,0)$ vale 0, allora il limite esiste e vale 0.
+A: F
+W: Sai solo che, **se** il limite esiste, vale 0. Esempio: $xy/(x^2+y^2)$ è nulla sugli assi ma vale $1/2$ su $y=x$.
+
+?vf
+Q: Se lungo $y=x$ il limite in $(0,0)$ vale 1 e lungo $y=0$ vale 0, il limite non esiste.
+A: V
+W: Teorema di restrizione: se esistesse, varrebbe lo stesso numero lungo ogni sottoinsieme.
+
+?vf
+Q: Se $\lim_{(x,y)\to(0,0)}f(x,y)=0$, allora per ogni $k$ il limite di $f(x,kx^2)$ per $x\to0$ vale 0.
+A: V
+W: Restrizione alla parabola $y=kx^2$, che passa per l'origine (di accumulazione per essa).
+
+?mc
+Q: Perché nella definizione di limite si chiede $0<\|P-P_0\|<\delta$ e non solo $\|P-P_0\|<\delta$?
+O: Per avere un disco aperto
+O: Perché il valore di $f$ in $P_0$ non conta: può non essere definita o valere altro
+O: Perché $\delta$ deve essere positivo
+O: Nessuna delle precedenti
+A: 2
+W: Il limite descrive il comportamento **vicino** a $P_0$, non in $P_0$.
+
+#lesson 1.5 Leggere i gradi e dimostrare che un limite non esiste
+goal: Prevedere in pochi secondi se un limite in $(0,0)$ esiste, e quando non esiste trovare due percorsi con valori diversi.
+
+::idea
+Quasi tutti i limiti d'esame sono rapporti $\frac00$. Vicino all'origine un monomio di grado $k$ si comporta come $r^k$: se il numeratore va a zero più in fretta del denominatore il rapporto tende a 0, altrimenti no. È solo una **previsione**, ma ti dice quale metodo usare.
+
+::method Lettura dei gradi
+1. Porta il punto nell'origine: per un limite in $(x_0,y_0)$ poni $u=x-x_0$, $v=y-y_0$.
+2. Sostituisci gli equivalenti (argomento $\to0$): $\sin u\sim u$, $1-\cos u\sim u^2/2$, $e^u-1\sim u$, $\ln(1+u)\sim u$.
+3. Confronta il grado $p$ del numeratore con $q$ del denominatore: $p>q$ probabilmente 0 (dimostralo con una stima); $p=q$ di solito non esiste (prova le rette); $p<q$ di solito infinito o non esiste.
+4. Denominatori sbilanciati come $x^4+y^2$: dai **peso** 1 a $x$ e 2 a $y$. Se i pesi coincidono, la curva rivelatrice è $y=kx^2$. In generale con $x^{2a}+y^{2b}$ prova $y=kx^{a/b}$.
+
+::method Dimostrare che non esiste: due percorsi
+1. Assi: $y=0$ e $x=0$. Se danno valori diversi, hai finito.
+2. Rette $y=mx$: se il risultato dipende da $m$, non esiste.
+3. Se tutte le rette danno lo stesso valore ma i gradi pesati sono uguali, prova la curva dei pesi ($y=kx^2$, $x=ky^2$, $y=kx^3$).
+4. Concludi citando la restrizione: "lungo $C_1$ vale $l_1$, lungo $C_2$ vale $l_2\ne l_1$: il limite non esiste".
+
+::table
+Limite in $(0,0)$ ¦ Gradi (pesi) ¦ Esito
+$\dfrac{x^3}{x^2+y^2}$ ¦ 3 contro 2 ¦ 0 (stima $|x|$)
+$\dfrac{xy}{x^2+y^2}$ ¦ 2 contro 2 ¦ non esiste ($m/(1+m^2)$)
+$\dfrac{x^2y}{x^4+y^2}$ ¦ pesi 4 contro 4 ¦ non esiste ($y=kx^2$)
+$\dfrac{y^2\ln(1+2|x|)}{x^2+y^2}$ ¦ 3 contro 2 ¦ 0
+$\dfrac{1-\cos(x^2+y^2)}{(x^2+y^2)^2}$ ¦ $\frac{r^4/2}{r^4}$ ¦ $\frac12$
+
+::example medio $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^2y}{x^4+y^2}$.
++ Assi: su $y=0$ e $x=0$ vale 0.
++ Rette: su $y=mx$: $\frac{mx^3}{x^4+m^2x^2}=\frac{mx}{x^2+m^2}\to0$. Tutte danno 0: non basta.
++ Pesi: $x$ peso 1, $y$ peso 2: tutto pesa 4. Su $y=kx^2$: $\frac{kx^4}{x^4+k^2x^4}=\frac{k}{1+k^2}$.
+= Con $k=1$ vale $\frac12$, sugli assi 0: il limite non esiste.
+
+::example esame 11 giugno 2025, n. 7: $f=\dfrac{x^2\sin y}{x^4+y^2}$. Il limite in $(0,0)$ vale: 0, $\frac12$, $-1$, nessuna.
++ Riconosci: $\sin y\sim y$: è l'esempio precedente travestito.
++ Percorsi: su $y=0$: 0. Su $y=x^2$: $\frac{x^2\sin x^2}{2x^4}=\frac12\cdot\frac{\sin x^2}{x^2}\to\frac12$.
+= Non esiste: **Nessuna delle precedenti**. Trappola: $\frac12$ è il limite lungo una curva, non il limite.
+
+::trap
+- Un percorso solo non dimostra niente: dà al più il candidato.
+- Nella curva $y=kx^2$ il parametro $k$ resta libero: è la dipendenza da $k$ che dimostra la non esistenza.
+- La lettura dei gradi non è una dimostrazione: in multipla basta per scegliere, ma va confermata quando hai tempo.
+
+#quiz
+?vf
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{xy}{x^2+y^4}$ esiste finito.
+A: F
+W: Su $y=x$: $\frac{x^2}{x^2+x^4}\to1$; su $x=0$: 0. Non esiste.
+S: 25 giugno 2025, fila A, n. 4
+
+?mc
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{xy^2}{x^2+y^4}$
+O: vale 0
+O: vale $\frac12$
+O: vale 1
+O: Nessuna delle precedenti
+A: 4
+W: Le rette danno 0, ma pesi: $x$ peso 2, $y$ peso 1. Su $x=ky^2$: $\frac{k}{k^2+1}$, dipende da $k$. Non esiste: nessuna delle precedenti.
+
+?vf
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{2xy}{x^2+3y^2}$ non esiste.
+A: V
+W: Su $y=mx$: $\frac{2m}{1+3m^2}$, che dipende da $m$ (0 per $m=0$, $\frac12$ per $m=1$).
+
+?mc
+Q: Quale curva conviene provare per $\dfrac{x^3y}{x^6+y^2}$ in $(0,0)$?
+O: $y=mx$
+O: $y=kx^2$
+O: $y=kx^3$
+O: Nessuna delle precedenti
+A: 3
+W: $x$ peso 1, $y$ peso 3: tutto pesa 6. Su $y=kx^3$ si ottiene $\frac{k}{1+k^2}$: non esiste.
+
+?vf
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^2y^2}{x^2y^2+(x-y)^2}$ non esiste.
+A: V
+W: Su $y=x$ vale 1, su $y=0$ vale 0. Trucco: guarda dove si annulla un pezzo del denominatore ($x=y$).
+
+#lesson 1.6 Dimostrare che un limite esiste: stime e polari
+goal: Dimostrare che $f\to l$ con una maggiorazione $|f-l|\le g$, $g\to0$, diretta o in coordinate polari.
+
+::idea
+Per dimostrare l'esistenza bisogna controllare **tutti i punti vicini insieme**, non una curva alla volta. Lo strumento è il confronto: cerchi una funzione semplice, che dipende solo da $r$ o da una coordinata, che sta sopra $|f-l|$ e tende a 0.
+
+::method Metodo A: stima diretta
+1. Trova il candidato $l$ (gradi o un percorso).
+2. Maggiora $|f-l|$ un pezzo alla volta con le stime di 1.1 e con $|\sin u|\le|u|$, $0\le1-\cos u\le u^2/2$, $0\le\ln(1+u)\le u$ per $u\ge0$.
+3. Arriva a una funzione che tende a 0 ($r$, $|x|$, $\ln(1+2|x|)$) e concludi con il confronto.
+
+::method Metodo B: coordinate polari, fatte bene
+1. Poni $x=x_0+r\cos\theta$, $y=y_0+r\sin\theta$.
+2. Riscrivi $f-l=F(r,\theta)$.
+3. Trova $|F(r,\theta)|\le g(r)$ con $g(r)\to0$ **indipendente da $\theta$**. Allora il limite è $l$.
+Se per ogni $\theta$ fissato $F\to0$ ma non hai una maggiorazione uniforme, hai solo calcolato i limiti direzionali: non hai dimostrato niente.
+
+::example base $\displaystyle\lim_{(0,0)}\frac{x^3+y^3}{x^2+y^2}$ in polari.
++ Polari: $\frac{r^3(\cos^3\theta+\sin^3\theta)}{r^2}=r(\cos^3\theta+\sin^3\theta)$.
++ Stima: $|\cos^3\theta+\sin^3\theta|\le|\cos\theta|^3+|\sin\theta|^3\le\cos^2\theta+\sin^2\theta=1$.
+= $|f|\le r\to0$, indipendente da $\theta$: il limite è 0.
+
+::example esame 22 gennaio 2025, n. 7: $\displaystyle\lim_{(0,0)}\frac{e^{x-y}-x-1+y}{2|x|+|y|}$. Opzioni: non esiste, 0, $\frac12$, nessuna.
++ Riconosci: con $u=x-y$ il numeratore è $e^u-1-u\sim u^2/2$: grado 2 contro 1, ci aspettiamo 0.
++ Stima: per $|u|\le1$ vale $|e^u-1-u|\le u^2$, e $|u|\le|x|+|y|\le 2|x|+|y|$.
++ Conclusione: $|f|\le\frac{(|x|+|y|)^2}{|x|+|y|}=|x|+|y|\to0$.
+= Risposta: **0**.
+
+::example esame 5 febbraio 2025, n. 7: $\displaystyle\lim_{(1,0)}\frac{y^2\ln x+\sin((x-1)^2+y^2)}{(x-1)^2+y^2}$.
++ Trasla: $u=x-1$, $\rho^2=u^2+y^2$: diventa $\frac{y^2\ln(1+u)}{\rho^2}+\frac{\sin\rho^2}{\rho^2}$.
++ Primo pezzo: $\left|\frac{y^2\ln(1+u)}{\rho^2}\right|\le|\ln(1+u)|\to0$.
++ Secondo pezzo: $\frac{\sin\rho^2}{\rho^2}\to1$ (limite notevole).
+= Il limite vale $0+1=$ **1**.
+
+::trap
+- Polari sbagliate: per $\frac{x^2y}{x^4+y^2}$ si ottiene $\frac{r\cos^2\theta\sin\theta}{r^2\cos^4\theta+\sin^2\theta}$, che per ogni $\theta$ fissato tende a 0, ma il limite non esiste: manca la maggiorazione uniforme.
+- Per maggiorare una frazione ingrandisci il numeratore o rimpicciolisci il denominatore, mai il contrario.
+
+::exam
+Il procedimento completo, in ordine: sostituisci (se è continua nel punto, il limite è il valore); trasla e usa gli equivalenti; leggi i gradi; se prevedi che non esista: assi, rette, curva dei pesi; se prevedi $l$: stima o polari uniformi; se è un prodotto, cerca **limitata per infinitesima**.
+
+#quiz
+?vf
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{y^2\ln(1+2|x|)}{x^2+y^2}$ esiste e vale 0.
+A: V
+W: $\frac{y^2}{x^2+y^2}\le1$ e $\ln(1+2|x|)\ge0$: $0\le f\le\ln(1+2|x|)\to0$.
+S: 11 giugno 2025, fila A, n. 3
+
+?mc
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{\sin(xy)}{\sqrt{x^2+y^2}}$ vale
+O: 1
+O: 0
+O: non esiste
+O: Nessuna delle precedenti
+A: 2
+W: $|\sin(xy)|\le|xy|\le r^2/2$: $|f|\le r/2\to0$.
+
+?vf
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{1-\cos(xy)}{x^2+y^2}=0$.
+A: V
+W: $0\le1-\cos(xy)\le\frac{(xy)^2}{2}\le\frac{r^4}{8}$: diviso $r^2$ dà $\le r^2/8\to0$.
+
+?mc
+Q: Per quali $\alpha>0$ si ha $\displaystyle\lim_{(0,0)}\frac{|x|^\alpha y}{x^2+y^2}=0$?
+O: $\alpha\ge1$
+O: $\alpha>1$
+O: $\alpha>2$
+O: Nessuna delle precedenti
+A: 2
+W: Grado $\alpha+1$ contro 2. Se $\alpha>1$: $|f|\le r^{\alpha-1}\to0$. Se $\alpha=1$: su $y=mx$ vale $\pm\frac{m}{1+m^2}$, non esiste.
+
+?vf
+Q: Se in polari $f(r\cos\theta,r\sin\theta)\to0$ per $r\to0$ per ogni $\theta$ fissato, allora $\lim_{(0,0)}f=0$.
+A: F
+W: Sono solo i limiti direzionali. Serve una maggiorazione indipendente da $\theta$. Controesempio: $\frac{x^2y}{x^4+y^2}$.
+
+#lesson 1.7 Continuità, funzioni a tratti, Weierstrass
+goal: Studiare la continuità nel punto speciale di una funzione definita a tratti (anche con parametro) ed enunciare Weierstrass con le sue ipotesi.
+
+::def Continuità
+$f$ è continua in $P_0\in A$ se $P_0$ è isolato, oppure se $\lim_{P\to P_0}f(P)=f(P_0)$. È continua su $A$ se lo è in ogni punto.
+
+::thm Funzioni combinate
+Somme, prodotti, quozienti (dove il denominatore non si annulla) e composizioni di funzioni continue sono continue. Polinomi, esponenziali, logaritmi, funzioni trigonometriche, radici e loro combinazioni sono continue nel loro dominio.
+
+::method Funzione definita a tratti: $f=g(x,y)$ fuori da $(0,0)$, $f(0,0)=a$
+1. Fuori dall'origine $f=g$ è continua per le funzioni combinate.
+2. Nell'origine calcola $\lim_{(0,0)}g$ con i metodi 1.5 e 1.6.
+3. $f$ è continua in $(0,0)$ se e solo se il limite esiste **e vale $a$**. Con un parametro: $a$ deve essere uguale al limite.
+
+::example esame 22 gennaio 2025, n. 8: $f=\dfrac{3y\sqrt{|xy|}}{|y|^3+2|x|}$, $f(0,0)=0$. È continua?
++ Assi: $f=0$ su entrambi: candidato 0.
++ Pesi: al denominatore $|y|^3$ e $|x|$: $x$ peso 3, $y$ peso 1. Il numeratore pesa $1+\frac{3+1}{2}=3$, come il denominatore: prova $x=y^3$.
++ Curva: su $x=y^3$: numeratore $3y\sqrt{y^4}=3y^3$, denominatore $3|y|^3$: $f=\pm1$.
+= Lungo $x=y^3$ con $y>0$, $f\to1\ne0$: **non è continua**.
+
+::thm Teorema di Weierstrass
+Sia $K\subset\mathbb R^n$ **non vuoto, chiuso e limitato** (compatto) e $f:K\to\mathbb R$ **continua**. Allora $f$ ha massimo e minimo assoluti su $K$.
+
+::table
+Ipotesi che manca ¦ Controesempio ¦ Cosa succede
+$K$ chiuso ¦ $x^2+y^2$ sul disco aperto $x^2+y^2<1$ ¦ si avvicina a 1 senza raggiungerlo
+$K$ limitato ¦ $f=x$ su $x\ge0$ ¦ cresce senza limite
+$f$ continua ¦ $1/(x^2+y^2)$, $f(0,0)=0$, disco chiuso ¦ illimitata vicino all'origine
+
+::trap
+- Il valore assegnato in $(0,0)$ non c'entra con il calcolo del limite: prima il limite di $g$, poi il confronto con $a$.
+- "Continua lungo ogni retta" non vuol dire continua: $\frac{x^2y}{x^4+y^2}$ con $f(0,0)=0$.
+- Weierstrass è sufficiente, non necessario: $e^{-x^2-y^2}$ ha massimo su tutto $\mathbb R^2$. E dice che max e min esistono, non dove sono.
+
+#quiz
+?mc
+Q: $f=\dfrac{e^{x^2+y^2}-1}{x^2+y^2}$ fuori dall'origine, $f(0,0)=a$. È continua su $\mathbb R^2$ se e solo se
+O: $a=0$
+O: $a=1$
+O: $a=e$
+O: Nessuna delle precedenti
+A: 2
+W: Con $t=x^2+y^2\to0$: $\frac{e^t-1}{t}\to1$.
+
+?vf
+Q: $f=\dfrac{xy}{x^2+y^2}$, $f(0,0)=0$, è continua in $(0,0)$.
+A: F
+W: Il limite non esiste (rette $y=mx$).
+
+?vf
+Q: Se $f$ è continua sul quadrato chiuso $[0,1]\times[0,1]$, allora $f$ è limitata.
+A: V
+W: Il quadrato chiuso è compatto: per Weierstrass $f$ ha massimo e minimo, quindi è limitata.
+
+?vf
+Q: Una funzione continua sul disco aperto $x^2+y^2<1$ ha sempre massimo.
+A: F
+W: Il disco aperto non è chiuso: $x^2+y^2$ non ha massimo.
+
+?mc
+Q: $f=\dfrac{1-\cos(x^2+y^2)}{(x^2+y^2)^2}$ fuori dall'origine, $f(0,0)=a$. È continua se e solo se
+O: $a=0$
+O: $a=1$
+O: $a=\frac12$
+O: Nessuna delle precedenti
+A: 3
+W: Con $t=x^2+y^2$: $\frac{1-\cos t}{t^2}\to\frac12$.
+
+#bank
+?vf
+Q: Se $\displaystyle\lim_{(x,y)\to(x_0,y_0)}f(x,y)=l$, allora per ogni sottoinsieme $C$ del dominio di $f$, con $P_0$ punto di accumulazione di $C$, vale $\displaystyle\lim_{(x,y)\to(x_0,y_0),\,(x,y)\in C}f(x,y)=l$.
+A: V
+W: È esattamente il teorema di restrizione.
+S: 9 luglio 2025, fila A, n. 1
+
+?vf
+Q: Se $\displaystyle\lim_{(x,y)\to(x_0,y_0)}f(x,y)=l$, allora per ogni sottoinsieme $C$ del dominio di $f$ vale $\displaystyle\lim_{(x,y)\to(x_0,y_0),\,(x,y)\in C}f(x,y)=l$.
+A: F
+W: Manca l'ipotesi che $P_0$ sia di accumulazione per $C$: se $C$ è lontano da $P_0$, il limite ristretto non ha neppure senso. Il dettaglio dell'ipotesi è tutto il quesito.
+S: 9 luglio 2025, fila B, n. 4
+
+?vf
+Q: Se per ogni versore $v$ vale $\lim_{t\to0}f(P_0+tv)=l$, con $l$ indipendente da $v$, allora $\lim_{P\to P_0}f(P)=l$.
+A: F
+W: Limiti direzionali tutti uguali non bastano. Controesempio: $\frac{x^2y}{x^4+y^2}$.
+S: 15 luglio 2026, n. 2
+
+?vf
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{y^2\ln(1+2|x|)}{x^2+y^2}$ esiste e vale 0.
+A: V
+W: $0\le f\le\ln(1+2|x|)\to0$.
+S: 11 giugno 2025, fila A, n. 3
+
+?vf
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^2\ln(1+3|y|)}{x^2+y^2}$ esiste e vale 0.
+A: V
+W: $0\le f\le\ln(1+3|y|)\to0$.
+S: 11 giugno 2025, fila B, n. 1
+
+?vf
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{xy}{x^2+y^4}$ esiste finito.
+A: F
+W: Su $y=x$: $\frac{x^2}{x^2+x^4}\to1$; su $x=0$: 0.
+S: 25 giugno 2025, fila A, n. 4
+
+?vf
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{xy}{x^4+y^2}$ non esiste.
+A: V
+W: Su $y=x$: $\frac{x^2}{x^4+x^2}\to1$; su $y=0$: 0.
+S: 25 giugno 2025, fila B, n. 2
+
+?vf
+Q: $\displaystyle\lim_{(x,y)\to(1,3)}\frac{|y-3|^3(\cos(2\pi y)-1)}{(x-1)^2+|y-3|^3}=0$.
+A: V
+W: $\frac{|y-3|^3}{(x-1)^2+|y-3|^3}\in[0,1]$ è limitata; $\cos(2\pi y)-1\to\cos6\pi-1=0$ è infinitesima. Limitata per infinitesima.
+S: esempio gennaio 2026, n. 5
+
+?mc
+Q: Sia $f(x,y)=\dfrac{x^2\sin y}{x^4+y^2}$. Il limite di $f$ per $(x,y)\to(0,0)$ vale
+O: 0
+O: $\frac12$
+O: $-1$
+O: Nessuna delle precedenti
+A: 4
+W: Su $y=0$ vale 0, su $y=x^2$ tende a $\frac12$: non esiste.
+S: 11 giugno 2025, fila A, n. 7
+
+?mc
+Q: Sia $f(x,y)=\dfrac{y^2(1-\cos x)}{x^4+y^4}$. Il limite di $f$ per $(x,y)\to(0,0)$ vale
+O: 1
+O: 2
+O: 0
+O: Nessuna delle precedenti
+A: 4
+W: $1-\cos x\sim\frac{x^2}{2}$: gradi 4 contro 4. Su $y=x$: $\frac{x^2(1-\cos x)}{2x^4}\to\frac14$; su $y=0$: 0. Non esiste.
+S: 11 giugno 2025, fila B, n. 10
+
+?mc
+Q: $\displaystyle\lim_{(x,y)\to(1,0)}\frac{y^2\ln x+\sin\big((x-1)^2+y^2\big)}{(x-1)^2+y^2}$ vale
+O: non esiste
+O: 0
+O: 1
+O: Nessuna delle precedenti
+A: 3
+W: Primo pezzo $\le|\ln x|\to0$, secondo $\frac{\sin\rho^2}{\rho^2}\to1$: totale 1.
+S: 5 febbraio 2025, fila A, n. 7
+
+?mc
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{e^{x-y}-x-1+y}{2|x|+|y|}$ vale
+O: non esiste
+O: 0
+O: $\frac12$
+O: Nessuna delle precedenti
+A: 2
+W: Con $u=x-y$: $|e^u-1-u|\le u^2$ vicino a 0, quindi $|f|\le\frac{(|x|+|y|)^2}{|x|+|y|}=|x|+|y|\to0$.
+S: 22 gennaio 2025, fila A, n. 7
+
+?mc
+Q: $\displaystyle\lim_{(x,y)\to(0,0)}\frac{e^{y-x}-y-1+x}{|x|+3|y|}$ vale
+O: 0
+O: non esiste
+O: $\frac13$
+O: Nessuna delle precedenti
+A: 1
+W: Con $u=y-x$: $|f|\le\frac{u^2}{|x|+3|y|}\le\frac{(|x|+|y|)^2}{|x|+|y|}=|x|+|y|\to0$.
+S: 22 gennaio 2025, fila B, n. 8
+
+?mc
+Q: Sia $f(x,y)=\dfrac{3y\sqrt{|xy|}}{|y|^3+2|x|}$ per $(x,y)\ne(0,0)$, $f(0,0)=0$. Allora
+O: $f$ non è continua in $(0,0)$
+O: $f$ è continua e derivabile ma non differenziabile in $(0,0)$
+O: $f$ è differenziabile in $(0,0)$
+O: Nessuna delle precedenti
+A: 1
+W: Su $x=y^3$ vale $\pm1$: il limite non è 0. Non continua.
+S: 22 gennaio 2025, fila A, n. 8
+
+?mc
+Q: Sia $f(x,y)=\dfrac{2x\sqrt{|xy|}}{|x|^3+3|y|}$ per $(x,y)\ne(0,0)$, $f(0,0)=0$. Allora
+O: $f$ è differenziabile in $(0,0)$
+O: $f$ è continua e derivabile ma non differenziabile in $(0,0)$
+O: $f$ non è continua in $(0,0)$
+O: Nessuna delle precedenti
+A: 3
+W: Pesi invertiti: prova $y=x^3$. Numeratore $2x\sqrt{x^4}=2x^3$, denominatore $|x|^3+3|x|^3=4|x|^3$: $f=\pm\frac12\ne0$.
+S: 22 gennaio 2025, fila B, n. 11
+
+#theory
+?th
+Q: Dai la definizione di limite per una funzione di due variabili e spiega come si dimostra che un limite non esiste.
+A: Sia $f:A\subseteq\mathbb R^2\to\mathbb R$ e $P_0$ punto di accumulazione di $A$. Si dice che $\lim_{P\to P_0}f(P)=l$ se per ogni $\varepsilon>0$ esiste $\delta>0$ tale che per ogni $P\in A$ con $0<\|P-P_0\|<\delta$ si ha $|f(P)-l|<\varepsilon$.
+
+Vale il **teorema di restrizione**: se il limite è $l$, allora per ogni $C\subseteq A$ di cui $P_0$ è punto di accumulazione anche il limite di $f$ ristretta a $C$ è $l$. Quindi, se si trovano due sottoinsiemi (due rette, una retta e una parabola) lungo i quali $f$ ha limiti diversi, il limite non esiste. Esempio: $\frac{xy}{x^2+y^2}$ vale $\frac{m}{1+m^2}$ sulla retta $y=mx$.
+
+Il viceversa non vale: limiti uguali lungo tutte le rette non garantiscono l'esistenza. $\frac{x^2y}{x^4+y^2}$ tende a 0 lungo ogni retta ma vale $\frac12$ sulla parabola $y=x^2$.
+K: Definizione con $\varepsilon$, $\delta$ e $0<\|P-P_0\|<\delta$, con $P_0$ di accumulazione
+K: Enunciato del teorema di restrizione, con l'ipotesi "di accumulazione per $C$"
+K: Esempio di non esistenza con due percorsi
+K: Avvertenza: rette tutte uguali non bastano, con controesempio
+
+?th
+Q: Enuncia il teorema di Weierstrass e discuti le ipotesi.
+A: Se $K\subset\mathbb R^n$ è non vuoto, chiuso e limitato e $f:K\to\mathbb R$ è continua, allora $f$ ammette massimo e minimo assoluti su $K$.
+
+Nessuna ipotesi si può togliere: sul disco aperto $x^2+y^2<1$ la funzione $x^2+y^2$ non ha massimo (manca la chiusura); sul semipiano $x\ge0$ la funzione $x$ non ha massimo (manca la limitatezza); sul disco chiuso, $f=\frac{1}{x^2+y^2}$ con $f(0,0)=0$ non ha massimo (manca la continuità). La condizione è sufficiente ma non necessaria: $e^{-x^2-y^2}$ ha massimo su $\mathbb R^2$.
+K: Ipotesi: $K$ non vuoto, chiuso, limitato; $f$ continua
+K: Tesi: esistono massimo e minimo assoluti
+K: Un controesempio per ogni ipotesi tolta
+K: Osservazione: sufficiente ma non necessaria
+
+?th
+Q: Quando una funzione è continua? Come si studia la continuità di una funzione definita a tratti?
+A: $f$ è continua in $P_0\in A$ se $P_0$ è isolato oppure se $\lim_{P\to P_0}f(P)=f(P_0)$. Somme, prodotti, quozienti con denominatore non nullo e composizioni di funzioni continue sono continue.
+
+Per $f$ che vale $g$ fuori da $P_0$ e $a$ in $P_0$: fuori da $P_0$ è continua se lo è $g$ (funzioni combinate); in $P_0$ è continua se e solo se $\lim_{P\to P_0}g(P)$ esiste e vale $a$. Esempio: $\frac{\sin(x^2+y^2)}{x^2+y^2}$ con $f(0,0)=a$ è continua se e solo se $a=1$.
+K: Definizione di continuità (con il caso del punto isolato)
+K: Teorema delle funzioni combinate
+K: Metodo: limite di $g$ nel punto confrontato con il valore assegnato
+K: Esempio con parametro
+
+#sheet
+Argomento ¦ Da ricordare
+Stime ¦ $|x|,|y|\le r$; $|xy|\le r^2/2$; $\frac{x^2}{x^2+y^2}\le1$; $r\le|x|+|y|\le\sqrt2 r$
+Natura di un insieme ¦ solo $<,>$: aperto; solo $\le,\ge,=$: chiuso; misto: né l'uno né l'altro; compatto = chiuso e limitato
+Dominio ¦ denominatore $\ne0$, radice pari $\ge0$, log $>0$, arcsin in $[-1,1]$
+Lettura dei gradi ¦ $p>q$: probabilmente 0; $p=q$: probabilmente non esiste; pesi per $x^4+y^2$
+Non esiste ¦ due percorsi con limiti diversi (assi, $y=mx$, $y=kx^2$); restrizione
+Esiste ¦ $|f-l|\le g\to0$ o polari con maggiorazione indipendente da $\theta$; limitata × infinitesima
+Trappola ¦ limiti direzionali tutti uguali non implicano l'esistenza
+Continuità a tratti ¦ continua in $(0,0)$ se e solo se $\lim g=a$
+Weierstrass ¦ continua su compatto non vuoto: max e min assoluti

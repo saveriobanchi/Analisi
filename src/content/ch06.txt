@@ -1,0 +1,303 @@
+#chapter 6
+title: Curve e integrali curvilinei
+short: Curve
+place: Cresta Jordan
+alt: 1950
+weight: 0.9
+program: Curve parametriche nel piano e nello spazio; curve regolari, chiuse, semplici; vettore e versore tangente; lunghezza di una curva; curve cartesiane e in coordinate polari; integrale curvilineo di prima specie; massa e baricentro di un filo.
+exam: Si presta a Vero/Falso sulle definizioni (regolare, chiusa, semplice; invarianza per riparametrizzazione) e a multiple di calcolo: una lunghezza o un integrale di prima specie su segmenti, archi di circonferenza o eliche. Il calcolo è breve se sai la formula e la velocità $|\gamma'(t)|$.
+
+#lesson 6.1 Curve parametriche
+goal: Riconoscere se una curva è regolare, chiusa, semplice e calcolarne il vettore tangente.
+
+::idea
+Una curva è la **traiettoria di un punto che si muove**: $\gamma(t)$ dice dove sta all'istante $t$. Il **sostegno** è l'insieme dei punti toccati, il disegno; la parametrizzazione dice anche come lo si percorre. $\gamma'(t)$ è il vettore velocità, tangente alla curva.
+
+::def Curva, sostegno, regolare, chiusa, semplice
+Una curva è una funzione continua $\gamma:[a,b]\to\mathbb R^n$; il sostegno è $\gamma([a,b])$. È **regolare** se $\gamma\in C^1$ e $\gamma'(t)\ne0$ per ogni $t$; **regolare a tratti** se lo è su un numero finito di sottointervalli. È **chiusa** se $\gamma(a)=\gamma(b)$; **semplice** se non passa due volte per lo stesso punto (tranne eventualmente $\gamma(a)=\gamma(b)$). Il versore tangente è $T(t)=\gamma'(t)/|\gamma'(t)|$.
+
+::table
+Curva ¦ Parametrizzazione ¦ $\lvert\gamma'(t)\rvert$
+Segmento da $A$ a $B$ ¦ $A+t(B-A)$, $t\in[0,1]$ ¦ $\lVert B-A\rVert$
+Circonferenza di raggio $R$ ¦ $(R\cos t,R\sin t)$, $t\in[0,2\pi]$ ¦ $R$
+Grafico $y=g(x)$ ¦ $(x,g(x))$, $x\in[a,b]$ ¦ $\sqrt{1+g'(x)^2}$
+Elica ¦ $(\cos t,\sin t,t)$ ¦ $\sqrt2$
+Curva polare $\rho=\rho(\theta)$ ¦ $(\rho\cos\theta,\rho\sin\theta)$ ¦ $\sqrt{\rho^2+\rho'^2}$
+
+::lab curve
+
+::example base $\gamma(t)=(t^2,t^3)$, $t\in[-1,1]$: è regolare?
++ Derivata: $\gamma'(t)=(2t,3t^2)$.
++ In t = 0: $\gamma'(0)=(0,0)$.
+= Non è regolare: nel punto $(0,0)$ il sostegno ha una **cuspide**. È comunque una curva continua e semplice.
+
+::trap
+- Regolare riguarda la parametrizzazione, non solo il disegno: la stessa circonferenza percorsa con $(\cos t^3,\sin t^3)$ ha velocità nulla in $t=0$.
+- Chiusa non vuol dire semplice: la lemniscata (un otto) è chiusa ma passa due volte dal centro.
+
+#quiz
+?vf
+Q: $\gamma(t)=(\cos t,\sin t)$, $t\in[0,2\pi]$, è una curva regolare, chiusa e semplice.
+A: V
+W: $|\gamma'(t)|=1\ne0$, $\gamma(0)=\gamma(2\pi)$, e non ripassa per lo stesso punto.
+
+?vf
+Q: $\gamma(t)=(t^2,t^3)$, $t\in[-1,1]$, è regolare.
+A: F
+W: $\gamma'(0)=(0,0)$: c'è una cuspide nell'origine.
+
+?mc
+Q: $\gamma(t)=(\cos t,\sin t)$, $t\in[0,4\pi]$ è
+O: chiusa e semplice
+O: chiusa ma non semplice
+O: semplice ma non chiusa
+O: Nessuna delle precedenti
+A: 2
+W: Chiusa ($\gamma(0)=\gamma(4\pi)$) ma percorre la circonferenza due volte.
+
+?mc
+Q: Il versore tangente all'elica $\gamma(t)=(\cos t,\sin t,t)$ in $t=0$ è
+O: $(0,1,1)$
+O: $\frac{1}{\sqrt2}(0,1,1)$
+O: $(1,0,1)$
+O: Nessuna delle precedenti
+A: 2
+W: $\gamma'(0)=(0,1,1)$, di norma $\sqrt2$.
+
+#lesson 6.2 Lunghezza di una curva
+goal: Calcolare la lunghezza di segmenti, archi, eliche, grafici e curve in coordinate polari.
+
+::def Lunghezza
+Per $\gamma:[a,b]\to\mathbb R^n$ regolare (a tratti):
+$$L(\gamma)=\int_a^b|\gamma'(t)|\,dt .$$
+Grafico $y=g(x)$: $L=\int_a^b\sqrt{1+g'(x)^2}\,dx$. Curva polare $\rho=\rho(\theta)$: $L=\int_{\theta_1}^{\theta_2}\sqrt{\rho^2+\rho'^2}\,d\theta$.
+
+::thm Invarianza per riparametrizzazione
+La lunghezza non dipende dalla parametrizzazione regolare scelta né dal verso di percorrenza. Dipende dal sostegno e da quante volte lo si percorre.
+
+::example base Lunghezza dell'elica $(\cos t,\sin t,t)$, $t\in[0,2\pi]$.
++ Velocità: $\gamma'=(-\sin t,\cos t,1)$, $|\gamma'|=\sqrt2$.
+= $L=2\pi\sqrt2$.
+
+::example medio Lunghezza del grafico di $y=x^{3/2}$ per $x\in[0,4]$.
++ Formula: $\sqrt{1+\frac94x}$.
++ Calcolo: $\int_0^4\sqrt{1+\frac94x}\,dx=\frac8{27}\Big[(1+\tfrac94x)^{3/2}\Big]_0^4$.
+= $\frac{8}{27}\big(10\sqrt{10}-1\big)$.
+
+::example esame Lunghezza della cardioide $\rho=1+\cos\theta$, $\theta\in[0,2\pi]$.
++ Polare: $\rho^2+\rho'^2=(1+\cos\theta)^2+\sin^2\theta=2+2\cos\theta=4\cos^2\frac\theta2$.
++ Calcolo: $L=\int_0^{2\pi}2\big|\cos\frac\theta2\big|\,d\theta=2\int_0^\pi2\cos\frac\theta2\,d\theta$.
+= $L=8$. Attenzione al valore assoluto: senza, l'integrale su $[0,2\pi]$ darebbe 0.
+
+::trap
+- $|\gamma'(t)|$ è la norma: radice della somma dei quadrati, non la somma delle componenti.
+- Con le radici di quadrati ($\sqrt{4\cos^2(\theta/2)}$) rimetti il valore assoluto.
+
+#quiz
+?mc
+Q: La lunghezza dell'elica $(\cos t,\sin t,t)$, $t\in[0,2\pi]$, è
+O: $2\pi$
+O: $2\sqrt2\,\pi$
+O: $4\pi$
+O: Nessuna delle precedenti
+A: 2
+W: $|\gamma'|=\sqrt2$ costante.
+
+?mc
+Q: La lunghezza del grafico di $y=\cosh x$ per $x\in[0,1]$ è
+O: $\cosh1$
+O: $\sinh1$
+O: $\sinh1-1$
+O: Nessuna delle precedenti
+A: 2
+W: $\sqrt{1+\sinh^2x}=\cosh x$, primitiva $\sinh x$.
+
+?vf
+Q: La lunghezza di una curva regolare non cambia se la si percorre in verso opposto.
+A: V
+W: La lunghezza dipende solo dal sostegno percorso una volta.
+
+?mc
+Q: La lunghezza della cardioide $\rho=1+\cos\theta$, $\theta\in[0,2\pi]$, è
+O: 4
+O: 8
+O: $2\pi$
+O: Nessuna delle precedenti
+A: 2
+W: $\sqrt{\rho^2+\rho'^2}=2|\cos\frac\theta2|$; integrale 8.
+
+?mc
+Q: La semicirconferenza di raggio 3, parametrizzata con $(3\cos t,3\sin t)$, $t\in[0,\pi]$, è lunga
+O: $6\pi$
+O: $3\pi$
+O: $9\pi$
+O: Nessuna delle precedenti
+A: 2
+W: $|\gamma'|=3$, integrale su $[0,\pi]$.
+
+#lesson 6.3 Integrale curvilineo di prima specie
+goal: Calcolare $\int_\gamma f\,ds$ e usarlo per massa e baricentro di un filo.
+
+::idea
+È la somma dei valori di $f$ lungo la curva, ciascuno pesato con la **lunghezza** del pezzetto: $ds=|\gamma'(t)|\,dt$. Con $f=1$ dà la lunghezza; con $f$ densità lineare dà la massa del filo.
+
+::def Integrale curvilineo di prima specie
+$$\int_\gamma f\,ds=\int_a^b f\big(\gamma(t)\big)\,|\gamma'(t)|\,dt .$$
+Non dipende dalla parametrizzazione né dal **verso** di percorrenza.
+
+::def Massa e baricentro di un filo
+Filo $\gamma$ di densità lineare $\mu$: massa $m=\int_\gamma\mu\,ds$; baricentro $\bar x=\frac1m\int_\gamma x\,\mu\,ds$, e così via per le altre coordinate.
+
+::method
+1. Parametrizza la curva e calcola $|\gamma'(t)|$.
+2. Sostituisci $\gamma(t)$ in $f$.
+3. Integra $f(\gamma(t))|\gamma'(t)|$ sull'intervallo del parametro.
+
+::example base $\int_\gamma(x+y)\,ds$, $\gamma$ segmento da $(0,0)$ a $(1,1)$.
++ Parametrizza: $\gamma(t)=(t,t)$, $|\gamma'|=\sqrt2$.
++ Calcolo: $\int_0^12t\sqrt2\,dt$.
+= $\sqrt2$.
+
+::example medio Baricentro della semicirconferenza omogenea $x^2+y^2=R^2$, $y\ge0$.
++ Massa: lunghezza $\pi R$ (densità 1).
++ Momento: $\int_\gamma y\,ds=\int_0^\pi R\sin t\cdot R\,dt=2R^2$.
+= $\bar y=\frac{2R}{\pi}$, diverso dal semidisco ($\frac{4R}{3\pi}$): il filo ha la massa tutta sul bordo, più lontano dal centro.
+
+::trap
+- Dimenticare $|\gamma'(t)|$: senza, il risultato dipende dalla parametrizzazione ed è sbagliato.
+- Non confondere con il lavoro (seconda specie, capitolo 7), che dipende dal verso.
+
+#quiz
+?mc
+Q: $\int_\gamma x\,ds$ con $\gamma$ il quarto di circonferenza unitaria nel primo quadrante vale
+O: $\frac\pi4$
+O: 1
+O: $\frac12$
+O: Nessuna delle precedenti
+A: 2
+W: $\int_0^{\pi/2}\cos t\cdot1\,dt=1$.
+
+?mc
+Q: La massa di un filo a forma di circonferenza unitaria con densità $\mu=x^2$ è
+O: $2\pi$
+O: $\pi$
+O: $\frac\pi2$
+O: Nessuna delle precedenti
+A: 2
+W: $\int_0^{2\pi}\cos^2t\,dt=\pi$.
+
+?vf
+Q: L'integrale curvilineo di prima specie cambia segno se si inverte il verso di percorrenza della curva.
+A: F
+W: È invariante: $ds$ è sempre positivo. È il lavoro (seconda specie) che cambia segno.
+
+?mc
+Q: $\int_\gamma z\,ds$ sull'elica $(\cos t,\sin t,t)$, $t\in[0,2\pi]$, vale
+O: $2\pi^2$
+O: $2\sqrt2\,\pi^2$
+O: $\sqrt2\,\pi$
+O: Nessuna delle precedenti
+A: 2
+W: $\int_0^{2\pi}t\sqrt2\,dt=\sqrt2\cdot2\pi^2$.
+
+?mc
+Q: L'ordinata del baricentro della semicirconferenza omogenea di raggio $R$ ($y\ge0$) è
+O: $\frac{4R}{3\pi}$
+O: $\frac{2R}{\pi}$
+O: $\frac R2$
+O: Nessuna delle precedenti
+A: 2
+W: $\frac{2R^2}{\pi R}$.
+
+#bank
+?vf
+Q: Se $\gamma\in C^1$ e $\gamma'(t)\ne0$ per ogni $t$, allora $\gamma$ è semplice.
+A: F
+W: Regolare non implica semplice: $(\cos t,\sin t)$ su $[0,4\pi]$ è regolare ma ripassa per gli stessi punti.
+
+?mc
+Q: La lunghezza del grafico di $y=x^{3/2}$, $x\in[0,4]$, è
+O: $\frac{8}{27}(10\sqrt{10}-1)$
+O: $\frac{8}{27}10\sqrt{10}$
+O: $\frac{2}{3}(10\sqrt{10}-1)$
+O: Nessuna delle precedenti
+A: 1
+W: $\int_0^4\sqrt{1+\frac94x}\,dx=\frac8{27}\big[(1+\frac94x)^{3/2}\big]_0^4$.
+
+?mc
+Q: $\int_\gamma(x+y)\,ds$, con $\gamma$ il segmento da $(0,0)$ a $(1,1)$, vale
+O: 1
+O: $\sqrt2$
+O: 2
+O: Nessuna delle precedenti
+A: 2
+W: $\gamma=(t,t)$, $ds=\sqrt2\,dt$: $\int_0^12t\sqrt2\,dt$.
+
+?vf
+Q: La lunghezza di una curva regolare è $\int_a^b|\gamma'(t)|\,dt$ e non dipende dalla parametrizzazione regolare scelta.
+A: V
+W: È la definizione con il teorema di invarianza.
+
+?mc
+Q: La lunghezza della circonferenza parametrizzata da $(2\cos t,2\sin t)$, $t\in[0,2\pi]$, è
+O: $2\pi$
+O: $4\pi$
+O: $8\pi$
+O: Nessuna delle precedenti
+A: 2
+W: $|\gamma'|=2$.
+
+?vf
+Q: L'astroide $\gamma(t)=(\cos^3t,\sin^3t)$, $t\in[0,2\pi]$, è una curva regolare.
+A: F
+W: $\gamma'(t)=(-3\cos^2t\sin t,\ 3\sin^2t\cos t)$ si annulla in $t=0,\frac\pi2,\pi,\frac{3\pi}2$: quattro cuspidi.
+
+?mc
+Q: La massa di un filo a forma di elica $(\cos t,\sin t,t)$, $t\in[0,2\pi]$, con densità $\mu=z$, è
+O: $2\pi^2$
+O: $2\sqrt2\,\pi^2$
+O: $4\pi^2$
+O: Nessuna delle precedenti
+A: 2
+W: $\int_0^{2\pi}t\sqrt2\,dt$.
+
+?mc
+Q: La lunghezza della cicloide $(t-\sin t,\ 1-\cos t)$, $t\in[0,2\pi]$, è
+O: $2\pi$
+O: 8
+O: 4
+O: Nessuna delle precedenti
+A: 2
+W: $|\gamma'|^2=(1-\cos t)^2+\sin^2t=2-2\cos t=4\sin^2\frac t2$; $\int_0^{2\pi}2\sin\frac t2\,dt=8$.
+
+#theory
+?th
+Q: Definisci curva regolare, chiusa e semplice, e la lunghezza di una curva.
+A: Una curva è una funzione continua $\gamma:[a,b]\to\mathbb R^n$; il suo sostegno è $\gamma([a,b])$. È **regolare** se $\gamma\in C^1([a,b])$ e $\gamma'(t)\ne0$ per ogni $t$; **chiusa** se $\gamma(a)=\gamma(b)$; **semplice** se $\gamma(t_1)\ne\gamma(t_2)$ per $t_1\ne t_2$, salvo eventualmente $t_1=a$, $t_2=b$. La lunghezza di una curva regolare è
+$$L(\gamma)=\int_a^b|\gamma'(t)|\,dt,$$
+e non dipende dalla parametrizzazione regolare scelta. Esempio: $(t^2,t^3)$ non è regolare in $t=0$ (cuspide).
+K: Definizione di regolare con $\gamma'\ne0$
+K: Chiusa e semplice
+K: Formula della lunghezza
+K: Invarianza per riparametrizzazione
+
+?th
+Q: Definisci l'integrale curvilineo di prima specie e spiega come si calcola la massa di un filo.
+A: Sia $\gamma:[a,b]\to\mathbb R^n$ regolare e $f$ continua sul sostegno. L'integrale curvilineo di prima specie è
+$$\int_\gamma f\,ds=\int_a^b f(\gamma(t))\,|\gamma'(t)|\,dt .$$
+Non dipende dalla parametrizzazione regolare né dal verso di percorrenza; con $f=1$ dà la lunghezza. Un filo con sostegno $\gamma$ e densità lineare $\mu$ ha massa $m=\int_\gamma\mu\,ds$ e baricentro $\bar x_i=\frac1m\int_\gamma x_i\,\mu\,ds$. Esempio: semicirconferenza omogenea di raggio $R$, $\bar y=\frac{2R}{\pi}$.
+K: Formula con $|\gamma'(t)|$
+K: Indipendenza da parametrizzazione e verso
+K: Massa e baricentro del filo
+K: Esempio
+
+#sheet
+Argomento ¦ Da ricordare
+Regolare ¦ $\gamma\in C^1$ e $\gamma'(t)\ne0$; cuspidi dove $\gamma'=0$
+Chiusa / semplice ¦ $\gamma(a)=\gamma(b)$ / nessun punto ripetuto
+Lunghezza ¦ $\int_a^b\lvert\gamma'(t)\rvert dt$
+Grafico ¦ $\int_a^b\sqrt{1+g'^2}\,dx$
+Polare ¦ $\int\sqrt{\rho^2+\rho'^2}\,d\theta$; cardioide $1+\cos\theta$: 8
+Prima specie ¦ $\int_\gamma f\,ds=\int f(\gamma)\lvert\gamma'\rvert dt$; non dipende dal verso
+Filo ¦ massa $\int_\gamma\mu\,ds$; semicirconferenza $\bar y=\frac{2R}\pi$
+Lunghezze note ¦ elica $2\sqrt2\pi$ per giro; astroide 6; cicloide (un arco) 8
